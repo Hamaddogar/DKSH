@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./styles.css";
 import ProfileCard from "../profile-card";
-import { Grid, Skeleton, Stack } from "@mui/material";
+import { Alert, Grid, Skeleton, Stack } from "@mui/material";
 import ThemeContext from "../../context/ThemeContext";
 const users = ["", "", "", "", "", "", "", ""];
 
@@ -45,6 +45,13 @@ const Index = ({ allDevelopersList, loading, view }) => {
                      <ProfileCard user={user} view={view} />
                   </Grid>
                )))
+         }
+
+         {
+            !loading && allDevelopersList.length === 0 &&
+            <Grid item xs="12" >
+               <Alert severity="error">No User Found</Alert>
+            </Grid>
          }
 
       </Grid>

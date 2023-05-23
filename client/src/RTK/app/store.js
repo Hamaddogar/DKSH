@@ -6,7 +6,7 @@ import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 import storage from 'redux-persist-indexeddb-storage';
 
 const persistConfig = {
-  key: 'poshtextiles',
+  key: 'dksh',
   storage: storage('myDB'),
   // stateReconciler: autoMergeLevel2,
   stateReconciler: autoMergeLevel1,

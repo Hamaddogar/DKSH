@@ -1,15 +1,6 @@
 import { toast } from 'react-toastify';
 
-
-
-
-
-
-
-
-
 export const Toaster = (type, error) => {
-
     switch (type) {
       case 'loading':
         toast.loading('Loading...', {
@@ -37,11 +28,4 @@ export const Toaster = (type, error) => {
         break;
     }
   
-  
-  
-  
-  
-  
-  
-  
-  }
+  };

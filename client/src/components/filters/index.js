@@ -74,7 +74,7 @@ const Index = (props) => {
         );
     };
     const ServiceDropdown = () => {
-        const list = ["All", "UI Design", "UX Design", "Top rated"];
+        const list = ["All", "UI Design", "UX Design"];
         const handleChangeService = (service) => dispatch(SERVICE_Filter(service))
         return (
             <Box className="dropdown-list">
@@ -87,7 +87,7 @@ const Index = (props) => {
         );
     };
     const RatingDropdown = () => {
-        const list = ["5", "4", "3", "Top rated"];
+        const list = ["Top rated", 5, 4, 3, 2, 1];
         const handleChangeRating = (service) => dispatch(RATING_Filter(service))
         return (
             <Box className="dropdown-list">
@@ -128,7 +128,7 @@ const Index = (props) => {
     const handleAvailableToWork = event => dispatch(AVALIABLE_TO_WORK_Filter(event.target.checked))
     const handleProTallent = event => dispatch(PRO_TALLENT_Filter(event.target.checked))
     const handleResetFilters = event => dispatch(RESET_Filter())
-    
+
 
     return (
         <>
@@ -163,7 +163,7 @@ const Index = (props) => {
 
 export default Index;
 
-const FilterButton = ({ icon, label, value, component, dark, onClick,  ...rest }) => <DropdownButton onClick={onClick} {...rest} dark={dark} icon={icon} label={label} value={value} children={component} />;
+const FilterButton = ({ icon, label, value, component, dark, onClick, ...rest }) => <DropdownButton onClick={onClick} {...rest} dark={dark} icon={icon} label={label} value={value} children={component} />;
 
 const ToggleButton = ({ label, dark, ...rest }) => {
     return (

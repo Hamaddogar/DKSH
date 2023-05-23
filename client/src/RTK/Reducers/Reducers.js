@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { userData } from './fakeData';
@@ -18,8 +17,8 @@ let initialState = {
   // filters
   activeTab: 'All',
   priceFilter: [0, 1000],
-  servicesFilter: "All",
-  ratingFilter: "5",
+  servicesFilter: "",
+  ratingFilter: 0,
   availableToWorkFilter: true,
   proTallentFilter: false,
 
@@ -80,11 +79,11 @@ const mainSlice = createSlice({
     },
     RESET_Filter: (state, { payload }) => {
       state.activeTab = 'All';
-      state.priceFilter = [0, 1000];
-      state.servicesFilter = "All";
-      state.ratingFilter = "5";
-      state.availableToWorkFilter = true;
-      state.proTallentFilter = false;
+      state.priceFilter= [0, 1000];
+      state.servicesFilter= "";
+      state.ratingFilter= 0;
+      state.availableToWorkFilter= true;
+      state.proTallentFilter= false;
     },
 
 
@@ -119,7 +118,7 @@ const mainSlice = createSlice({
             }
           })
 
-          state.allDevelopers = data
+          // state.allDevelopers = data
 
         }
       })
