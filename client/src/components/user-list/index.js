@@ -2,16 +2,14 @@ import React, { useContext } from "react";
 import "./styles.css";
 import ProfileCard from "../profile-card";
 import { Grid, Skeleton, Stack } from "@mui/material";
-import { useSelector } from 'react-redux';
 import ThemeContext from "../../context/ThemeContext";
 const users = ["", "", "", "", "", "", "", ""];
 
-const Index = (props) => {
-   const { view } = props;
+const Index = ({ allDevelopersList, loading, view }) => {
    const { dark } = useContext(ThemeContext);
-   const { allDevelopers, loading } = useSelector(store => store.mainReducer)
 
-   console.log("----allDevelopers---", allDevelopers);
+
+   console.log("----allDevelopersList---", allDevelopersList);
 
    const LoadSkelton = () => {
       return <Stack spacing={1}>
@@ -39,12 +37,12 @@ const Index = (props) => {
          }
          {
             !loading && (view === "List"
-               ? allDevelopers?.map((user) => (
+               ? allDevelopersList?.map((user) => (
                   <Grid item key={user.id} xs="12" sm="12" md="12" lg="12">
                      <ProfileCard user={user} view={view} />
                   </Grid>
                ))
-               : allDevelopers?.map((user) => (
+               : allDevelopersList?.map((user) => (
                   <Grid item key={user.id} xs="12" sm="6" md="4">
                      <ProfileCard user={user} view={view} />
                   </Grid>
