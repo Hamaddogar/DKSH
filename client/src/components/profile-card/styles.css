@@ -31,19 +31,33 @@
  border: 5px solid #000;
 }
 .grid-profile-name {
- font-style: normal;
- font-weight: 600;
- font-size: 16px;
- line-height: 20px;
- text-align: center;
- letter-spacing: -0.015em;
- color: #090b0c;
- flex: none;
- order: 0;
- align-self: stretch;
- flex-grow: 0;
- margin-top: 5px;
-}
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: -0.015em;
+    color: #090b0c;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    margin-top: 5px;
+   }
+   .grid-profile-name-dark {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: -0.015em;
+    color: #fff;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    margin-top: 5px;
+   }
 .grid-profile-desc {
  font-style: normal;
  font-weight: 500;

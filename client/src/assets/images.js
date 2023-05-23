@@ -8,6 +8,7 @@ import profileGrid from "./profileGrid.png";
 import WhiteLogo from "./white-logo.png";
 import WhiteMsg from "./msg-white.svg";
 import Star from "./star.svg";
-const Images = { Star, WhiteMsg, Logo, Profile, grid1, grid2, grid3, profileGrid, WhiteLogo, IconDarkLight };
+import HamadPhoto from "./hamad.jpeg";
+const Images = { Star, WhiteMsg, Logo, Profile, grid1, grid2, grid3, profileGrid, WhiteLogo, IconDarkLight, HamadPhoto };
 
 export default Images;
