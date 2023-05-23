@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Icons from "../../assets/icons";
 import { Box } from "@mui/material";
 const { UpIcon, DownIcon } = Icons;
-function DropdownButton({ icon, label, dark, value, children }) {
+function DropdownButton({ icon, label, dark, value, children, onClick }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   useEffect(() => {
@@ -17,18 +17,21 @@ function DropdownButton({ icon, label, dark, value, children }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
+
+
   return (
     <div className="custom-dropdown" ref={dropdownRef}>
       <Box sx={{ ...styleSheet.filterButton, ...styleSheet.flex }} style={{ gap: 18 }} onClick={() => setIsOpen(!isOpen)}>
-        <Box sx={{ ...styleSheet.flex, justifyContent: "flex-start" }} style={{ gap: 8.8 }}>
-          {icon && <img src={icon} />}
+        <Box onClick={onClick} sx={{ ...styleSheet.flex, justifyContent: "flex-start" }} style={{ gap: 8.8 }}>
+          {icon && <img src={icon} alt='' />}
           <span style={styleSheet.label}>
             {label} <span className={dark ? "switch-label switch-label-dark" : "switch-label"}>{value}</span>
           </span>
         </Box>
         {label !== "Reset all" && (
           <Box>
-            <img src={isOpen ? UpIcon : DownIcon} />
+            <img alt='' src={isOpen ? UpIcon : DownIcon} />
           </Box>
         )}
       </Box>

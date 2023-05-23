@@ -11,12 +11,14 @@ const Index = ({ user }) => {
     const navigate = useNavigate()
     const { dark } = useContext(ThemeContext);
 
-    const handleClickMessage = ()=>{
+    const handleClickMessage = () => {
         toast.info('Not Avaliable!')
     }
-    if (!user) {
-        navigate(-1)
-    }
+
+    React.useLayoutEffect(() => window.scrollTo(0, 0), [])
+
+
+
     return (
         <div className={dark ? "banner-container banner-container-dark  user-network" : "banner-container user-network"}>
             <div className="user-network-container">
@@ -26,13 +28,13 @@ const Index = ({ user }) => {
                         <div className="verified-icon">{profileVerifiedIcon()}</div>
                     </div>
                     <div className="user-profile-content">
-                        <h1 className={dark ? "job-title white-text" : "job-title"}>{`${user?.firstName} ${user?.lastName}` } </h1>
+                        <h1 className={dark ? "job-title white-text" : "job-title"}>{`${user?.firstName} ${user?.lastName}`} </h1>
                         <h3 className={dark ? "network-user-reviews white-text" : "network-user-reviews"} style={{ margin: 0 }}>
                             <img src={Images.Star} alt='' />
                             {user?.ratingCount()} ({user?.commentCount()} Reviews)
                         </h3>
                         <p className={dark ? "network-user-exp white-text" : "network-user-exp"} style={{ width: "90%" }}>
-                           {user?.description}
+                            {user?.description}
                         </p>
                     </div>
                 </div>

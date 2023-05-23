@@ -15,6 +15,15 @@ let initialState = {
   loading: false,
   allDevelopers: userData,
   selectedProfile: null,
+  // filters
+  activeTab: 'All',
+  priceFilter: [0, 1000],
+  servicesFilter: "All",
+  ratingFilter: "5",
+  availableToWorkFilter: true,
+  proTallentFilter: false,
+
+
 }
 
 // ________________ Asyn Functions for Calling __________________ //
@@ -27,78 +36,6 @@ export const allDeveloperGetter = createAsyncThunk(
     return data.data;
   }
 );
-
-// inventorydata 
-export const inventoryDataFunction = createAsyncThunk(
-  'mainSlice/inventoryDataFunction',
-  async ({ token, toastPermission }) => {
-    const data = await toast.promise(
-      axios.post(APIS.inventory_micro, { token: token }),
-      toastPermission ? { pending: 'Loading Please Wait...', success: 'Successfully Loaded', error: 'Something Went Wrong' } : { error: 'Something Went Wrong' },
-      { autoClose: 1500, hideProgressBar: true }
-    );
-    return data.data;
-  }
-);
-
-// History
-export const historyGetter = createAsyncThunk(
-  'mainSlice/historyGetter',
-  async ({ token, toastPermission }) => {
-    const data = await toast.promise(
-      axios.post(APIS.sale_orders_micro, { token: token }),
-      toastPermission ? { pending: 'Loading Please Wait...', success: 'Successfully Loaded', error: 'Something Went Wrong' } : { error: 'Something Went Wrong' },
-      { autoClose: 1500, hideProgressBar: true }
-    );
-    return data.data;
-  }
-);
-
-// csvOrderDealer
-export const csvOrderDealer = createAsyncThunk(
-  'mainSlice/csvOrderDealer',
-  async ({ token, body }) => {
-    const data = await toast.promise(
-      axios.post(APIS.csv_order_micro, { token, body }),
-      { pending: 'Loading Please Wait...', success: 'Successfully Loaded', error: 'Something Went Wrong' },
-      { autoClose: 1500, hideProgressBar: true }
-    );
-    return data.data;
-  }
-);
-
-// csvOrderDealer
-export const shipFromLocation = createAsyncThunk(
-  'mainSlice/shipFromLocation',
-  async ({ token, locationCode }) => {
-    const data = await axios.post(APIS.shipFrom, { token, locationCode })
-    return data.data;
-  }
-);
-
-// successPick_micro
-export const successPickDetails = createAsyncThunk(
-  'mainSlice/successPickDetails',
-  async ({ token, pickCode }) => {
-    const data = await axios.post(APIS.successPick_micro, { token, pickCode })
-    return data.data;
-  }
-);
-
-// pickingPageDealer
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -123,9 +60,35 @@ const mainSlice = createSlice({
     SELECTED_PROFILE: (state, { payload }) => {
       state.selectedProfile = payload;
     },
+    ACTIVE_TAB_Filter: (state, { payload }) => {
+      state.activeTab = payload;
+    },
+    PRICE_Filter: (state, { payload }) => {
+      state.priceFilter = payload;
+    },
+    SERVICE_Filter: (state, { payload }) => {
+      state.servicesFilter = payload;
+    },
+    RATING_Filter: (state, { payload }) => {
+      state.ratingFilter = payload;
+    },
+    AVALIABLE_TO_WORK_Filter: (state, { payload }) => {
+      state.availableToWorkFilter = payload;
+    },
+    PRO_TALLENT_Filter: (state, { payload }) => {
+      state.proTallentFilter = payload;
+    },
+    RESET_Filter: (state, { payload }) => {
+      state.activeTab = 'All';
+      state.priceFilter = [0, 1000];
+      state.servicesFilter = "All";
+      state.ratingFilter = "5";
+      state.availableToWorkFilter = true;
+      state.proTallentFilter = false;
+    },
+
 
   },
-
 
   // thunk reducers Responses
   extraReducers: (builder) =>
@@ -149,7 +112,7 @@ const mainSlice = createSlice({
               ratingCount: function () {
                 let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
                 return number.toFixed(1)
-            },
+              },
               profileName: function () {
                 return `${this.firstName} ${this.lastName}`
               },
@@ -181,6 +144,14 @@ const mainSlice = createSlice({
 export const {
   LOG_IN,
   SELECTED_PROFILE,
+  ACTIVE_TAB_Filter,
+  PRICE_Filter,
+  SERVICE_Filter,
+  RATING_Filter,
+  AVALIABLE_TO_WORK_Filter,
+  PRO_TALLENT_Filter,
+  RESET_Filter
+
 
 } = mainSlice.actions;
 

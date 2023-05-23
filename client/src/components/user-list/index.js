@@ -9,8 +9,6 @@ const Index = ({ allDevelopersList, loading, view }) => {
    const { dark } = useContext(ThemeContext);
 
 
-   console.log("----allDevelopersList---", allDevelopersList);
-
    const LoadSkelton = () => {
       return <Stack spacing={1}>
          <Skeleton sx={{ bgcolor: dark ? 'grey.900' : "none", fontSize: '1rem' }} variant="text" />

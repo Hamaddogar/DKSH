@@ -17,3 +17,7 @@ label,
 span {
  font-family: "Axiforma", sans-serif;
 }
+
+html {
+    scroll-behavior: smooth;
+  }
