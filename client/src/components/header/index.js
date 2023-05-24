@@ -256,25 +256,29 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                             </h4>
                             <div className="see-all">See All</div>
                         </div>
-                        {(users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))).map((user, k) => (
-                            <Box sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s' }} className="dropdown-content" key={k}
-                                onClick={e => { handleClickUser(user); setSearchDropdown(false) }}>
-                                <div className="dis-flex">
-                                    {CustomIcon(<img alt="" width={25} src={user.profileImg} style={{ borderRadius: "50%", background: "none" }} />)}
-                                    <label className="searched-username"> {user.username}</label>
-                                </div>
-                                <div className="dis-flex" style={{ gap: 20 }}>
+                        <div className={dark ? "scrollbox-dark" : "scrollbox"}>
+                            {(users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))).map((user, k) => (
+                                <Box
+                                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s', paddingRight: '5px' }}
+                                    className="dropdown-content" key={k}
+                                    onClick={e => { handleClickUser(user); setSearchDropdown(false) }}>
                                     <div className="dis-flex">
-                                        <img alt="" src={StarIcon} width={22} />
-                                        <label className={dark ? "label label-dark" : "label"}> {user.rating} / 5</label>
+                                        {CustomIcon(<img alt="" width={25} src={user.profileImg} style={{ borderRadius: "50%", background: "none" }} />)}
+                                        <label className="searched-username"> {user.username}</label>
                                     </div>
-                                    <div className="dis-flex">
-                                        <img alt="" src={!dark ? MsgIcon : Images.IconDarkLight} width={21} height={19} />
-                                        <label className={dark ? "label label-dark" : "label"}> {user.comments}</label>
+                                    <div className="dis-flex" style={{ gap: 20 }}>
+                                        <div className="dis-flex">
+                                            <img alt="" src={StarIcon} width={22} />
+                                            <label className={dark ? "label label-dark" : "label"}> {user.rating} / 5</label>
+                                        </div>
+                                        <div className="dis-flex">
+                                            <img alt="" src={!dark ? MsgIcon : Images.IconDarkLight} width={21} height={19} />
+                                            <label className={dark ? "label label-dark" : "label"}> {user.comments}</label>
+                                        </div>
                                     </div>
-                                </div>
-                            </Box>
-                        ))}
+                                </Box>
+                            ))}
+                        </div>
                         <div className="dropdown-header" style={{ paddingBottom: 10, paddingTop: 6 }}>
                             <h4 style={{ margin: 0 }}>
                                 Services{" "}
@@ -284,20 +288,23 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                             </h4>
                             <div className="see-all">See All</div>
                         </div>
-
-                        {(services.filter(dev => dev.title.toLowerCase().includes(searchIt.toLowerCase()))).map((service, k) => (
-                            <Box sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s' }} className="dropdown-content" key={k}
-                                onClick={e => { handleClickService(service); setSearchDropdown(false) }}>
-                                <div className="dis-flex">
-                                    {CustomIcon(searchIcon())}
-                                    <label className="searched-username"> {service.title}</label>
-                                </div>
-                                <div className="dis-flex">
-                                    <img alt="" src={dark ? PeopleWhite : PeopleGroupIcon} width={18} />
-                                    <label className={dark ? "label label-dark" : "label"}> {service.search_result}</label>
-                                </div>
-                            </Box>
-                        ))}
+                        <div className={dark ? "scrollbox-dark" : "scrollbox"}>
+                            {(services.filter(dev => dev.title.toLowerCase().includes(searchIt.toLowerCase()))).map((service, k) => (
+                                <Box
+                                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s', paddingRight: '5px' }}
+                                    className="dropdown-content" key={k}
+                                    onClick={e => { handleClickService(service); setSearchDropdown(false) }}>
+                                    <div className="dis-flex">
+                                        {CustomIcon(searchIcon())}
+                                        <label className="searched-username"> {service.title}</label>
+                                    </div>
+                                    <div className="dis-flex">
+                                        <img alt="" src={dark ? PeopleWhite : PeopleGroupIcon} width={18} />
+                                        <label className={dark ? "label label-dark" : "label"}> {service.search_result}</label>
+                                    </div>
+                                </Box>
+                            ))}
+                        </div>
                     </div>
                     <div className={dark ? "dropdown-footer dropdown-footer-dark" : "dropdown-footer"} style={{ display: "flex" }}>
                         <div className="dis-flex">
