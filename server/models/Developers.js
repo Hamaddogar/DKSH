@@ -19,7 +19,6 @@ const developerSchema = new mongoose.Schema({
     revenue: Number,
     services: [
         {
-            _id: String,
             title: String,
             description: String,
             comments: [

@@ -1,5 +1,5 @@
 const express = require('express');
-const DevelopersSkelton = require('../models/Developers'); 
+const DevelopersSkelton = require('../models/Developers');
 const userRouter = express.Router();
 
 userRouter.get('/', async (req, res) => {
@@ -28,14 +28,6 @@ userRouter.get('/:id', async (req, res) => {
     }
 });
 
-userRouter.get("/add", async (req, res) => {
-    try {
-        const createdUsers = await DevelopersSkelton.create();
-        res.send({ success: true, message: 'User Registered' });
 
-    } catch (error) {
-        res.send({ success: false, message: error.message });
-    }
-});
 
 module.exports = userRouter;
