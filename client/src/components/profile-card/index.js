@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
-import { Card, useThemeProps } from "@mui/material";
 import Images from "../../assets/images";
 import { Grid } from "@mui/material";
 import "./styles.css";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -25,7 +23,7 @@ const profileVerifiedIcon = () => {
   );
 };
 const commentIcon = (dark) => {
-  if (dark) return <img src={Images.WhiteMsg} />;
+  if (dark) return <img alt='' src={Images.WhiteMsg} />;
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -100,50 +98,6 @@ const modalIcon = () => {
   );
 };
 
-const ListObject = [
-  {
-    image1: (
-      <>
-        <img src={Images.grid1} className="list-image-style " />
-      </>
-    ),
-    image2: (
-      <>
-        <img src={Images.grid2} className="list-image-style " />
-      </>
-    ),
-    image3: (
-      <>
-        <img src={Images.grid3} className="list-image-style " />
-      </>
-    ),
-    profileImage: (
-      <>
-        {" "}
-        <img src={Images.profileGrid} className="List-profile-image" />{" "}
-      </>
-    ),
-    profileName: "Ryan Jackson",
-    profileDesc: "UI/UX designer with 5 years of experience.Specializes in creating clean, modern interfaces ",
-    specialization: ["UI Design", "Ux Design", "+3"],
-
-    commentCount: "12",
-    ratingCount: "4.6/5",
-  },
-];
-const commentObject = [
-  {
-    Heading: "Gift Giving Website",
-    title: "Yevhen produced a wireframe, ui and design style guide for a custom e-commerce site. He did the work on time and with a great design eye. Nice design touch",
-    date: "March 09, 2023 11:00 AM",
-  },
-  {
-    Heading: "Design Four Startup Web UX/UI Screens and Logo",
-    title:
-      "evhen, our designer, has done an outstanding job on this project. Not only did he bring his considerable design skills to the table, but he also collaborated effectively with the rest of the team, listening to feedback and incorporating suggestions to create a final product that exceeded our expectations. Yevhen's attention to detail, creativity, and professionalism were invaluable to the success of this project. We are fortunate to have such a talented and dedicated designer on our team.",
-    date: "March 09, 2023 11:00 AM",
-  },
-];
 const Index = ({ user, view }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -155,11 +109,7 @@ const Index = ({ user, view }) => {
     setOpen(true);
     setScroll(scrollType);
   };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  const handleClose = () => setOpen(false);
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
     if (open) {
@@ -169,75 +119,16 @@ const Index = ({ user, view }) => {
       }
     }
   }, [open]);
-
-
   const handleViewMore = (event, profile) => {
     event.stopPropagation();
-    console.log('---', profile);
     navigate('/network');
     dispatch(SELECTED_PROFILE(profile))
   }
-
-
-  // const userD = {
-  //   _id: '1',
-  //   firstName: 'John',
-  //   lastName: 'Doe',
-  //   profileName: function () {
-  //     return `${this.firstName} ${this.lastName}`
-  //   },
-  //   hourlyRate: 70,
-  //   avatar: Images.HamadPhoto,
-  //   verified: true,
-  //   description: 'UI/UX designer with 5 years of experience. Specializes in creating clean, modern interfaces',
-  //   category: "Design",
-  //   comments: [
-  //     {
-  //       Heading: "Gift Giving Website",
-  //       title: "Yevhen produced a wireframe, ui and design style guide for a custom e-commerce site. He did the work on time and with a great design eye. Nice design touch",
-  //       date: "March 09, 2023 11:00 AM",
-  //       rated: 4,
-  //     },
-  //     {
-  //       Heading: "Design Four Startup Web UX/UI Screens and Logo",
-  //       title: "evhen, our designer, has done an outstanding job on this project. Not only did he bring his considerable design skills to the table, but he also collaborated effectively with the rest of the team, listening to feedback and incorporating suggestions to create a final product that exceeded our expectations. Yevhen's attention to detail, creativity, and professionalism were invaluable to the success of this project. We are fortunate to have such a talented and dedicated designer on our team.",
-  //       date: "March 09, 2023 11:00 AM",
-  //       rated: 5,
-  //     },
-  //   ],
-  //   specialization: ["UI Design", "Ux Design", "+3"],
-  //   projectsThumbs: [Images.grid1, Images.grid2, Images.grid3],
-  //   commentCount: function () {
-  //     return this.comments.length
-  //   },
-  //   ratingCount: function () {
-  //     return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-  //   },
-  // }
-  // const GridArr = [
-  //   {
-  //     image1: <img src={Images.grid1} className="grid-image-style" />,
-  //     image2: <img src={Images.grid2} className="grid-image-style" />,
-  //     image3: <img src={Images.grid3} className="grid-image-style" />,
-  //     profileImage: <img src={Images.profileGrid} className={dark ? "grid-profile-image grid-profile-image-dark" : "grid-profile-image"} />,
-  //     profileName: "Ryan Jackson",
-  //     profileDesc: "UI/UX designer with 5 years of experience. Specializes in creating clean, modern interfaces ",
-  //     specialization: ["UI Design", "Ux Design", "+3"],
-  //     commentCount: "12",
-  //     ratingCount: "4.6/5",
-  //   },
-  // ];
-
-  // console.log("user----------", userD.profileName());
-
-
 
   return (
     <>
       {view === "List" ? (
         <div className={dark ? "card-list-container card-list-container-dark" : "card-list-container"} onClick={handleClickOpen("paper")}>
-
-
           <Grid container spacing={2}>
             <Grid item xs={12} sm={7} md={6} lg={4}>
               <Grid container spacing={2}>
@@ -282,85 +173,27 @@ const Index = ({ user, view }) => {
               </div>
             </Grid>
           </Grid>
-
-          {/* {ListObject.map((item) => (
-            <>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={7} md={6} lg={4}>
-                  <Grid container spacing={2}>
-                    <Grid item sm={2.5}>
-                      <div className="images-grid-center">{item?.profileImage}</div>
-                      <div className="profileVerifiedList-Icon">{profileVerifiedIcon()}</div>
-                    </Grid>
-                    <Grid item sm={9}>
-                      <div className={dark ? "List-profile-name List-profile-name-dark" : "List-profile-name"}>{item?.profileName}</div>
-                      <div className="List-profile-desc">{item?.profileDesc}</div>
-                      <div style={{ marginBottom: '10px' }}>
-                        <Button variant='contained' size='small' onClick={(e) => handleViewMore(e, item)} sx={{ fontSize: '12px', backgroundColor: '#8077F6' }}>view More</Button>
-                      </div>
-                      <div className={dark ? "timeList-Container timeList-dark" : "timeList-Container"}>
-                        $75 <span className="timehoursList-title">/ hour</span>
-                      </div>
-                      <div className="commentRating-container">
-                        <div className={dark ? "commentsRating-Listcount commentsRating-Listcount-dark" : "commentsRating-Listcount"}>
-                          <div className="margin-icon">{commentIcon()}</div> {item?.commentCount} <span className="commentsRating-Listtitle">Comments</span>
-                        </div>
-                        <div className={dark ? "commentsRating-Listcount commentsRating-Listcount-dark" : "commentsRating-Listcount"}>
-                          {item?.ratingCount} <span className="commentsRating-Listtitle">Rating</span>
-                        </div>
-                      </div>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} sm={5} md={6} lg={4}>
-                  <div className="images-List-center">
-                    {item?.specialization.map((e) => (
-                      <div className={dark ? "container-List-desc container-List-desc-dark" : "container-List-desc"} key={e}>
-                        {e}
-                      </div>
-                    ))}
-                  </div>
-                </Grid>
-                <Grid item xs={12} sm={9} md={6} lg={4}>
-                  <div className="images-listContainer">
-                    {item?.image1}
-                    {item?.image2}
-                    {item?.image3}
-                  </div>
-                </Grid>
-              </Grid>
-            </>
-          ))} */}
         </div>
       ) : (
         <div onClick={handleClickOpen("paper")} className={dark ? "card-grid-container card-grid-container-dark" : "card-grid-container"}>
-
-
-
           <div className={dark ? "time-Container time-Container-dark" : "time-Container"}>
             ${user?.hourlyRate} <span className={dark ? "time-hours-title time-hours-title-dark " : "time-hours-title"}>/hour</span>
           </div>
           <div className="images-grid-center">
-            {
-              user?.projectsThumbs.map(src => <img alt='' key={src} src={src} className="grid-image-style" />)
-            }
+            {user?.projectsThumbs.map(src => <img alt='' key={src} src={src} className="grid-image-style" />)}
           </div>
           <div className="images-grid-center" style={{ position: "relative" }}>
             <img src={user?.avatar} alt='avatar' className={dark ? "grid-profile-image grid-profile-image-dark" : "grid-profile-image"} />
             <div className="profileVerified-Icon">{profileVerifiedIcon()}</div>
           </div>
-
           <div className={dark ? "grid-profile-name grid-profile-name-dark " : "grid-profile-name"}>{user?.profileName()}</div>
-
           <div className="grid-profile-name">
             <Button variant='contained' size='small' onClick={(e) => handleViewMore(e, user)} sx={{ fontSize: '12px', backgroundColor: '#8077F6' }}>view More</Button>
           </div>
           <div className="grid-profile-desc">{user?.description}</div>
           <div className="images-grid-center">
             {user?.specialization.map((e) => (
-              <div className={dark ? "container-grid-desc container-grid-desc-dark" : "container-grid-desc"} key={e}>
-                {e}
-              </div>
+              <div className={dark ? "container-grid-desc container-grid-desc-dark" : "container-grid-desc"} key={e}>{e}  </div>
             ))}
           </div>
           <div className={dark ? "Hr-grid Hr-grid-dark" : "Hr-grid"}></div>
@@ -372,56 +205,6 @@ const Index = ({ user, view }) => {
               {user?.ratingCount()} / 5 <span className="commentsRating-title">Rating</span>
             </div>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-          {/* {GridArr.map((item) => (
-            <>
-              <div className={dark ? "time-Container time-Container-dark" : "time-Container"}>
-                ${user?.hourlyRate} <span className={dark ? "time-hours-title time-hours-title-dark " : "time-hours-title"}>/hour</span>
-              </div>
-              <div className="images-grid-center">
-                {
-                  user?.projectsThumbs.map(src => <img alt='' key={src} src={src} className="grid-image-style" />)
-                }
-              </div>
-              <div className="images-grid-center" style={{ position: "relative" }}>
-                <img src={user?.avatar} alt='avatar' className={dark ? "grid-profile-image grid-profile-image-dark" : "grid-profile-image"} />
-                <div className="profileVerified-Icon">{profileVerifiedIcon()}</div>
-              </div>
-
-              <div className="grid-profile-name">{user?.profileName()}</div>
-              <div className="grid-profile-name">
-                <Button variant='contained' size='small' onClick={(e) => handleViewMore(e, item)} sx={{ fontSize: '12px', backgroundColor: '#8077F6' }}>view More</Button>
-              </div>
-              <div className="grid-profile-desc">{user?.description}</div>
-              <div className="images-grid-center">
-                {user?.specialization.map((e) => (
-                  <div className={dark ? "container-grid-desc container-grid-desc-dark" : "container-grid-desc"} key={e}>
-                    {e}
-                  </div>
-                ))}
-              </div>
-              <div className={dark ? "Hr-grid Hr-grid-dark" : "Hr-grid"}></div>
-              <div className="commentRating-container">
-                <div className={dark ? "commentsRating-count commentsRating-count-dark" : "commentsRating-count"}>
-                  <div className="margin-icon">{commentIcon(dark)}</div> {user?.commentCount()} <span className="commentsRating-title">Comments</span>
-                </div>
-                <div className={dark ? "commentsRating-count commentsRating-count-dark" : "commentsRating-count"}>
-                  {user?.ratingCount()} / 5 <span className="commentsRating-title">Rating</span>
-                </div>
-              </div>
-            </>
-          ))} */}
         </div>
       )}
       <div>

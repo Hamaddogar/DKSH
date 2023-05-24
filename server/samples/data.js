@@ -1,16 +1,11 @@
-
-export const userData = [
+const userData = [
     // 'Interfaces'
     {
-        _id: '1',
         firstName: 'Hammad',
-        mainCategory : 'Interfaces',
+        mainCategory: 'Interfaces',
         proTallent: false,
         availableToWork: true,
         lastName: 'Shafiq',
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
         hourlyRate: 95,
         avatar: 'https://avatars.githubusercontent.com/u/42932321?v=4',
         verified: true,
@@ -80,9 +75,8 @@ export const userData = [
     },
     // 1 finish 
     {
-        _id: '2',
         firstName: 'Clive ',
-        mainCategory : 'Interfaces',
+        mainCategory: 'Interfaces',
         proTallent: false,
         availableToWork: true,
         lastName: 'B',
@@ -170,22 +164,12 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/1253575602255597568',
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/7e75af82-e218-4ebf-a1c2-f79532618921',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish 2
 
     {
-        _id: '3',
         firstName: 'Tetiana ',
-        mainCategory : 'Interfaces',
+        mainCategory: 'Interfaces',
         proTallent: false,
         availableToWork: true,
         lastName: 'F',
@@ -259,23 +243,12 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/pretty-curly-young-woman-writing-notes-startup-project-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/road-sign-direction-perforated-paper-arrow-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     // finsih 3
     {
-        _id: '4',
         firstName: 'Ruslan ',
-        mainCategory : 'Interfaces',
+        mainCategory: 'Interfaces',
         proTallent: false,
         availableToWork: true,
         lastName: 'Morris',
@@ -352,22 +325,11 @@ export const userData = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjkt6-gO3HTEZZaMTQR37i0eTLSfxUbdK6AQ&usqp=CAU',
 
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finsh4 
     {
-        _id: '5',
         firstName: 'Sebastian',
-        mainCategory : 'Interfaces',
+        mainCategory: 'Interfaces',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -456,23 +418,13 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-05-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-06-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     //finish5
 
     {
-        _id: '6',
         firstName: 'Domonkos ',
-        mainCategory : 'Interfaces',
+        mainCategory: 'Interfaces',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -561,21 +513,11 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish6 
     {
-        _id: '7',
         firstName: 'Umar ',
-        mainCategory : 'Interfaces',
+        mainCategory: 'Interfaces',
         proTallent: false,
         availableToWork: true,
         lastName: ' .B',
@@ -664,15 +606,6 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
 
@@ -736,17 +669,13 @@ export const userData = [
 
 
 
-// Branding
+    // Branding
     {
-        _id: '8',
         firstName: 'Hammad',
-        mainCategory : 'Branding',
+        mainCategory: 'Branding',
         proTallent: false,
         availableToWork: true,
         lastName: 'Shafiq',
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
         hourlyRate: 95,
         avatar: 'https://avatars.githubusercontent.com/u/42932321?v=4',
         verified: true,
@@ -816,9 +745,8 @@ export const userData = [
     },
     // 1 finish 
     {
-        _id: '2',
         firstName: 'Clive ',
-        mainCategory : 'Branding',
+        mainCategory: 'Branding',
         proTallent: false,
         availableToWork: true,
         lastName: 'B',
@@ -906,22 +834,12 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/1253575602255597568',
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/7e75af82-e218-4ebf-a1c2-f79532618921',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish 2
 
     {
-        _id: '3',
         firstName: 'Tetiana ',
-        mainCategory : 'Branding',
+        mainCategory: 'Branding',
         proTallent: false,
         availableToWork: true,
         lastName: 'F',
@@ -995,23 +913,12 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/pretty-curly-young-woman-writing-notes-startup-project-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/road-sign-direction-perforated-paper-arrow-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     // finsih 3
     {
-        _id: '4',
         firstName: 'Ruslan ',
-        mainCategory : 'Branding',
+        mainCategory: 'Branding',
         proTallent: false,
         availableToWork: true,
         lastName: 'Morris',
@@ -1088,22 +995,11 @@ export const userData = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjkt6-gO3HTEZZaMTQR37i0eTLSfxUbdK6AQ&usqp=CAU',
 
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finsh4 
     {
-        _id: '5',
         firstName: 'Sebastian',
-        mainCategory : 'Branding',
+        mainCategory: 'Branding',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -1192,23 +1088,13 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-05-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-06-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     //finish5
 
     {
-        _id: '6',
         firstName: 'Domonkos ',
-        mainCategory : 'Branding',
+        mainCategory: 'Branding',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -1297,21 +1183,11 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish6 
     {
-        _id: '7',
         firstName: 'Umar ',
-        mainCategory : 'Branding',
+        mainCategory: 'Branding',
         proTallent: false,
         availableToWork: true,
         lastName: ' .B',
@@ -1400,15 +1276,6 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
 
@@ -1437,15 +1304,11 @@ export const userData = [
 
     // 'Illustration'
     {
-        _id: '1',
         firstName: 'Hammad',
-        mainCategory : 'Illustration',
+        mainCategory: 'Illustration',
         proTallent: false,
         availableToWork: true,
         lastName: 'Shafiq',
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
         hourlyRate: 95,
         avatar: 'https://avatars.githubusercontent.com/u/42932321?v=4',
         verified: true,
@@ -1515,9 +1378,8 @@ export const userData = [
     },
     // 1 finish 
     {
-        _id: '2',
         firstName: 'Clive ',
-        mainCategory : 'Illustration',
+        mainCategory: 'Illustration',
         proTallent: false,
         availableToWork: true,
         lastName: 'B',
@@ -1605,22 +1467,12 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/1253575602255597568',
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/7e75af82-e218-4ebf-a1c2-f79532618921',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish 2
 
     {
-        _id: '3',
         firstName: 'Tetiana ',
-        mainCategory : 'Illustration',
+        mainCategory: 'Illustration',
         proTallent: false,
         availableToWork: true,
         lastName: 'F',
@@ -1694,23 +1546,12 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/pretty-curly-young-woman-writing-notes-startup-project-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/road-sign-direction-perforated-paper-arrow-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     // finsih 3
     {
-        _id: '4',
         firstName: 'Ruslan ',
-        mainCategory : 'Illustration',
+        mainCategory: 'Illustration',
         proTallent: false,
         availableToWork: true,
         lastName: 'Morris',
@@ -1787,22 +1628,11 @@ export const userData = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjkt6-gO3HTEZZaMTQR37i0eTLSfxUbdK6AQ&usqp=CAU',
 
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finsh4 
     {
-        _id: '5',
         firstName: 'Sebastian',
-        mainCategory : 'Illustration',
+        mainCategory: 'Illustration',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -1891,23 +1721,13 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-05-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-06-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     //finish5
 
     {
-        _id: '6',
         firstName: 'Domonkos ',
-        mainCategory : 'Illustration',
+        mainCategory: 'Illustration',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -1996,21 +1816,11 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish6 
     {
-        _id: '7',
         firstName: 'Umar ',
-        mainCategory : 'Illustration',
+        mainCategory: 'Illustration',
         proTallent: false,
         availableToWork: true,
         lastName: ' .B',
@@ -2099,15 +1909,6 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
 
@@ -2119,15 +1920,11 @@ export const userData = [
     // Graphics
 
     {
-        _id: '1',
         firstName: 'Hammad',
-        mainCategory : 'Graphics',
+        mainCategory: 'Graphics',
         proTallent: false,
         availableToWork: true,
         lastName: 'Shafiq',
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
         hourlyRate: 95,
         avatar: 'https://avatars.githubusercontent.com/u/42932321?v=4',
         verified: true,
@@ -2197,9 +1994,8 @@ export const userData = [
     },
     // 1 finish 
     {
-        _id: '2',
         firstName: 'Clive ',
-        mainCategory : 'Graphics',
+        mainCategory: 'Graphics',
         proTallent: false,
         availableToWork: true,
         lastName: 'B',
@@ -2287,22 +2083,12 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/1253575602255597568',
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/7e75af82-e218-4ebf-a1c2-f79532618921',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish 2
 
     {
-        _id: '3',
         firstName: 'Tetiana ',
-        mainCategory : 'Graphics',
+        mainCategory: 'Graphics',
         proTallent: false,
         availableToWork: true,
         lastName: 'F',
@@ -2376,23 +2162,12 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/pretty-curly-young-woman-writing-notes-startup-project-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/road-sign-direction-perforated-paper-arrow-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     // finsih 3
     {
-        _id: '4',
         firstName: 'Ruslan ',
-        mainCategory : 'Graphics',
+        mainCategory: 'Graphics',
         proTallent: false,
         availableToWork: true,
         lastName: 'Morris',
@@ -2469,22 +2244,11 @@ export const userData = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjkt6-gO3HTEZZaMTQR37i0eTLSfxUbdK6AQ&usqp=CAU',
 
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finsh4 
     {
-        _id: '5',
         firstName: 'Sebastian',
-        mainCategory : 'Graphics',
+        mainCategory: 'Graphics',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -2573,23 +2337,13 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-05-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-06-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     //finish5
 
     {
-        _id: '6',
         firstName: 'Domonkos ',
-        mainCategory : 'Graphics',
+        mainCategory: 'Graphics',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -2678,21 +2432,11 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish6 
     {
-        _id: '7',
         firstName: 'Umar ',
-        mainCategory : 'Graphics',
+        mainCategory: 'Graphics',
         proTallent: false,
         availableToWork: true,
         lastName: ' .B',
@@ -2781,15 +2525,6 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
 
@@ -2805,15 +2540,11 @@ export const userData = [
     // 3D
 
     {
-        _id: '1',
         firstName: 'Hammad',
-        mainCategory : '3D',
+        mainCategory: '3D',
         proTallent: false,
         availableToWork: true,
         lastName: 'Shafiq',
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
         hourlyRate: 95,
         avatar: 'https://avatars.githubusercontent.com/u/42932321?v=4',
         verified: true,
@@ -2883,9 +2614,8 @@ export const userData = [
     },
     // 1 finish 
     {
-        _id: '2',
         firstName: 'Clive ',
-        mainCategory : '3D',
+        mainCategory: '3D',
         proTallent: false,
         availableToWork: true,
         lastName: 'B',
@@ -2973,22 +2703,12 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/1253575602255597568',
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/7e75af82-e218-4ebf-a1c2-f79532618921',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish 2
 
     {
-        _id: '3',
         firstName: 'Tetiana ',
-        mainCategory : '3D',
+        mainCategory: '3D',
         proTallent: false,
         availableToWork: true,
         lastName: 'F',
@@ -3062,23 +2782,12 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/pretty-curly-young-woman-writing-notes-startup-project-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/road-sign-direction-perforated-paper-arrow-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     // finsih 3
     {
-        _id: '4',
         firstName: 'Ruslan ',
-        mainCategory : '3D',
+        mainCategory: '3D',
         proTallent: false,
         availableToWork: true,
         lastName: 'Morris',
@@ -3155,22 +2864,11 @@ export const userData = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjkt6-gO3HTEZZaMTQR37i0eTLSfxUbdK6AQ&usqp=CAU',
 
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finsh4 
     {
-        _id: '5',
         firstName: 'Sebastian',
-        mainCategory : '3D',
+        mainCategory: '3D',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -3259,23 +2957,13 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-05-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-06-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     //finish5
 
     {
-        _id: '6',
         firstName: 'Domonkos ',
-        mainCategory : '3D',
+        mainCategory: '3D',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -3364,21 +3052,11 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish6 
     {
-        _id: '7',
         firstName: 'Umar ',
-        mainCategory : '3D',
+        mainCategory: '3D',
         proTallent: false,
         availableToWork: true,
         lastName: ' .B',
@@ -3467,15 +3145,6 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
 
@@ -3507,15 +3176,11 @@ export const userData = [
     // Animation
 
     {
-        _id: '1',
         firstName: 'Hammad',
-        mainCategory : 'Animation',
+        mainCategory: 'Animation',
         proTallent: false,
         availableToWork: true,
         lastName: 'Shafiq',
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
         hourlyRate: 95,
         avatar: 'https://avatars.githubusercontent.com/u/42932321?v=4',
         verified: true,
@@ -3585,9 +3250,8 @@ export const userData = [
     },
     // 1 finish 
     {
-        _id: '2',
         firstName: 'Clive ',
-        mainCategory : 'Animation',
+        mainCategory: 'Animation',
         proTallent: false,
         availableToWork: true,
         lastName: 'B',
@@ -3675,22 +3339,12 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/1253575602255597568',
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/7e75af82-e218-4ebf-a1c2-f79532618921',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish 2
 
     {
-        _id: '3',
         firstName: 'Tetiana ',
-        mainCategory : 'Animation',
+        mainCategory: 'Animation',
         proTallent: false,
         availableToWork: true,
         lastName: 'F',
@@ -3764,23 +3418,12 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/pretty-curly-young-woman-writing-notes-startup-project-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/road-sign-direction-perforated-paper-arrow-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     // finsih 3
     {
-        _id: '4',
         firstName: 'Ruslan ',
-        mainCategory : 'Animation',
+        mainCategory: 'Animation',
         proTallent: false,
         availableToWork: true,
         lastName: 'Morris',
@@ -3857,22 +3500,11 @@ export const userData = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjkt6-gO3HTEZZaMTQR37i0eTLSfxUbdK6AQ&usqp=CAU',
 
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finsh4 
     {
-        _id: '5',
         firstName: 'Sebastian',
-        mainCategory : 'Animation',
+        mainCategory: 'Animation',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -3961,23 +3593,13 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-05-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-06-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     //finish5
 
     {
-        _id: '6',
         firstName: 'Domonkos ',
-        mainCategory : 'Animation',
+        mainCategory: 'Animation',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -4066,21 +3688,11 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish6 
     {
-        _id: '7',
         firstName: 'Umar ',
-        mainCategory : 'Animation',
+        mainCategory: 'Animation',
         proTallent: false,
         availableToWork: true,
         lastName: ' .B',
@@ -4169,15 +3781,6 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
 
@@ -4208,15 +3811,11 @@ export const userData = [
     // Graphics
 
     {
-        _id: '1',
         firstName: 'Hammad',
-        mainCategory : 'Marketing',
+        mainCategory: 'Marketing',
         proTallent: false,
         availableToWork: true,
         lastName: 'Shafiq',
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
         hourlyRate: 95,
         avatar: 'https://avatars.githubusercontent.com/u/42932321?v=4',
         verified: true,
@@ -4286,9 +3885,8 @@ export const userData = [
     },
     // 1 finish 
     {
-        _id: '2',
         firstName: 'Clive ',
-        mainCategory : 'Marketing',
+        mainCategory: 'Marketing',
         proTallent: false,
         availableToWork: true,
         lastName: 'B',
@@ -4376,22 +3974,12 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/1253575602255597568',
             'https://www.upwork.com/att/download/portfolio/persons/uid/1173403296888061952/profile/projects/files/7e75af82-e218-4ebf-a1c2-f79532618921',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish 2
 
     {
-        _id: '3',
         firstName: 'Tetiana ',
-        mainCategory : 'Marketing',
+        mainCategory: 'Marketing',
         proTallent: false,
         availableToWork: true,
         lastName: 'F',
@@ -4465,23 +4053,12 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/pretty-curly-young-woman-writing-notes-startup-project-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/09/road-sign-direction-perforated-paper-arrow-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     // finsih 3
     {
-        _id: '4',
         firstName: 'Ruslan ',
-        mainCategory : 'Marketing',
+        mainCategory: 'Marketing',
         proTallent: false,
         availableToWork: true,
         lastName: 'Morris',
@@ -4558,22 +4135,11 @@ export const userData = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjkt6-gO3HTEZZaMTQR37i0eTLSfxUbdK6AQ&usqp=CAU',
 
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-            return number.toFixed(1)
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finsh4 
     {
-        _id: '5',
         firstName: 'Sebastian',
-        mainCategory : 'Marketing',
+        mainCategory: 'Marketing',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -4662,23 +4228,13 @@ export const userData = [
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-05-340x250.jpg',
             'https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-06-340x250.jpg',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
     //finish5
 
     {
-        _id: '6',
         firstName: 'Domonkos ',
-        mainCategory : 'Marketing',
+        mainCategory: 'Marketing',
         proTallent: false,
         availableToWork: true,
         lastName: 'Bells',
@@ -4767,21 +4323,11 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
     // finish6 
     {
-        _id: '7',
         firstName: 'Umar ',
-        mainCategory : 'Marketing',
+        mainCategory: 'Marketing',
         proTallent: false,
         availableToWork: true,
         lastName: ' .B',
@@ -4870,15 +4416,6 @@ export const userData = [
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/92fb0dac-0810-47a8-9414-872f358467ac',
             'https://www.upwork.com/att/download/portfolio/persons/uid/650319826375020544/profile/projects/files/953678690184065024',
         ],
-        commentCount: function () {
-            return this.comments.length
-        },
-        ratingCount: function () {
-            return this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-        },
-        profileName: function () {
-            return `${this.firstName} ${this.lastName}`
-        },
     },
 
 

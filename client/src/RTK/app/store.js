@@ -17,6 +17,7 @@ const persistConfig = {
     "ratingFilter",
     "availableToWorkFilter",
     "proTallentFilter",
+    "selectedProfile"
   ],
   rootReducer: mainReducer
 }

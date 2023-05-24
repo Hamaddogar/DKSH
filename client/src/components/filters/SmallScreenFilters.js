@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AVALIABLE_TO_WORK_Filter, PRICE_Filter, PRO_TALLENT_Filter, RATING_Filter, RESET_Filter, SERVICE_Filter } from "../../RTK/Reducers/Reducers";
 const { RatingIcon, ServiceIcon, PriceIcon, UpIcon, DownIcon, CrossIcon, CheckIcon } = Icons;
 const SMFilters = ({ open, onClose = () => { } }) => {
-    const { priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter } = useSelector(store => store.mainReducer)
+    const { priceFilter, servicesFilter, servicesFilterOptions, ratingFilter, availableToWorkFilter, proTallentFilter } = useSelector(store => store.mainReducer)
     const { dark } = useTheme();
     const [price, setPrice] = useState({ view: false, value: priceFilter });
     const [service, setService] = useState({ view: false, value: "All" });
@@ -60,11 +60,10 @@ const SMFilters = ({ open, onClose = () => { } }) => {
         );
     };
     const ServiceDropdown = () => {
-        const list = ["All", "UI Design", "UX Design"];
         const handleChangeService = (service) => dispatch(SERVICE_Filter(service))
         return (
             <Box className="dropdown-list">
-                {list.map((service) => (
+                {servicesFilterOptions.map((service) => (
                     <Box onClick={() => handleChangeService(service)} key={service} className={servicesFilter === service ? "dropdown-active-item" : "dropdown-item"}>
                         {service}
                     </Box>

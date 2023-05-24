@@ -3,10 +3,12 @@ import Banner from "../../components/banner";
 import Filters from "../../components/filters";
 import UserList from "../../components/user-list";
 import "./styles.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SERVICE_Filter_Options } from "../../RTK/Reducers/Reducers";
 const Index = () => {
+    const dispatch = useDispatch();
     const [listView, setListView] = useState(false);
-    const [data, setData] = React.useState([]);
+    const [data, setData] = React.useState([null]);
     const { allDevelopers, loading, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab } = useSelector(store => store.mainReducer)
     React.useEffect(() => {
         if (allDevelopers.length > 0) {
@@ -20,18 +22,22 @@ const Index = () => {
                 ((dev.specialization.filter(item => item.toLowerCase().includes(servicesFilter === "All" ? "" : servicesFilter.toLowerCase()))).length > 0) &&
                 (activeTab.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTab.toLowerCase())
             )
-            setData(finalFilterdData)
-        }
-        else { setData([]) }
+            setData(finalFilterdData);
+            const specializationSet = [];
+            allDevelopers.forEach(dev => {
+                if (activeTab.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTab.toLowerCase()) specializationSet.push(...dev.specialization)
+            });
+            dispatch(SERVICE_Filter_Options([...new Set(specializationSet)]));
 
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allDevelopers, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab])
     React.useEffect(() => {
         setTimeout(() => {
             window.scrollTo(0, 0)
         }, 100);
     }, [])
-    console.log("<<<<<<<allDevelopers>>>>>>",allDevelopers);
-    console.log("<<<<<<<data>>>>>>",data);
+
     return (
         <>
             <Banner />

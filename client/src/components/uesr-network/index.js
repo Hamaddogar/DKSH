@@ -4,20 +4,15 @@ import Button from "../form/Button";
 import "./styles.css";
 import Images from "../../assets/images";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 const Index = ({ user }) => {
-    // const { selectedProfile } = useSelector(store => store.mainReducer)
-    const navigate = useNavigate()
-    const { dark } = useContext(ThemeContext);
-
+    const { dark } = useContext(ThemeContext); 
     const handleClickMessage = () => {
         toast.info('Not Avaliable!')
     }
-
-    React.useLayoutEffect(() => window.scrollTo(0, 0), [])
-
-
+    React.useEffect(() => {
+        window.scrollTo(0, 0)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
 
     return (
         <div className={dark ? "banner-container banner-container-dark  user-network" : "banner-container user-network"}>

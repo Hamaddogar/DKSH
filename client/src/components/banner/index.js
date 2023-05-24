@@ -1,5 +1,5 @@
 import ThemeContext from "../../context/ThemeContext";
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux"
 import "./styles.css";
@@ -60,21 +60,12 @@ const image2Right = () => {
 const ButtonArr = ["All", "Interfaces", "Branding", "Illustration", "Graphics", "3D", "Animation", "Marketing"];
 const Index = () => {
     const matches = useMediaQuery("(min-width:768px)");
-
     const { dark } = useContext(ThemeContext);
-
-
-
     const dispatch = useDispatch()
     const { activeTab } = useSelector(store => store.mainReducer)
     const handleTabChange = event => {
         dispatch(ACTIVE_TAB_Filter(event.target.innerText))
     }
-
-
-
-
-
     return (
         <div className={dark ? "banner-container banner-container-dark" : "banner-container"}>
             <div className={dark ? "banner-heading banner-heading-dark" : "banner-heading"}>Welcome, John ✋ </div>

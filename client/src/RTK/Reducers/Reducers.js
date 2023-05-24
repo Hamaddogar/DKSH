@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import { userData } from './fakeData';
 const APIS = {
-  all_dev: 'http://localhost:8080/developers',
+  all_dev: 'http://localhost:8080/user',
 }
 
 // ------------------All Asyn Reducers are below ------------------//
@@ -15,6 +14,7 @@ let initialState = {
   activeTab: 'All',
   priceFilter: [0, 1000],
   servicesFilter: "",
+  servicesFilterOptions: ["All", "UI Design", "UX Design"],
   ratingFilter: 0,
   availableToWorkFilter: true,
   proTallentFilter: false,
@@ -65,6 +65,8 @@ const mainSlice = createSlice({
       state.ratingFilter = 0;
       state.availableToWorkFilter = true;
       state.proTallentFilter = false;
+    },SERVICE_Filter_Options: (state, { payload }) => {
+      state.servicesFilterOptions = payload;
     },
 
 
@@ -96,7 +98,7 @@ const mainSlice = createSlice({
               },
             }
           })
-          state.allDevelopers = data
+          state.allDevelopers = data;
         }
       })
       .addCase(allDeveloperGetter.rejected, (state, { error }) => {
@@ -120,7 +122,8 @@ export const {
   RATING_Filter,
   AVALIABLE_TO_WORK_Filter,
   PRO_TALLENT_Filter,
-  RESET_Filter
+  RESET_Filter,
+  SERVICE_Filter_Options
 
 } = mainSlice.actions;
 

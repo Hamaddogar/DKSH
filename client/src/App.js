@@ -13,7 +13,6 @@ const App = () => {
     const dispatch = useDispatch();
     React.useEffect(() => {
         dispatch(allDeveloperGetter())
-        console.log("=================");
     }, [dispatch]);
     return <ThemeContext.Provider value={value}>{content}</ThemeContext.Provider>;
 };

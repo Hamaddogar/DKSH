@@ -15,7 +15,7 @@ const { RatingIcon, ServiceIcon, PriceIcon, FilterIcon, ListIcon, GridIcon, Dark
 
 const Index = (props) => {
     const dispatch = useDispatch();
-    const { priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter } = useSelector(store => store.mainReducer)
+    const { allDevelopers, priceFilter, servicesFilter, servicesFilterOptions, ratingFilter, availableToWorkFilter, proTallentFilter } = useSelector(store => store.mainReducer)
     const { dark } = useTheme();
     const { view, setView } = props;
     const [price, setPrice] = useState(priceFilter);
@@ -45,6 +45,8 @@ const Index = (props) => {
                             "& .MuiSlider-rail": { backgroundColor: "#E5E8EC" },
                             "& .MuiSlider-valueLabel": { display: "none" },
                         }}
+                        mountOnEnter
+                        unmountOnExit
                         min={0}
                         max={1000}
                         getAriaLabel={() => "Price range"}
@@ -70,11 +72,10 @@ const Index = (props) => {
         );
     };
     const ServiceDropdown = () => {
-        const list = ["All", "UI Design", "UX Design"];
         const handleChangeService = (service) => dispatch(SERVICE_Filter(service))
         return (
-            <Box className="dropdown-list">
-                {list.map((service) => (
+            <Box className={dark ? "scrollbox-dark dropdown-list" : "scrollbox dropdown-list"} >
+                {servicesFilterOptions.map((service) => (
                     <Box onClick={() => handleChangeService(service)} key={service} className={servicesFilter === service ? "dropdown-active-item" : "dropdown-item"}>
                         {service}
                     </Box>
@@ -127,7 +128,7 @@ const Index = (props) => {
             <Box sx={{ ...styleSheet.flex, mt: 2, mb: 3 }}>
                 <Box sx={{ ...styleSheet.flex }}>
                     <h2 className={dark ? "talents talents-dark" : "talents"}>{props.title || "Talents"} </h2>
-                    <span className={dark ? "number_of_talents number_of_talents-dark" : "number_of_talents"}>1244</span>
+                    <span className={dark ? "number_of_talents number_of_talents-dark" : "number_of_talents"}>{allDevelopers?.length}</span>
                 </Box>
                 <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>
                     {!props.hideGridView && ViewToggleContainer()}
