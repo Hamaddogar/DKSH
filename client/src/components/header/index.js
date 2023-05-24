@@ -9,7 +9,8 @@ import ThemeContext from "../../context/ThemeContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ACTIVE_TAB_Filter, SELECTED_PROFILE, SERVICE_Filter } from "../../RTK/Reducers/Reducers";
 // import { useSelector } from "@mui/base";
 const { SubtractIcon, SelectIcon, StarIcon, MsgIcon, PeopleGroupIcon, SearchWhite, NotificationWhite, PeopleWhite, HomeWhite, ForwardWhite, FileWhite, ChatWhite } = Icon;
 const { profileGrid } = Images;
@@ -216,124 +217,20 @@ const HomeButtonIcon = (dark) => {
         </svg>
     );
 };
-const DropDown = (dark) => {
-    const services = [
-        { title: "UI Design", search_result: 3214 },
-        { title: "UX Design", search_result: 332 },
-        { title: "3D Design", search_result: 123 },
-    ];
-    const users = [
-        { profileImg: Images.profileGrid, username: "Design Jackson", rating: "4.6", comments: "12" },
-        { profileImg: Images.profileGrid, username: "Derec Chen", rating: "4.1", comments: "34" },
-        { profileImg: Images.profileGrid, username: "Iuckder Lee", rating: "4.4", comments: "6" },
-    ];
 
-    return (
-        <div className={dark ? "search-dropdown-container search-dropdown-container-dark " : "search-dropdown-container"} style={{ width: "100%" }}>
-            <div className={dark ? "search-dropdown-content-container search-dropdown-content-container-dark" : "search-dropdown-content-container"}>
-                <div className="dropdown-header" style={{ paddingBottom: 8 }}>
-                    <h4 style={{ margin: 0 }}>
-                        Talents{" "}
-                        <span className="number_of_talents" style={{ paddingLeft: 20 }}>
-                            12
-                        </span>
-                    </h4>
-                    <div className="see-all">See All</div>
-                </div>
-                {users.map((user, k) => (
-                    <div className="dropdown-content" key={k}>
-                        <div className="dis-flex">
-                            {CustomIcon(<img alt="" width={25} src={user.profileImg} style={{ borderRadius: "50%", background: "none" }} />)}
-                            <label className="searched-username"> {user.username}</label>
-                        </div>
-                        <div className="dis-flex" style={{ gap: 20 }}>
-                            <div className="dis-flex">
-                                <img alt="" src={StarIcon} width={22} />
-                                <label className={dark ? "label label-dark" : "label"}> {user.rating} / 5</label>
-                            </div>
-                            <div className="dis-flex">
-                                <img alt="" src={!dark ? MsgIcon : Images.IconDarkLight} width={21} height={19} />
-                                <label className={dark ? "label label-dark" : "label"}> {user.comments}</label>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-                <div className="dropdown-header" style={{ paddingBottom: 10, paddingTop: 6 }}>
-                    <h4 style={{ margin: 0 }}>
-                        Services{" "}
-                        <span className="number_of_talents" style={{ paddingLeft: 20 }}>
-                            1
-                        </span>
-                    </h4>
-                    <div className="see-all">See All</div>
-                </div>
-
-                {services.map((service, k) => (
-                    <div className="dropdown-content" key={k}>
-                        <div className="dis-flex">
-                            {CustomIcon(searchIcon())}
-                            <label className="searched-username"> {service.title}</label>
-                        </div>
-                        <div className="dis-flex">
-                            <img alt="" src={dark ? PeopleWhite : PeopleGroupIcon} width={18} />
-                            <label className={dark ? "label label-dark" : "label"}> {service.search_result}</label>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className={dark ? "dropdown-footer dropdown-footer-dark" : "dropdown-footer"} style={{ display: "flex" }}>
-                <div className="dis-flex">
-                    {CustomIcon(<ExpandLessIcon />)}
-                    {CustomIcon(<ExpandMoreIcon />)}
-                    <h5>To navigate</h5>
-                </div>
-                <div className="dis-flex">
-                    {CustomIcon(<img alt="" src={SelectIcon} />)}
-                    <h5>To select</h5>
-                </div>
-                <div className="dis-flex">
-                    {CustomIcon(<img alt="" src={SelectIcon} />)}
-                    <h5>To dismiss</h5>
-                </div>
-            </div>
-        </div>
-    );
-};
-const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService) => {
-    // const services = [
-    //     { title: "UI Design", search_result: 3214 },
-    //     { title: "UX Design", search_result: 332 },
-    //     { title: "3D Design", search_result: 123 },
-    // ];
-    // const users = [
-    //     { profileImg: Images.profileGrid, username: "Design Jackson", rating: "4.6", comments: "12" },
-    //     { profileImg: Images.profileGrid, username: "Derec Chen", rating: "4.1", comments: "34" },
-    //     { profileImg: Images.profileGrid, username: "Iuckder Lee", rating: "4.4", comments: "6" },
-    // ];
-
+const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt) => {
     const categoryCount = allDevelopers.reduce((count, item) => {
-        const category = item.category;
-        count[category] = (count[category] || 0) + 1;
+        const mainCategory = item.mainCategory;
+        count[mainCategory] = (count[mainCategory] || 0) + 1;
         return count;
     }, {});
-
     const services = Object.entries(categoryCount).map(([category, count]) => ({
         title: category,
         search_result: count
     }));
-
-
     const users = allDevelopers.map(dev => {
         return { id: dev._id, profileImg: dev.avatar, username: dev.profileName(), rating: dev.ratingCount(), comments: dev.commentCount() }
     })
-
-
-
-
-
-
-
-
     return (
         <div className={"search-bar"}>
             <div className={dark ? "search-input-container search-input-container-dark" : "search-input-container"}>
@@ -344,12 +241,12 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                     className={dark ? "search-input search-input-dark" : "search-input"}
                     // onClose={() => setSearchDropdown(false)}
                     placeholder="Search candidate, competencies, services"
+                    onChange={e => setsearchIt(e.target.value)}
                 />
                 <div className={dark ? "right-image right-image-dark" : "right-image"}>{searchButton(searchDropdown, dark)}</div>
             </div>
 
-            {
-                searchDropdown &&
+            {searchDropdown &&
                 <div className={dark ? "search-dropdown-container search-dropdown-container-dark " : "search-dropdown-container"} style={{ width: "100%" }}>
                     <div className={dark ? "search-dropdown-content-container search-dropdown-content-container-dark" : "search-dropdown-content-container"}>
                         <div className="dropdown-header" style={{ paddingBottom: 8 }}>
@@ -361,8 +258,9 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                             </h4>
                             <div className="see-all">See All</div>
                         </div>
-                        {users.map((user, k) => (
-                            <Box sx={{ cursor: 'pointer','&:hover':{backgroundColor:'rgb(0, 120, 212,.1)'}, tranisition:'.2s' }} className="dropdown-content" key={k} onClick={e => { handleClickUser(user); setSearchDropdown(false) }}>
+                        {(users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))).map((user, k) => (
+                            <Box sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s' }} className="dropdown-content" key={k}
+                                onClick={e => { handleClickUser(user); setSearchDropdown(false) }}>
                                 <div className="dis-flex">
                                     {CustomIcon(<img alt="" width={25} src={user.profileImg} style={{ borderRadius: "50%", background: "none" }} />)}
                                     <label className="searched-username"> {user.username}</label>
@@ -389,8 +287,9 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                             <div className="see-all">See All</div>
                         </div>
 
-                        {services.map((service, k) => (
-                            <div className="dropdown-content" key={k}>
+                        {(services.filter(dev => dev.title.toLowerCase().includes(searchIt.toLowerCase()))).map((service, k) => (
+                            <Box sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s' }} className="dropdown-content" key={k}
+                                onClick={e => { handleClickService(service); setSearchDropdown(false) }}>
                                 <div className="dis-flex">
                                     {CustomIcon(searchIcon())}
                                     <label className="searched-username"> {service.title}</label>
@@ -399,7 +298,7 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                                     <img alt="" src={dark ? PeopleWhite : PeopleGroupIcon} width={18} />
                                     <label className={dark ? "label label-dark" : "label"}> {service.search_result}</label>
                                 </div>
-                            </div>
+                            </Box>
                         ))}
                     </div>
                     <div className={dark ? "dropdown-footer dropdown-footer-dark" : "dropdown-footer"} style={{ display: "flex" }}>
@@ -424,23 +323,19 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
 };
 const Index = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const matches = useMediaQuery("(min-width:768px)");
     const { dark, setDark } = useContext(ThemeContext);
     const [searchDropdown, setSearchDropdown] = useState(false);
-
+    const [searchIt, setsearchIt] = useState("");
     const { allDevelopers } = useSelector(store => store.mainReducer)
-
     const handleClickUser = (profile) => {
-        // setSearchDropdown(false)
-        console.log(profile);
         const user = allDevelopers.filter(dev => dev._id === profile.id)
+        dispatch(SELECTED_PROFILE(user[0]))
+        navigate('/network');
     }
 
-    const handleClickService = (service) => {
-        // setSearchDropdown(false)
-        // const user = allDevelopers.filter(dev => dev._id === profile.id )
-    }
-
+    const handleClickService = (service) => dispatch(ACTIVE_TAB_Filter(service.title))
 
     if (!matches)
         return (
@@ -467,7 +362,7 @@ const Index = () => {
                 </div>
 
                 <Grid item xs={12} sm={12} sx={{ mt: 3 }}>
-                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService)}
+                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt)}
                 </Grid>
             </div>
         );
@@ -479,7 +374,7 @@ const Index = () => {
                     <img alt="" src={dark ? Images.WhiteLogo : Images.Logo} className="header-logo" />
                 </Grid>
                 <Grid item sx={{ display: { sm: "none", sm: "block" } }} xs={5} sm={6} md={3.5} lg={4}>
-                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService)}
+                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt)}
                 </Grid>
                 <Grid item sx={{ display: { xs: "block", sm: "none", md: "none", lg: "none" } }} xs={1.5}>
                     <MenuIcon className="Menu-Icon" />

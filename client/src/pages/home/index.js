@@ -19,7 +19,8 @@ const Index = () => {
                 (dev.hourlyRate >= priceFilter[0] && dev.hourlyRate <= priceFilter[1]) &&
                 (typeof (ratingFilter) === 'number' ? dev.ratingCount() >= Number(ratingFilter) : dev.ratingCount() >= 5) &&
                 ((dev.specialization.filter(item => item.toLowerCase().includes(servicesFilter === "All" ? "" : servicesFilter.toLowerCase()))).length > 0) &&
-                (activeTab.toLowerCase() === "all" ? true : dev.category.toLowerCase() === activeTab.toLowerCase())
+                // (activeTab.toLowerCase() === "all" ? true : dev.category.toLowerCase() === activeTab.toLowerCase()) &&
+                (activeTab.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTab.toLowerCase())
             )
             setData(finalFilterdData)
         }
