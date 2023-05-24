@@ -2,17 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { userData } from './fakeData';
-// import { APIS } from '../../utils/table';
-
 const APIS = {
   all_dev: 'http://localhost:8080/developers',
 }
 
-
 // ------------------All Asyn Reducers are below ------------------//
 let initialState = {
   loading: false,
-  allDevelopers: userData,
+  allDevelopers: [],
   selectedProfile: null,
   // filters
   activeTab: 'All',
@@ -21,13 +18,11 @@ let initialState = {
   ratingFilter: 0,
   availableToWorkFilter: true,
   proTallentFilter: false,
-
-
 }
 
 // ________________ Asyn Functions for Calling __________________ //
 
-// saleOrderNoFilter
+// allDeveloperGetter
 export const allDeveloperGetter = createAsyncThunk(
   'mainSlice/allDeveloperGetter',
   async () => {
@@ -37,25 +32,11 @@ export const allDeveloperGetter = createAsyncThunk(
 );
 
 
-
-
-
-
-
-
-
-
 // asyn setter
 const mainSlice = createSlice({
   name: 'mainSlice',
   initialState,
   reducers: {
-    LOG_OUT: (state) => {
-    },
-    LOG_IN: (state, { payload }) => {
-      state.isAuthorised = true;
-      state.accessToken = payload;
-    },
     SELECTED_PROFILE: (state, { payload }) => {
       state.selectedProfile = payload;
     },
@@ -79,11 +60,11 @@ const mainSlice = createSlice({
     },
     RESET_Filter: (state, { payload }) => {
       state.activeTab = 'All';
-      state.priceFilter= [0, 1000];
-      state.servicesFilter= "";
-      state.ratingFilter= 0;
-      state.availableToWorkFilter= true;
-      state.proTallentFilter= false;
+      state.priceFilter = [0, 1000];
+      state.servicesFilter = "";
+      state.ratingFilter = 0;
+      state.availableToWorkFilter = true;
+      state.proTallentFilter = false;
     },
 
 
@@ -99,9 +80,7 @@ const mainSlice = createSlice({
       })
       .addCase(allDeveloperGetter.fulfilled, (state, { payload }) => {
         state.loading = false;
-        console.log('=======', payload);
         if (payload.success) {
-
           const data = payload.users.map(user => {
             return {
               ...user,
@@ -117,21 +96,13 @@ const mainSlice = createSlice({
               },
             }
           })
-
-          // state.allDevelopers = data
-
+          state.allDevelopers = data
         }
       })
       .addCase(allDeveloperGetter.rejected, (state, { error }) => {
         state.loading = false;
         Swal.fire({ icon: 'error', title: error.code, text: error.message })
       })
-
-
-  // pickingPageDealer
-
-
-
 
 
 })
@@ -151,12 +122,8 @@ export const {
   PRO_TALLENT_Filter,
   RESET_Filter
 
-
 } = mainSlice.actions;
 
-
-
 // ------------------All Asyn Getter Setter Reducers Exporter ------------------//
-
 export const mainReducer = mainSlice.reducer;
 

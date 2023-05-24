@@ -10,10 +10,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import { ACTIVE_TAB_Filter, SELECTED_PROFILE, SERVICE_Filter } from "../../RTK/Reducers/Reducers";
-// import { useSelector } from "@mui/base";
-const { SubtractIcon, SelectIcon, StarIcon, MsgIcon, PeopleGroupIcon, SearchWhite, NotificationWhite, PeopleWhite, HomeWhite, ForwardWhite, FileWhite, ChatWhite } = Icon;
-const { profileGrid } = Images;
+import { ACTIVE_TAB_Filter, SELECTED_PROFILE } from "../../RTK/Reducers/Reducers";
+const { SubtractIcon, SelectIcon, StarIcon, MsgIcon, PeopleGroupIcon, PeopleWhite, HomeWhite, ForwardWhite, FileWhite } = Icon;
 const NotificationsIcons = (dark) => {
     if (dark)
         return (
@@ -230,7 +228,8 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
     }));
     const users = allDevelopers.map(dev => {
         return { id: dev._id, profileImg: dev.avatar, username: dev.profileName(), rating: dev.ratingCount(), comments: dev.commentCount() }
-    })
+    });
+
     return (
         <div className={"search-bar"}>
             <div className={dark ? "search-input-container search-input-container-dark" : "search-input-container"}>
@@ -239,11 +238,10 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                     type="text"
                     onClick={() => setSearchDropdown(true)}
                     className={dark ? "search-input search-input-dark" : "search-input"}
-                    // onClose={() => setSearchDropdown(false)}
                     placeholder="Search candidate, competencies, services"
                     onChange={e => setsearchIt(e.target.value)}
                 />
-                <div className={dark ? "right-image right-image-dark" : "right-image"}>{searchButton(searchDropdown, dark)}</div>
+                <div onClick={() => setSearchDropdown(false)} style={{ cursor: 'pointer' }} className={dark ? "right-image right-image-dark" : "right-image"}>{searchButton(searchDropdown, dark)}</div>
             </div>
 
             {searchDropdown &&
@@ -334,9 +332,10 @@ const Index = () => {
         dispatch(SELECTED_PROFILE(user[0]))
         navigate('/network');
     }
-
-    const handleClickService = (service) => dispatch(ACTIVE_TAB_Filter(service.title))
-
+    const handleClickService = (service) => {
+        dispatch(ACTIVE_TAB_Filter(service.title))
+        navigate('/')
+    }
     if (!matches)
         return (
             <div className={dark ? "header-container header-container-dark " : "header-container"} style={{ display: "block", paddingTop: "12px" }}>
@@ -373,7 +372,7 @@ const Index = () => {
                 <Grid item xs={10.5} sm={2} md={1.5} lg={1.7} sx={{ display: { sm: "none", md: "block" } }}>
                     <img alt="" src={dark ? Images.WhiteLogo : Images.Logo} className="header-logo" />
                 </Grid>
-                <Grid item sx={{ display: { sm: "none", sm: "block" } }} xs={5} sm={6} md={3.5} lg={4}>
+                <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={6} md={3.5} lg={4}>
                     {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt)}
                 </Grid>
                 <Grid item sx={{ display: { xs: "block", sm: "none", md: "none", lg: "none" } }} xs={1.5}>
@@ -384,7 +383,7 @@ const Index = () => {
                         <div className={dark ? "header-Home-btn header-Home-btn-dark" : "header-Home-btn"} onClick={() => navigate("/")}>
                             {HomeButtonIcon(dark)} <span className="Home-margin">Home</span>
                         </div>
-                        <div className="header-jobs-btn" onClick={() => navigate("/network")}>
+                        <div className="header-jobs-btn" onClick={() => navigate("/")}>
                             {networkButton(dark)} <span className="Home-margin">My network</span>
                         </div>
                         <div className="header-jobs-btn" onClick={() => navigate("/jobs")}>

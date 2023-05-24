@@ -7,30 +7,26 @@ import DropdownButton from "../dropdown";
 import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import SM_Filters from "./SmallScreenFilters";
+import SMFilters from "./SmallScreenFilters";
 import useTheme from "../../hooks/useTheme";
 import { useDispatch, useSelector } from "react-redux";
 import { AVALIABLE_TO_WORK_Filter, PRICE_Filter, PRO_TALLENT_Filter, RATING_Filter, RESET_Filter, SERVICE_Filter } from "../../RTK/Reducers/Reducers";
 const { RatingIcon, ServiceIcon, PriceIcon, FilterIcon, ListIcon, GridIcon, DarkFilterIcon, ListWhite, GridWhite } = Icons;
 
 const Index = (props) => {
-
     const dispatch = useDispatch();
     const { priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter } = useSelector(store => store.mainReducer)
-
-
     const { dark } = useTheme();
     const { view, setView } = props;
     const [price, setPrice] = useState(priceFilter);
     const [viewFilters, setViewFilters] = useState(false);
     const [modelViewFilters, setModelViewFilters] = useState(false);
-
     const matches = useMediaQuery("(max-width:768px)");
     useEffect(() => {
         if (matches && viewFilters) setViewFilters(false);
         else if (!matches && modelViewFilters) setModelViewFilters(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matches]);
-
     const PriceDropdown = () => {
         const handleChangePrice = (e, values) => setPrice(values)
         const handleApplyPrice = () => dispatch(PRICE_Filter(price))
@@ -119,17 +115,13 @@ const Index = (props) => {
             </Box>
         );
     };
-
     const handleViewFilters = () => {
         if (matches) setModelViewFilters(true);
         else setViewFilters((e) => !e);
     };
-
     const handleAvailableToWork = event => dispatch(AVALIABLE_TO_WORK_Filter(event.target.checked))
     const handleProTallent = event => dispatch(PRO_TALLENT_Filter(event.target.checked))
     const handleResetFilters = event => dispatch(RESET_Filter())
-
-
     return (
         <>
             <Box sx={{ ...styleSheet.flex, mt: 2, mb: 3 }}>
@@ -142,7 +134,7 @@ const Index = (props) => {
                     <Button style={{ padding: "15px" }} title={<img alt='' src={viewFilters || modelViewFilters ? FilterIcon : DarkFilterIcon} />} type={viewFilters ? "primary" : "secondary"} onClick={handleViewFilters} />
                 </Box>
             </Box>
-            {matches && <SM_Filters open={modelViewFilters} onClose={() => setModelViewFilters(false)} view={view} setView={setView} />}
+            {matches && <SMFilters open={modelViewFilters} onClose={() => setModelViewFilters(false)} view={view} setView={setView} />}
             {viewFilters && !matches && (
                 <Box sx={{ ...styleSheet.flex, mt: 2, mb: 3, flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" } }}>
                     <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>

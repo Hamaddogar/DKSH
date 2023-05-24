@@ -8,7 +8,6 @@ const Index = () => {
     const [listView, setListView] = useState(false);
     const [data, setData] = React.useState([]);
     const { allDevelopers, loading, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab } = useSelector(store => store.mainReducer)
-
     React.useEffect(() => {
         if (allDevelopers.length > 0) {
             const filterdData = allDevelopers.filter(dev =>
@@ -19,7 +18,6 @@ const Index = () => {
                 (dev.hourlyRate >= priceFilter[0] && dev.hourlyRate <= priceFilter[1]) &&
                 (typeof (ratingFilter) === 'number' ? dev.ratingCount() >= Number(ratingFilter) : dev.ratingCount() >= 5) &&
                 ((dev.specialization.filter(item => item.toLowerCase().includes(servicesFilter === "All" ? "" : servicesFilter.toLowerCase()))).length > 0) &&
-                // (activeTab.toLowerCase() === "all" ? true : dev.category.toLowerCase() === activeTab.toLowerCase()) &&
                 (activeTab.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTab.toLowerCase())
             )
             setData(finalFilterdData)
@@ -27,8 +25,13 @@ const Index = () => {
         else { setData([]) }
 
     }, [allDevelopers, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab])
-
-
+    React.useEffect(() => {
+        setTimeout(() => {
+            window.scrollTo(0, 0)
+        }, 100);
+    }, [])
+    console.log("<<<<<<<allDevelopers>>>>>>",allDevelopers);
+    console.log("<<<<<<<data>>>>>>",data);
     return (
         <>
             <Banner />
