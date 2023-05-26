@@ -32,7 +32,7 @@ const Index = () => {
                 <Grid item xs="12" sm="12" md="3" lg="3">
                     <div className={dark ? "network-container dark-border" : "network-container"}>
                         <div>
-                            <h1 className={dark ? "network-title white-text" : "network-title"}>${formatNumber(selectedProfile?.revneue)}</h1>
+                            <h1 className={dark ? "network-title white-text" : "network-title"}>${formatNumber(selectedProfile?.revenue)}</h1>
                             <h3 className={dark ? "network-subTitle white-text" : "network-subTitle"}>Total Earnings</h3>
                         </div>
                         <div>

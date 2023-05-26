@@ -11,12 +11,13 @@ const developerSchema = new mongoose.Schema({
     verified: Boolean,
     description: String,
     category: String,
+    revenue: Number,
     jobs: {
         completed: Number,
         cancelled: Number,
         inProgress: Number,
     },
-    revenue: Number,
+    
     services: [
         {
             title: String,
