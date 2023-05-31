@@ -12,7 +12,7 @@ const Index = ({ user }) => {
     React.useEffect(() => {
         window.scrollTo(0, 0)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user])
+    }, [])
 
     return (
         <div className={dark ? "banner-container banner-container-dark  user-network" : "banner-container user-network"}>

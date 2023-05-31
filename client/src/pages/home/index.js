@@ -28,7 +28,6 @@ const Index = () => {
                 if (activeTab.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTab.toLowerCase()) specializationSet.push(...dev.specialization)
             });
             dispatch(SERVICE_Filter_Options([...new Set(specializationSet)]));
-
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allDevelopers, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab])

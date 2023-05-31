@@ -23,7 +23,7 @@ const Index = () => {
     React.useEffect(() => {
         if (selectedProfile === null) { navigate('/') }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProfile])
+    }, [])
 
     return (
         <>
@@ -80,7 +80,7 @@ const Index = () => {
                             </h1>
                             <div className="network-container-img">
                                 {gig?.profile.map((img) => (
-                                    <img alt={img} src={img} className="list-image-style " key={img} />
+                                    <img loading="lazy" alt={img} src={img} className="list-image-style " key={img} />
                                 ))}
                             </div>
                         </div>

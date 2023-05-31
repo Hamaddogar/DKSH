@@ -42,8 +42,9 @@
  display: flex;
  margin-top: 38px;
  overflow: auto;
- width: 100%;
+ width: calc(100% - 40px);
  padding-left: 20px;
+ padding-right: 20px;
 }
 .banners-button-grid-responsive::-webkit-scrollbar {
  display: none;
@@ -83,4 +84,14 @@
   margin-top: 18px;
   position: relative;
  }
+}
+
+.relative-position {
+    position: relative;
+}
+.z-index-2 {
+    z-index: 2;
+}
+.z-index-1 {
+    z-index: 1;
 }

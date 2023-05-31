@@ -14,7 +14,7 @@ const Index = () => {
     const { dark } = useContext(ThemeContext);
     const links = [
         { label: "Home", icon: HomeButtonIcon(dark, path), href: "/" },
-        { label: "My Network", icon: networkButton(dark, path), href: "/" },
+        { label: "My Network", icon: networkButton(dark, path), href: "/network" },
         { label: "Jobs", icon: JobsIcon(dark, path), href: "/jobs" },
     ];
 

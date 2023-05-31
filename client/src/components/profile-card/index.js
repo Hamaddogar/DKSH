@@ -23,7 +23,7 @@ const profileVerifiedIcon = () => {
   );
 };
 const commentIcon = (dark) => {
-  if (dark) return <img alt='' src={Images.WhiteMsg} />;
+  if (dark) return <img loading="lazy" alt='' src={Images.WhiteMsg} />;
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -133,7 +133,7 @@ const Index = ({ user, view }) => {
             <Grid item xs={12} sm={7} md={6} lg={4}>
               <Grid container spacing={2}>
                 <Grid item sm={2.5}>
-                  <div className="images-grid-center"><img alt='avatar' src={user?.avatar} className="List-profile-image" /></div>
+                  <div className="images-grid-center"><img loading="lazy" alt='avatar' src={user?.avatar} className="List-profile-image" /></div>
                   <div className="profileVerifiedList-Icon">{profileVerifiedIcon()}</div>
                 </Grid>
                 <Grid item sm={9}>
@@ -168,7 +168,7 @@ const Index = ({ user, view }) => {
             <Grid item xs={12} sm={9} md={6} lg={4}>
               <div className="images-listContainer">
                 {
-                  user?.projectsThumbs.map(src => <img alt='' key={src} src={src} className="list-image-style " />)
+                  user?.projectsThumbs.map(src => <img loading="lazy" alt='' key={src} src={src} className="list-image-style " />)
                 }
               </div>
             </Grid>
@@ -180,10 +180,10 @@ const Index = ({ user, view }) => {
             ${user?.hourlyRate} <span className={dark ? "time-hours-title time-hours-title-dark " : "time-hours-title"}>/hour</span>
           </div>
           <div className="images-grid-center">
-            {user?.projectsThumbs.map(src => <img alt='' key={src} src={src} className="grid-image-style" />)}
+            {user?.projectsThumbs.map(src => <img loading="lazy" alt='' key={src} src={src} className="grid-image-style" />)}
           </div>
           <div className="images-grid-center" style={{ position: "relative" }}>
-            <img src={user?.avatar} alt='avatar' className={dark ? "grid-profile-image grid-profile-image-dark" : "grid-profile-image"} />
+            <img loading="lazy" src={user?.avatar} alt='avatar' className={dark ? "grid-profile-image grid-profile-image-dark" : "grid-profile-image"} />
             <div className="profileVerified-Icon">{profileVerifiedIcon()}</div>
           </div>
           <div className={dark ? "grid-profile-name grid-profile-name-dark " : "grid-profile-name"}>{user?.profileName()}</div>
@@ -253,7 +253,7 @@ const Index = ({ user, view }) => {
             <DialogContentText>
               <Grid container spacing={2}>
                 <Grid item sm={2.5}>
-                  <img alt='avatar' src={user?.avatar} className="List-profile-image" />
+                  <img loading="lazy" alt='avatar' src={user?.avatar} className="List-profile-image" />
                   <div className="profileVerified-Icon">{profileVerifiedIcon()}</div>
                 </Grid>
               </Grid>

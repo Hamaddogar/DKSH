@@ -3,7 +3,7 @@ import { useRoutes } from "react-router-dom";
 import ThemeContext from "./context/ThemeContext";
 import routes from "./routes";
 import { useDispatch } from "react-redux";
-import { allDeveloperGetter } from "./RTK/Reducers/Reducers";
+import { allDeveloperGetter, allJobsGetter } from "./RTK/Reducers/Reducers";
 
 const App = () => {
     const defaultTheme = localStorage.getItem("dark-theme");
@@ -12,7 +12,8 @@ const App = () => {
     const content = useRoutes(routes);
     const dispatch = useDispatch();
     React.useEffect(() => {
-        dispatch(allDeveloperGetter())
+        dispatch(allDeveloperGetter());
+        dispatch(allJobsGetter());
     }, [dispatch]);
     return <ThemeContext.Provider value={value}>{content}</ThemeContext.Provider>;
 };

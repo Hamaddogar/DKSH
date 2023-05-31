@@ -10,18 +10,42 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import SMFilters from "./SmallScreenFilters";
 import useTheme from "../../hooks/useTheme";
 import { useDispatch, useSelector } from "react-redux";
-import { AVALIABLE_TO_WORK_Filter, PRICE_Filter, PRO_TALLENT_Filter, RATING_Filter, RESET_Filter, SERVICE_Filter } from "../../RTK/Reducers/Reducers";
+import { AVALIABLE_TO_WORK_Filter, PRICE_Filter, PRICE_Filter_JOB, PRO_TALLENT_Filter, RATING_Filter, RATING_Filter_JOB, RESET_Filter, RESET_Filter_JOB, SERVICE_Filter, SERVICE_Filter_JOB } from "../../RTK/Reducers/Reducers";
 const { RatingIcon, ServiceIcon, PriceIcon, FilterIcon, ListIcon, GridIcon, DarkFilterIcon, ListWhite, GridWhite } = Icons;
 
 const Index = (props) => {
     const dispatch = useDispatch();
-    const { allDevelopers, priceFilter, servicesFilter, servicesFilterOptions, ratingFilter, availableToWorkFilter, proTallentFilter } = useSelector(store => store.mainReducer)
+    const { view, setView, filterFor = 'home' } = props;
+    const homeFilter = filterFor === 'home'
+    const { allDevelopers, priceFilter, servicesFilter, servicesFilterOptions, ratingFilter, availableToWorkFilter, proTallentFilter,
+        priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB,servicesFilterJOB,
+    } = useSelector(store => store.mainReducer)
     const { dark } = useTheme();
-    const { view, setView } = props;
-    const [price, setPrice] = useState(priceFilter);
+    const [price, setPrice] = useState(homeFilter ? priceFilter : priceFilterJOB);
     const [viewFilters, setViewFilters] = useState(false);
     const [modelViewFilters, setModelViewFilters] = useState(false);
     const matches = useMediaQuery("(max-width:768px)");
+    const [ALPHA_FUNCTIONS, setALPHA_FUNCTIONS] = useState(null);
+    useEffect(() => {
+        if (homeFilter) {
+            setALPHA_FUNCTIONS({
+                'AVALIABLE_FUNCTION': AVALIABLE_TO_WORK_Filter,
+                'PRICE_FUNCTION': PRICE_Filter,
+                'PRO_FUNCTION': PRO_TALLENT_Filter,
+                'RATING_FUNCTION': RATING_Filter,
+                'RESET_FUNCTION': RESET_Filter,
+                "SERVICE_FUNCTION": SERVICE_Filter
+            })
+        } else {
+            setALPHA_FUNCTIONS({
+                'PRICE_FUNCTION': PRICE_Filter_JOB,
+                'RATING_FUNCTION': RATING_Filter_JOB,
+                'RESET_FUNCTION': RESET_Filter_JOB,
+                "SERVICE_FUNCTION": SERVICE_Filter_JOB
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filterFor]);
     useEffect(() => {
         if (matches && viewFilters) setViewFilters(false);
         else if (!matches && modelViewFilters) setModelViewFilters(false);
@@ -29,9 +53,9 @@ const Index = (props) => {
     }, [matches]);
     const PriceDropdown = () => {
         const handleChangePrice = (e, values) => setPrice(values)
-        const handleApplyPrice = () => dispatch(PRICE_Filter(price))
+        const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price))
         const handleCancelPrice = () => {
-            dispatch(PRICE_Filter([0, 1000]))
+            dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION([0, 1000]))
             setPrice([0, 1000])
         }
         return (
@@ -72,11 +96,11 @@ const Index = (props) => {
         );
     };
     const ServiceDropdown = () => {
-        const handleChangeService = (service) => dispatch(SERVICE_Filter(service))
+        const handleChangeService = (service) => dispatch(ALPHA_FUNCTIONS.SERVICE_FUNCTION(service))
         return (
             <Box className={dark ? "scrollbox-dark dropdown-list" : "scrollbox dropdown-list"} >
-                {servicesFilterOptions.map((service) => (
-                    <Box onClick={() => handleChangeService(service)} key={service} className={servicesFilter === service ? "dropdown-active-item" : "dropdown-item"}>
+                {(homeFilter ? servicesFilterOptions : servicesFilterOptionsJOB).map((service) => (
+                    <Box onClick={() => handleChangeService(service)} key={service} className={(homeFilter ? servicesFilter : servicesFilterJOB) === service ? "dropdown-active-item" : "dropdown-item"}>
                         {service}
                     </Box>
                 ))}
@@ -84,12 +108,12 @@ const Index = (props) => {
         );
     };
     const RatingDropdown = () => {
-        const list = ["Top rated", 5, 4, 3, 2, 1];
-        const handleChangeRating = (service) => dispatch(RATING_Filter(service))
+        const list = ["Top rated", 4, 3, 2, 1];
+        const handleChangeRating = (service) => dispatch(ALPHA_FUNCTIONS.RATING_FUNCTION(service))
         return (
             <Box className="dropdown-list">
                 {list.map((option) => (
-                    <Box onClick={() => handleChangeRating(option)} key={option} className={ratingFilter === option ? "dropdown-active-item" : "dropdown-item"}>
+                    <Box onClick={() => handleChangeRating(option)} key={option} className={(homeFilter ? ratingFilter : ratingFilterJOB) === option ? "dropdown-active-item" : "dropdown-item"}>
                         {option}
                     </Box>
                 ))}
@@ -120,9 +144,9 @@ const Index = (props) => {
         if (matches) setModelViewFilters(true);
         else setViewFilters((e) => !e);
     };
-    const handleAvailableToWork = event => dispatch(AVALIABLE_TO_WORK_Filter(event.target.checked))
-    const handleProTallent = event => dispatch(PRO_TALLENT_Filter(event.target.checked))
-    const handleResetFilters = event => dispatch(RESET_Filter())
+    const handleAvailableToWork = event => dispatch(ALPHA_FUNCTIONS.AVALIABLE_FUNCTION(event.target.checked))
+    const handleProTallent = event => dispatch(ALPHA_FUNCTIONS.PRO_FUNCTION(event.target.checked))
+    const handleResetFilters = event => dispatch(ALPHA_FUNCTIONS.RESET_FUNCTION())
     return (
         <>
             <Box sx={{ ...styleSheet.flex, mt: 2, mb: 3 }}>
@@ -135,7 +159,7 @@ const Index = (props) => {
                     <Button style={{ padding: "15px" }} title={<img alt='' src={viewFilters || modelViewFilters ? FilterIcon : DarkFilterIcon} />} type={viewFilters ? "primary" : "secondary"} onClick={handleViewFilters} />
                 </Box>
             </Box>
-            {matches && <SMFilters open={modelViewFilters} onClose={() => setModelViewFilters(false)} view={view} setView={setView} />}
+            {matches && <SMFilters condition={homeFilter} open={modelViewFilters} onClose={() => setModelViewFilters(false)} view={view} setView={setView} />}
             {viewFilters && !matches && (
                 <Box sx={{ ...styleSheet.flex, mt: 2, mb: 3, flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" } }}>
                     <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>
@@ -144,10 +168,10 @@ const Index = (props) => {
                         <FilterButton dark={dark} label="Sort by : " icon={RatingIcon} value="Rating" component={<RatingDropdown />} />
                         <FilterButton dark={dark} label="Reset all" onClick={handleResetFilters} />
                     </Box>
-                    <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>
+                    {homeFilter && <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>
                         <ToggleButton label="Available to work" onChange={handleAvailableToWork} checked={availableToWorkFilter} dark={dark} />
                         <ToggleButton onChange={handleProTallent} checked={proTallentFilter} label="Pro tallent" dark={dark} />
-                    </Box>
+                    </Box>}
                 </Box>
             )}
         </>

@@ -216,19 +216,66 @@ const HomeButtonIcon = (dark) => {
     );
 };
 
-const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt) => {
-    const categoryCount = allDevelopers.reduce((count, item) => {
-        const mainCategory = item.mainCategory;
-        count[mainCategory] = (count[mainCategory] || 0) + 1;
-        return count;
-    }, {});
-    const services = Object.entries(categoryCount).map(([category, count]) => ({
-        title: category,
-        search_result: count
-    }));
+const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector) => {
     const users = allDevelopers.map(dev => {
         return { id: dev._id, profileImg: dev.avatar, username: dev.profileName(), rating: dev.ratingCount(), comments: dev.commentCount() }
     });
+    const [services, setServices] = useState([]);
+
+    const servicesFunction = React.useMemo(() => {
+        const filteredServices = allDevelopers.reduce((count, item) => {
+            const mainCategory = item.mainCategory;
+            const userName = item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase();
+
+            if (
+                mainCategory.toLowerCase().includes(searchIt.toLowerCase()) ||
+                userName.includes(searchIt.toLowerCase())
+            ) {
+                count[mainCategory] = (count[mainCategory] || 0) + 1;
+            } else {
+                count[mainCategory] = count[mainCategory] || 0;
+            }
+
+            return count;
+        }, {});
+
+        return Object.entries(filteredServices).map(([category, count]) => ({
+            title: category,
+            search_result: count,
+        }));
+    }, [allDevelopers, searchIt]);
+
+    const handleEffect = React.useCallback(() => {
+        setServices(servicesFunction);
+    }, [servicesFunction]);
+
+    React.useEffect(handleEffect, [handleEffect]);
+
+
+    const handleClose = () => setSearchDropdown(false)
+    const activeViewDown = () => {
+        const activeList = users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))
+        const newIndex = Math.abs((userSelector.index - 1) % activeList?.length)
+        document.getElementById('user-container').scrollTop -= (userSelector.index < 4 || userSelector.index < activeList?.length - 4 ? 40 : 5);
+        setUserSelector({ index: newIndex, thisUser: activeList[newIndex] })
+    }
+    const activeViewUp = () => {
+        const activeList = users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))
+        const newIndex = Math.abs((userSelector.index + 1) % users.length);
+        document.getElementById('user-container').scrollTop = newIndex === 0 ? 0 : userSelector.index * 40;
+        setUserSelector({ index: newIndex, thisUser: activeList[newIndex] })
+    }
+    const selectUser = () => {
+        handleClickUser(userSelector.thisUser);
+        handleClose()
+    }
+
+    React.useEffect(() => {
+        if (searchDropdown && typeof (userSelector.index) === "number") {
+            document.getElementById('user-container').scrollTop = userSelector.index * (userSelector.index < 4 ? 5 : 30);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchDropdown])
 
     return (
         <div className={"search-bar"}>
@@ -256,12 +303,12 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                             </h4>
                             <div className="see-all">See All</div>
                         </div>
-                        <div className={dark ? "scrollbox-dark" : "scrollbox"}>
+                        <div className={dark ? "scrollbox-dark" : "scrollbox"} id='user-container'>
                             {(users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))).map((user, k) => (
                                 <Box
-                                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s', paddingRight: '5px' }}
+                                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s', paddingRight: '5px', backgroundColor: userSelector.index === k ? 'rgb(0, 120, 212,.1)' : 'none' }}
                                     className="dropdown-content" key={k}
-                                    onClick={e => { handleClickUser(user); setSearchDropdown(false) }}>
+                                    onClick={e => { handleClickUser(user, k); setSearchDropdown(false) }}>
                                     <div className="dis-flex">
                                         {CustomIcon(<img alt="" width={25} src={user.profileImg} style={{ borderRadius: "50%", background: "none" }} />)}
                                         <label className="searched-username"> {user.username}</label>
@@ -283,13 +330,13 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                             <h4 style={{ margin: 0 }}>
                                 Services{" "}
                                 <span className="number_of_talents" style={{ paddingLeft: 20 }}>
-                                    {Object.keys(categoryCount).length}
+                                    {services?.length}
                                 </span>
                             </h4>
                             <div className="see-all">See All</div>
                         </div>
                         <div className={dark ? "scrollbox-dark" : "scrollbox"}>
-                            {(services.filter(dev => dev.title.toLowerCase().includes(searchIt.toLowerCase()))).map((service, k) => (
+                            {services?.map((service, k) => (
                                 <Box
                                     sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s', paddingRight: '5px' }}
                                     className="dropdown-content" key={k}
@@ -308,16 +355,16 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                     </div>
                     <div className={dark ? "dropdown-footer dropdown-footer-dark" : "dropdown-footer"} style={{ display: "flex" }}>
                         <div className="dis-flex">
-                            {CustomIcon(<ExpandLessIcon />)}
-                            {CustomIcon(<ExpandMoreIcon />)}
+                            {CustomIcon(<ExpandLessIcon />, activeViewDown)}
+                            {CustomIcon(<ExpandMoreIcon />, activeViewUp)}
                             <h5>To navigate</h5>
                         </div>
                         <div className="dis-flex">
-                            {CustomIcon(<img alt="" src={SelectIcon} />)}
+                            {CustomIcon(<img alt="" src={SelectIcon} />, selectUser)}
                             <h5>To select</h5>
                         </div>
                         <div className="dis-flex">
-                            {CustomIcon(<img alt="" src={SelectIcon} />)}
+                            {CustomIcon(<img alt="" src={SelectIcon} />, handleClose)}
                             <h5>To dismiss</h5>
                         </div>
                     </div>
@@ -332,10 +379,12 @@ const Index = () => {
     const matches = useMediaQuery("(min-width:768px)");
     const { dark, setDark } = useContext(ThemeContext);
     const [searchDropdown, setSearchDropdown] = useState(false);
+    const [userSelector, setUserSelector] = useState({ index: '0', thisUser: '' });
     const [searchIt, setsearchIt] = useState("");
     const { allDevelopers } = useSelector(store => store.mainReducer)
-    const handleClickUser = (profile) => {
-        const user = allDevelopers.filter(dev => dev._id === profile.id)
+    const handleClickUser = (profile, index) => {
+        const user = allDevelopers.filter(dev => dev._id === profile.id);
+        setUserSelector({ index: index, thisUser: user[0] })
         dispatch(SELECTED_PROFILE(user[0]))
         navigate('/network');
     }
@@ -368,7 +417,7 @@ const Index = () => {
                 </div>
 
                 <Grid item xs={12} sm={12} sx={{ mt: 3 }}>
-                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt)}
+                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector)}
                 </Grid>
             </div>
         );
@@ -380,7 +429,7 @@ const Index = () => {
                     <img alt="" src={dark ? Images.WhiteLogo : Images.Logo} className="header-logo" />
                 </Grid>
                 <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={6} md={3.5} lg={4}>
-                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt)}
+                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector)}
                 </Grid>
                 <Grid item sx={{ display: { xs: "block", sm: "none", md: "none", lg: "none" } }} xs={1.5}>
                     <MenuIcon className="Menu-Icon" />
@@ -390,7 +439,7 @@ const Index = () => {
                         <div className={dark ? "header-Home-btn header-Home-btn-dark" : "header-Home-btn"} onClick={() => navigate("/")}>
                             {HomeButtonIcon(dark)} <span className="Home-margin">Home</span>
                         </div>
-                        <div className="header-jobs-btn" onClick={() => navigate("/")}>
+                        <div className="header-jobs-btn" onClick={() => navigate("/network")}>
                             {networkButton(dark)} <span className="Home-margin">My network</span>
                         </div>
                         <div className="header-jobs-btn" onClick={() => navigate("/jobs")}>
@@ -428,4 +477,4 @@ const Index = () => {
 
 export default Index;
 
-const CustomIcon = (icon) => <div className="custom-icon">{icon}</div>;
+const CustomIcon = (icon, clickAction) => <div onClick={clickAction} style={{ cursor: 'pointer' }} className="custom-icon">{icon}</div>;

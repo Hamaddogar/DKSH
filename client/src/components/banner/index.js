@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux"
 import "./styles.css";
-import { ACTIVE_TAB_Filter } from "../../RTK/Reducers/Reducers";
+import { ACTIVE_TAB_Filter, ACTIVE_TAB_Filter_JOB } from "../../RTK/Reducers/Reducers";
 
 const imageLeft = () => {
     return (
@@ -58,33 +58,40 @@ const image2Right = () => {
     );
 };
 const ButtonArr = ["All", "Interfaces", "Branding", "Illustration", "Graphics", "3D", "Animation", "Marketing"];
-const Index = () => {
+const Index = ({ filterFor = 'home' }) => {
+    const condition = filterFor === "home"
     const matches = useMediaQuery("(min-width:768px)");
     const { dark } = useContext(ThemeContext);
     const dispatch = useDispatch()
-    const { activeTab } = useSelector(store => store.mainReducer)
+
+    const { activeTab, activeTabJOB } = useSelector(store => store.mainReducer)
     const handleTabChange = event => {
-        dispatch(ACTIVE_TAB_Filter(event.target.innerText))
+        dispatch(
+            condition ?
+                ACTIVE_TAB_Filter(event.target.innerText)
+                :
+                ACTIVE_TAB_Filter_JOB(event.target.innerText)
+        )
     }
     return (
         <div className={dark ? "banner-container banner-container-dark" : "banner-container"}>
             <div className={dark ? "banner-heading banner-heading-dark" : "banner-heading"}>Welcome, John ✋ </div>
             <div className={dark ? "banner-Subheading banner-Subheading-dark" : "banner-Subheading"}>Let’s Explore DKSH’s top talent</div>
-            <div className={matches ? "banners-button-grid" : "banners-button-grid-responsive"}>
+            <div className={matches ? "banners-button-grid relative-position z-index-2" : "banners-button-grid-responsive relative-position z-index-2"}>
                 {ButtonArr.map((item, i) => (
                     <div
                         onClick={handleTabChange}
                         key={i}
                         name={item}
-                        className={dark ? `${activeTab === item ? "banner-Btn-active banner-Btn banner-Btn-dark" : "banner-Btn banner-Btn-dark"}` : `${activeTab === item ? "banner-Btn banner-Btn-active" : "banner-Btn"}`}
+                        className={dark ? `${(condition ? activeTab : activeTabJOB) === item ? "banner-Btn-active banner-Btn banner-Btn-dark" : "banner-Btn banner-Btn-dark"}` : `${(condition ? activeTab : activeTabJOB) === item ? "banner-Btn banner-Btn-active" : "banner-Btn"}`}
                     >{item}</div>
                 ))}
             </div>
-            <div style={{ marginTop: "-52px" }}>
+            <div style={{ marginTop: "-52px" }} className=" relative-position z-index-1">
                 <div style={{ position: "absolute", left: "0px", marginTop: "-28px" }}>{imageLeft()}</div>
                 <div style={{ position: "absolute", left: "4px" }}>{image2Left()}</div>
             </div>
-            <div style={{ marginTop: "-90px" }}>
+            <div style={{ marginTop: "-90px" }} className=" relative-position z-index-1">
                 <div style={{ position: "absolute", right: "0px", marginTop: "-28px" }}>{imageRight()}</div>
                 <div style={{ position: "absolute", right: "0px" }}>{image2Right()}</div>
             </div>
