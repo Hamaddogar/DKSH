@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 const APIS = {
-  all_dev: '/user',
-  all_jobs: '/jobss',
+  all_dev: 'http://localhost:8080/user',
+  all_jobs: 'http://localhost:8080/jobss',
 }
 
 // ------------------All Asyn Reducers are below ------------------//

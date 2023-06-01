@@ -250,7 +250,7 @@ const Index = ({ user, view }) => {
               },
             }}
           >
-            <DialogContentText>
+            <DialogContentText sx={{ mb: { xs: 8, md: 0 } }}>
               <Grid container spacing={2}>
                 <Grid item sm={2.5}>
                   <img loading="lazy" alt='avatar' src={user?.avatar} className="List-profile-image" />
