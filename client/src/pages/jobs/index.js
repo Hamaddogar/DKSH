@@ -15,7 +15,6 @@ const Index = ({view}) => {
     const { allJobs, loading, priceFilterJOB, servicesFilterJOB, ratingFilterJOB, activeTabJOB } = useSelector(store => store.mainReducer)
     React.useEffect(() => {
         if (allJobs.length > 0) {
-
             const finalFilterdData = allJobs.filter(dev =>
                 (dev.hourlyRate >= priceFilterJOB[0] && dev.hourlyRate <= priceFilterJOB[1]) &&
                 (typeof (ratingFilterJOB) === 'number' ? dev.rating >= Number(ratingFilterJOB) : dev.rating >= 5) &&
@@ -37,8 +36,6 @@ const Index = ({view}) => {
         }, 100);
     }, [])
 
-
-    console.log("<<<<<<<<<<<>>>", data);
 
 
     const LoadSkelton = React.useCallback(() => {

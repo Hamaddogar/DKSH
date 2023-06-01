@@ -36,7 +36,7 @@ const Index = () => {
             window.scrollTo(0, 0)
         }, 100);
     }, [])
-
+    
     return (
         <>
             <Banner />

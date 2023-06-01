@@ -35,39 +35,42 @@ const Index = ({ allDevelopersList, loading, view }) => {
    }, [dark]);
 
    const mapUsers = React.useCallback(
-      (user) => (
-         <Grid item key={user} xs="12" sm="12" md="12" lg="12">
+      (user, index) => view === 'List' ?
+         <Grid item key={index} xs="12" >
             {LoadSkelton()}
          </Grid>
-      ),
-      [LoadSkelton]
+         :
+         <Grid item key={index} xs="12" sm="6" md="4" >
+            {LoadSkelton()}
+         </Grid>
+      ,
+      [LoadSkelton, view]
    );
 
    const mapProfileCards = React.useCallback(
-      (user) => (
-         <Grid item key={user.id} xs="12" sm="6" md="4">
+      (user) => view === 'List' ?
+         <Grid item key={user._id} xs="12">
             <ProfileCard user={user} view={view} />
          </Grid>
-      ),
+         :
+         <Grid item key={user._id} xs="12" sm="6" md="4">
+            <ProfileCard user={user} view={view} />
+         </Grid>
+      ,
       [view]
    );
 
    return (
       <Grid item container spacing={2}>
-         {(loading || allDevelopersList[0] === null) && (view === 'List'
-            ? users.map(mapUsers)
-            : users.map(mapUsers))}
+         {(loading || allDevelopersList[0] === null) &&
+            users.map(mapUsers)}
          {!loading && allDevelopersList.length === 0 && (
             <Grid item xs="12">
                <Alert severity="error">No Profile Found</Alert>
             </Grid>
          )}
-         {!loading &&
-            (view === 'List'
-               ? allDevelopersList[0] !== null &&
-               allDevelopersList?.map(mapProfileCards)
-               : allDevelopersList[0] !== null &&
-               allDevelopersList?.map(mapProfileCards))}
+         {!loading && allDevelopersList[0] !== null &&
+            allDevelopersList?.map(mapProfileCards)}
       </Grid>
    );
 };
