@@ -8,13 +8,13 @@ const Index = ({ job, index }) => {
     const matches = useMediaQuery("(max-width:550px)");
 
     const { dark } = useContext(ThemeContext);
-    const { title, subTitle, description, skills, applications, rating, portfolio } = job;
+    const { title, subTitle, description, skills, applications, rating, portfolio, hourlyRate } = job;
     return (
         <div className="job-container" key={index}>
             <div className="job-title-container">
                 <h1 className={dark ? "job-title white-text" : "job-title"}>{title}</h1>
                 <div className={dark ? "job-hourly-rate job-hourly-rate-dark" : "job-hourly-rate"}>
-                    $75 <span className={dark ? "job-hours white-text" : "job-hours"}>/ hour</span>
+                    ${hourlyRate} <span className={dark ? "job-hours white-text" : "job-hours"}>/ hour</span>
                 </div>
             </div>
             <h3 className={dark ? "job-subTitle white-text" : "job-subTitle"}>{subTitle}</h3>
@@ -29,7 +29,7 @@ const Index = ({ job, index }) => {
             {portfolio.length > 0 && (
                 <div className="job-portfolio-container">
                     {portfolio.map((img) => (
-                        <img alt='' src={img} key={img} className="job-portfolio-img" />
+                        <img loading="lazy" alt='' src={img} key={img} className="job-portfolio-img" />
                     ))}
                 </div>
             )}

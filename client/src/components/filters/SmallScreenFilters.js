@@ -48,52 +48,13 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
 
 
     const dispatch = useDispatch();
-    const PriceDropdown = () => {
-        const handleChangePrice = (e, values) => setPrice((e) => ({ ...e, value: values }));
-        const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price))
-        const handleCancelPrice = () => {
-            dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION([0, 1000]))
-            setPrice([0, 1000])
-        }
-        return (
-            <Box sx={{ minWidth: '90%', p: 2 }}>
-                <Box className="slider-container">
-                    <Slider
-                        sx={{
-                            color: dark ? "#fff" : "#090B0C",
-                            marginTop: "20px",
-                            "& .MuiSlider-thumb": { height: 20, width: 20, border: dark ? "5px solid #fff" : "5px solid #090B0C", backgroundColor: dark ? "#090B0C" : "#FFFFFF" },
-                            "& .MuiSlider-rail": { backgroundColor: "#E5E8EC" },
-                            "& .MuiSlider-valueLabel": { display: "none" },
-                        }}
-                        min={0}
-                        max={1000}
-                        getAriaLabel={() => "Price range"}
-                        value={price.value}
-                        onChange={handleChangePrice}
-                        valueLabelDisplay="auto"
-                        getAriaValueText={valuetext}
-                    />
-                    <Box sx={styleSheet.flex}>
-                        <span className="slider-label ">0$</span>
-                        <span className="slider-label ">10 000$</span>
-                    </Box>
-                    <Box sx={{ ...styleSheet.flex, mt: "25px", justifyContent: "flex-start" }}>
-                        <Input label="From" value={`${price.value[0]}$`} disabled style={{ width: "100px" }} />
-                        <Input label="To" value={`${price.value[1]}$`} disabled style={{ width: "100px" }} />
-                    </Box>
-                    <Box sx={{ ...styleSheet.flex, justifyContent: "flex-start", paddingRight: "30px", mt: "25px" }}>
-                        <Box>
-                            <Button title="Cancel" sx={{ width: "115px" }} onClick={handleCancelPrice} type="secondary" />
-                        </Box>
-                        <Box>
-                            <Button title="Apply" sx={{ width: "115px" }} onClick={handleApplyPrice} type="primary" />
-                        </Box>
-                    </Box>
-                </Box>
-            </Box>
-        );
-    };
+    const handleChangePrice = (e, values) => setPrice((e) => ({ ...e, value: values }));
+    const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price))
+    const handleCancelPrice = () => {
+        dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION([0, 1000]));
+        setPrice((e) => ({ ...e, value: [0, 1000] }))
+    }
+
     const ServiceDropdown = () => {
         const handleChangeService = (service) => dispatch(ALPHA_FUNCTIONS.SERVICE_FUNCTION(service))
         return (
@@ -142,7 +103,42 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
                     <h1 className={dark ? "white-text" : ""}>Filters</h1>
                     {dark ? <CloseIcon sx={{ color: "#fff" }} /> : <img alt='' src={CrossIcon} onClick={onClose} />}
                 </div>
-                <CustomButton children={<PriceDropdown />} dark={dark} label="Price per hr : " value={"All"} icon={PriceIcon} open={price.view} setOpen={() => handleClose(setPrice)} />
+                <CustomButton children={<Box sx={{ minWidth: '90%', p: 2 }}>
+                    <Box className="slider-container">
+                        <Slider
+                            sx={{
+                                color: dark ? "#fff" : "#090B0C",
+                                marginTop: "20px",
+                                "& .MuiSlider-thumb": { height: 20, width: 20, border: dark ? "5px solid #fff" : "5px solid #090B0C", backgroundColor: dark ? "#090B0C" : "#FFFFFF" },
+                                "& .MuiSlider-rail": { backgroundColor: "#E5E8EC" },
+                                "& .MuiSlider-valueLabel": { display: "none" },
+                            }}
+                            min={0}
+                            max={1000}
+                            getAriaLabel={() => "Price range"}
+                            value={price.value}
+                            onChange={handleChangePrice}
+                            valueLabelDisplay="auto"
+                            getAriaValueText={valuetext}
+                        />
+                        <Box sx={styleSheet.flex}>
+                            <span className="slider-label ">0$</span>
+                            <span className="slider-label ">10 000$</span>
+                        </Box>
+                        <Box sx={{ ...styleSheet.flex, mt: "25px", justifyContent: "flex-start" }}>
+                            <Input label="From" value={`${price.value[0]}$`} disabled style={{ width: "100px" }} />
+                            <Input label="To" value={`${price.value[1]}$`} disabled style={{ width: "100px" }} />
+                        </Box>
+                        <Box sx={{ ...styleSheet.flex, justifyContent: "flex-start", paddingRight: "30px", mt: "25px" }}>
+                            <Box>
+                                <Button title="Cancel" sx={{ width: "115px" }} onClick={handleCancelPrice} type="secondary" />
+                            </Box>
+                            <Box>
+                                <Button title="Apply" sx={{ width: "115px" }} onClick={handleApplyPrice} type="primary" />
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>} dark={dark} label="Price per hr : " value={"All"} icon={PriceIcon} open={price.view} setOpen={() => handleClose(setPrice)} />
                 <br />
                 <CustomButton children={<ServiceDropdown />} dark={dark} label="Services : " value={service.value} icon={ServiceIcon} open={service.view} setOpen={() => handleClose(setService)} />
                 <br />

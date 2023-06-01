@@ -18,7 +18,7 @@ const Index = (props) => {
     const { view, setView, filterFor = 'home' } = props;
     const homeFilter = filterFor === 'home'
     const { allDevelopers, priceFilter, servicesFilter, servicesFilterOptions, ratingFilter, availableToWorkFilter, proTallentFilter,
-        priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB,servicesFilterJOB,
+        priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB, servicesFilterJOB,
     } = useSelector(store => store.mainReducer)
     const { dark } = useTheme();
     const [price, setPrice] = useState(homeFilter ? priceFilter : priceFilterJOB);
@@ -51,75 +51,18 @@ const Index = (props) => {
         else if (!matches && modelViewFilters) setModelViewFilters(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matches]);
-    const PriceDropdown = () => {
-        const handleChangePrice = (e, values) => setPrice(values)
-        const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price))
-        const handleCancelPrice = () => {
-            dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION([0, 1000]))
-            setPrice([0, 1000])
-        }
-        return (
-            <Box sx={{ minWidth: 392, p: 2 }}>
-                <Box className="slider-container">
-                    <Slider
-                        sx={{
-                            color: "#090B0C",
-                            marginTop: "20px",
-                            "& .MuiSlider-thumb": { height: 20, width: 20, border: "5px solid #090B0C", backgroundColor: "#FFFFFF" },
-                            "& .MuiSlider-rail": { backgroundColor: "#E5E8EC" },
-                            "& .MuiSlider-valueLabel": { display: "none" },
-                        }}
-                        mountOnEnter
-                        unmountOnExit
-                        min={0}
-                        max={1000}
-                        getAriaLabel={() => "Price range"}
-                        value={price}
-                        onChange={handleChangePrice}
-                        valueLabelDisplay="auto"
-                        getAriaValueText={valuetext}
-                    />
-                    <Box sx={styleSheet.flex}>
-                        <span className="slider-label ">0$</span>
-                        <span className="slider-label ">1 000$</span>
-                    </Box>
-                    <Box sx={{ ...styleSheet.flex, mt: "25px" }}>
-                        <Input label="From" value={`${price[0]}$`} disabled />
-                        <Input label="To" value={`${price[1]}$`} disabled />
-                    </Box>
-                    <Box sx={{ ...styleSheet.flex, mt: "25px" }}>
-                        <Button title="Cancel" onClick={handleCancelPrice} type="secondary" />
-                        <Button title="Apply" onClick={handleApplyPrice} type="primary" />
-                    </Box>
-                </Box>
-            </Box>
-        );
-    };
-    const ServiceDropdown = () => {
-        const handleChangeService = (service) => dispatch(ALPHA_FUNCTIONS.SERVICE_FUNCTION(service))
-        return (
-            <Box className={dark ? "scrollbox-dark dropdown-list" : "scrollbox dropdown-list"} >
-                {(homeFilter ? servicesFilterOptions : servicesFilterOptionsJOB).map((service) => (
-                    <Box onClick={() => handleChangeService(service)} key={service} className={(homeFilter ? servicesFilter : servicesFilterJOB) === service ? "dropdown-active-item" : "dropdown-item"}>
-                        {service}
-                    </Box>
-                ))}
-            </Box>
-        );
-    };
-    const RatingDropdown = () => {
-        const list = ["Top rated", 4, 3, 2, 1];
-        const handleChangeRating = (service) => dispatch(ALPHA_FUNCTIONS.RATING_FUNCTION(service))
-        return (
-            <Box className="dropdown-list">
-                {list.map((option) => (
-                    <Box onClick={() => handleChangeRating(option)} key={option} className={(homeFilter ? ratingFilter : ratingFilterJOB) === option ? "dropdown-active-item" : "dropdown-item"}>
-                        {option}
-                    </Box>
-                ))}
-            </Box>
-        );
-    };
+    const handleChangePrice = (e, values) => setPrice(values)
+    const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price))
+    const handleCancelPrice = () => {
+        dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION([0, 1000]))
+        setPrice([0, 1000])
+    }
+
+    const handleChangeService = (service) => dispatch(ALPHA_FUNCTIONS.SERVICE_FUNCTION(service))
+
+    const list = ["Top rated", 4, 3, 2, 1];
+    const handleChangeRating = (service) => dispatch(ALPHA_FUNCTIONS.RATING_FUNCTION(service))
+
     const ViewToggleContainer = () => {
         const viewItems = [
             <Box className={!view ? `${dark ? "filter-toggle-active filter-toggle-active-dark" : "filter-toggle-active"}` : "filter-toggle-item"} onClick={() => setView(false)}>
@@ -163,9 +106,56 @@ const Index = (props) => {
             {viewFilters && !matches && (
                 <Box sx={{ ...styleSheet.flex, mt: 2, mb: 3, flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" } }}>
                     <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>
-                        <FilterButton dark={dark} label="Price per hr : " icon={PriceIcon} value="All" component={<PriceDropdown />} />
-                        <FilterButton dark={dark} label="Services : " icon={ServiceIcon} value="All" component={<ServiceDropdown />} />
-                        <FilterButton dark={dark} label="Sort by : " icon={RatingIcon} value="Rating" component={<RatingDropdown />} />
+                        <FilterButton dark={dark} label="Price per hr : " icon={PriceIcon} value="All" component={
+                            <Box sx={{ minWidth: 392, p: 2 }}>
+                                <Box className="slider-container">
+                                    <Slider
+                                        sx={{
+                                            color: "#090B0C",
+                                            marginTop: "20px",
+                                            "& .MuiSlider-thumb": { height: 20, width: 20, border: "5px solid #090B0C", backgroundColor: "#FFFFFF" },
+                                            "& .MuiSlider-rail": { backgroundColor: "#E5E8EC" },
+                                            "& .MuiSlider-valueLabel": { display: "none" },
+                                        }}
+                                        mountOnEnter
+                                        unmountOnExit
+                                        min={0}
+                                        max={1000}
+                                        getAriaLabel={() => "Price range"}
+                                        value={price}
+                                        onChange={handleChangePrice}
+                                        valueLabelDisplay="auto"
+                                        getAriaValueText={valuetext}
+                                    />
+                                    <Box sx={styleSheet.flex}>
+                                        <span className="slider-label ">0$</span>
+                                        <span className="slider-label ">1 000$</span>
+                                    </Box>
+                                    <Box sx={{ ...styleSheet.flex, mt: "25px" }}>
+                                        <Input label="From" value={`${price[0]}$`} disabled />
+                                        <Input label="To" value={`${price[1]}$`} disabled />
+                                    </Box>
+                                    <Box sx={{ ...styleSheet.flex, mt: "25px" }}>
+                                        <Button title="Cancel" onClick={handleCancelPrice} type="secondary" />
+                                        <Button title="Apply" onClick={handleApplyPrice} type="primary" />
+                                    </Box>
+                                </Box>
+                            </Box>
+                        } />
+                        <FilterButton dark={dark} label="Services : " icon={ServiceIcon} value="All" component={<Box className={dark ? "scrollbox-dark dropdown-list" : "scrollbox dropdown-list"} >
+                            {(homeFilter ? servicesFilterOptions : servicesFilterOptionsJOB).map((service) => (
+                                <Box onClick={() => handleChangeService(service)} key={service} className={(homeFilter ? servicesFilter : servicesFilterJOB) === service ? "dropdown-active-item" : "dropdown-item"}>
+                                    {service}
+                                </Box>
+                            ))}
+                        </Box>} />
+                        <FilterButton dark={dark} label="Sort by : " icon={RatingIcon} value="Rating" component={<Box className="dropdown-list">
+                            {list.map((option) => (
+                                <Box onClick={() => handleChangeRating(option)} key={option} className={(homeFilter ? ratingFilter : ratingFilterJOB) === option ? "dropdown-active-item" : "dropdown-item"}>
+                                    {option}
+                                </Box>
+                            ))}
+                        </Box>} />
                         <FilterButton dark={dark} label="Reset all" onClick={handleResetFilters} />
                     </Box>
                     {homeFilter && <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>
