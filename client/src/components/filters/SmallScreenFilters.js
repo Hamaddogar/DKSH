@@ -15,12 +15,13 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
         priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB, servicesFilterJOB
     } = useSelector(store => store.mainReducer)
     const { dark } = useTheme();
-    const [price, setPrice] = useState(condition ? { view: false, value: priceFilter } : { view: false, value: priceFilterJOB });
+    const [price, setPrice] = useState({ view: false, value: [0, 1000] });
     const [service, setService] = useState({ view: false, value: "All" });
     const [rating, setRating] = useState({ view: false, value: "Rating" });
     const [ALPHA_FUNCTIONS, setALPHA_FUNCTIONS] = useState(null);
     React.useEffect(() => {
         if (condition) {
+            setPrice({ view: false, value: priceFilter });
             setALPHA_FUNCTIONS({
                 'AVALIABLE_FUNCTION': AVALIABLE_TO_WORK_Filter,
                 'PRICE_FUNCTION': PRICE_Filter,
@@ -30,6 +31,7 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
                 "SERVICE_FUNCTION": SERVICE_Filter
             })
         } else {
+            setPrice({ view: false, value: priceFilterJOB });
             setALPHA_FUNCTIONS({
                 'PRICE_FUNCTION': PRICE_Filter_JOB,
                 'RATING_FUNCTION': RATING_Filter_JOB,
@@ -49,7 +51,7 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
 
     const dispatch = useDispatch();
     const handleChangePrice = (e, values) => setPrice((e) => ({ ...e, value: values }));
-    const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price))
+    const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price.value))
     const handleCancelPrice = () => {
         dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION([0, 1000]));
         setPrice((e) => ({ ...e, value: [0, 1000] }))
@@ -59,7 +61,12 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
         const handleChangeService = (service) => dispatch(ALPHA_FUNCTIONS.SERVICE_FUNCTION(service))
         return (
             <Box className="dropdown-list">
-                {(condition ? servicesFilterOptions : servicesFilterOptionsJOB).map((service) => (
+                {condition && servicesFilterOptions.map((service, key) => (
+                    <Box onClick={() => handleChangeService(service)} key={service} className={(condition ? servicesFilter : servicesFilterJOB) === service ? (dark ? "dropdown-active-item white-text" : "dropdown-active-item") : "dropdown-item"}>
+                        {service}
+                    </Box>
+                ))}
+                 {!condition && servicesFilterOptionsJOB.map((service, key) => (
                     <Box onClick={() => handleChangeService(service)} key={service} className={(condition ? servicesFilter : servicesFilterJOB) === service ? (dark ? "dropdown-active-item white-text" : "dropdown-active-item") : "dropdown-item"}>
                         {service}
                     </Box>

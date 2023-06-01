@@ -21,13 +21,14 @@ const Index = (props) => {
         priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB, servicesFilterJOB,
     } = useSelector(store => store.mainReducer)
     const { dark } = useTheme();
-    const [price, setPrice] = useState(homeFilter ? priceFilter : priceFilterJOB);
+    const [price, setPrice] = useState([0, 1000]);
     const [viewFilters, setViewFilters] = useState(false);
     const [modelViewFilters, setModelViewFilters] = useState(false);
     const matches = useMediaQuery("(max-width:768px)");
     const [ALPHA_FUNCTIONS, setALPHA_FUNCTIONS] = useState(null);
     useEffect(() => {
         if (homeFilter) {
+            setPrice(priceFilter);
             setALPHA_FUNCTIONS({
                 'AVALIABLE_FUNCTION': AVALIABLE_TO_WORK_Filter,
                 'PRICE_FUNCTION': PRICE_Filter,
@@ -37,6 +38,7 @@ const Index = (props) => {
                 "SERVICE_FUNCTION": SERVICE_Filter
             })
         } else {
+            setPrice(priceFilterJOB);
             setALPHA_FUNCTIONS({
                 'PRICE_FUNCTION': PRICE_Filter_JOB,
                 'RATING_FUNCTION': RATING_Filter_JOB,
