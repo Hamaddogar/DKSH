@@ -6,12 +6,13 @@ import "./styles.css";
 import UserNetwork from "../../components/uesr-network";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../utils/HELPER";
 
 function formatNumber(number = 0) {
     if (number >= 1000000) {
-        return (number / 1000000).toFixed(1) + "M";
+        return (number / 1000000).toFixed(0) + "m";
     } else if (number >= 1000) {
-        return (number / 1000).toFixed(1) + "K";
+        return (number / 1000).toFixed(0) + "k";
     }
     return number.toString();
 }
@@ -59,7 +60,7 @@ const Index = () => {
                                             <Rating name="read-only" value={review.rated} readOnly sx={{ "& .MuiRating-iconFilled": { color: starColor, fontSize: 15 } }} />
                                         </span>
                                         <span>{review.rated} out of 5 star . </span>
-                                        <span>{review.commentDate}</span>
+                                        <span>{formatDate(review.commentDate, false)}</span>
                                     </div>
                                     <h3 className="commentDesc-title">
                                         {review.description}

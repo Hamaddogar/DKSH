@@ -17,7 +17,6 @@ const persistConfig = {
     "ratingFilter",
     "availableToWorkFilter",
     "proTallentFilter",
-    "selectedProfile",
     "activeTabJOB",
     "priceFilterJOB",
     "servicesFilterJOB",

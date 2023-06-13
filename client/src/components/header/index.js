@@ -353,7 +353,7 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                             ))}
                         </div>
                     </div>
-                    <div className={dark ? "dropdown-footer dropdown-footer-dark" : "dropdown-footer"} style={{ display: "flex" }}>
+                    <div className={dark ? "dropdown-footer dropdown-footer-dark" : "dropdown-footer"} style={{ display: "flex", flexWrap: 'wrap' }}>
                         <div className="dis-flex">
                             {CustomIcon(<ExpandLessIcon />, activeViewDown)}
                             {CustomIcon(<ExpandMoreIcon />, activeViewUp)}

@@ -77,7 +77,7 @@ const Index = ({ filterFor = 'home' }) => {
         <div className={dark ? "banner-container banner-container-dark" : "banner-container"}>
             <div className={dark ? "banner-heading banner-heading-dark" : "banner-heading"}>Welcome, John ✋ </div>
             <div className={dark ? "banner-Subheading banner-Subheading-dark" : "banner-Subheading"}>Let’s Explore DKSH’s top talent</div>
-            <div className={matches ? "banners-button-grid relative-position z-index-2" : "banners-button-grid-responsive relative-position z-index-2"}>
+            <div className={matches ? "banners-button-grid relative-position" : "banners-button-grid-responsive relative-position"}>
                 {ButtonArr.map((item, i) => (
                     <div
                         onClick={handleTabChange}

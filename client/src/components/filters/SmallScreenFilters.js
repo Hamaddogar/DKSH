@@ -60,13 +60,13 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
     const ServiceDropdown = () => {
         const handleChangeService = (service) => dispatch(ALPHA_FUNCTIONS.SERVICE_FUNCTION(service))
         return (
-            <Box className="dropdown-list">
+            <Box className="dropdown-list" sx={{ gap: '10px' }}>
                 {condition && servicesFilterOptions.map((service, key) => (
                     <Box onClick={() => handleChangeService(service)} key={service} className={(condition ? servicesFilter : servicesFilterJOB) === service ? (dark ? "dropdown-active-item white-text" : "dropdown-active-item") : "dropdown-item"}>
                         {service}
                     </Box>
                 ))}
-                 {!condition && servicesFilterOptionsJOB.map((service, key) => (
+                {!condition && servicesFilterOptionsJOB.map((service, key) => (
                     <Box onClick={() => handleChangeService(service)} key={service} className={(condition ? servicesFilter : servicesFilterJOB) === service ? (dark ? "dropdown-active-item white-text" : "dropdown-active-item") : "dropdown-item"}>
                         {service}
                     </Box>
@@ -79,7 +79,7 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
         const list = ["Top rated", 4, 3, 2, 1];
         const handleChangeRating = (service) => dispatch(ALPHA_FUNCTIONS.RATING_FUNCTION(service))
         return (
-            <Box className="dropdown-list">
+            <Box className="dropdown-list" sx={{ gap: '10px' }}>
                 {list.map((option) => (
                     <Box onClick={() => handleChangeRating(option)} key={option} className={(condition ? ratingFilter : ratingFilterJOB) === option ? (dark ? "dropdown-active-item white-text" : "dropdown-active-item") : "dropdown-item"}>
                         {option}

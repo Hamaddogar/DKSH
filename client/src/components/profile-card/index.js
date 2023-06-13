@@ -2,15 +2,14 @@ import React, { useContext } from "react";
 import Images from "../../assets/images";
 import { Grid } from "@mui/material";
 import "./styles.css";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ThemeContext from "../../context/ThemeContext";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { SELECTED_PROFILE } from "../../RTK/Reducers/Reducers";
+import { formatDate } from "../../utils/HELPER";
 const profileVerifiedIcon = () => {
   return (
     <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +98,6 @@ const modalIcon = () => {
 };
 
 const Index = ({ user, view }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { dark } = useContext(ThemeContext);
   const [open, setOpen] = React.useState(false);
@@ -108,6 +106,7 @@ const Index = ({ user, view }) => {
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
     setScroll(scrollType);
+    dispatch(SELECTED_PROFILE(user))
   };
   const handleClose = () => setOpen(false);
   const descriptionElementRef = React.useRef(null);
@@ -119,11 +118,7 @@ const Index = ({ user, view }) => {
       }
     }
   }, [open]);
-  const handleViewMore = (event, profile) => {
-    event.stopPropagation();
-    navigate('/network');
-    dispatch(SELECTED_PROFILE(profile))
-  }
+
 
   return (
     <>
@@ -139,9 +134,6 @@ const Index = ({ user, view }) => {
                 <Grid item sm={9}>
                   <div className={dark ? "List-profile-name List-profile-name-dark" : "List-profile-name"}>{user?.profileName()}</div>
                   <div className="List-profile-desc">{user?.description}</div>
-                  <div style={{ marginBottom: '10px' }}>
-                    <Button variant='contained' size='small' onClick={(e) => handleViewMore(e, user)} sx={{ fontSize: '12px', backgroundColor: '#8077F6' }}>view More</Button>
-                  </div>
                   <div className={dark ? "timeList-Container timeList-dark" : "timeList-Container"}>
                     ${user?.hourlyRate} <span className="timehoursList-title">/ hour</span>
                   </div>
@@ -187,9 +179,6 @@ const Index = ({ user, view }) => {
             <div className="profileVerified-Icon">{profileVerifiedIcon()}</div>
           </div>
           <div className={dark ? "grid-profile-name grid-profile-name-dark " : "grid-profile-name"}>{user?.profileName()}</div>
-          <div className="grid-profile-name">
-            <Button variant='contained' size='small' onClick={(e) => handleViewMore(e, user)} sx={{ fontSize: '12px', backgroundColor: '#8077F6' }}>view More</Button>
-          </div>
           <div className="grid-profile-desc">{user?.description}</div>
           <div className="images-grid-center">
             {user?.specialization.map((e) => (
@@ -281,7 +270,7 @@ const Index = ({ user, view }) => {
                   <div className="commentDesc-title">{comment?.title}</div>
                   <div className="Hr-dialog"></div>
                   <div style={{ display: "flex", marginTop: "12px", marginBottom: "2px" }}>
-                    {dialogCommentIcon()} <span className={dark ? "comment-DialogDate  dialogTitle-dark" : "comment-DialogDate"}>{comment?.date}</span>{" "}
+                    {dialogCommentIcon()} <span className={dark ? "comment-DialogDate  dialogTitle-dark" : "comment-DialogDate"}>{formatDate(comment?.date)}</span>{" "}
                   </div>
                 </div>
               ))}

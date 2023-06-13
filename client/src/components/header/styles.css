@@ -208,7 +208,7 @@
 }
 .dropdown-footer {
  gap: 24px;
- height: 40px;
+ /* height: 40px; */
  background: #fbfbfc;
  border-top: 1px solid #edf0f3;
  width: 100%;
@@ -219,6 +219,7 @@
  padding-left: 15px;
  padding-right: 15px;
  padding-top: 6px;
+ padding-bottom: 6px;
  width: -webkit-fill-available;
  border-bottom-left-radius: 12px;
  border-bottom-right-radius: 12px;

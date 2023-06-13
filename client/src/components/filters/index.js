@@ -144,14 +144,14 @@ const Index = (props) => {
                                 </Box>
                             </Box>
                         } />
-                        <FilterButton dark={dark} label="Services : " icon={ServiceIcon} value="All" component={<Box className={dark ? "scrollbox-dark dropdown-list" : "scrollbox dropdown-list"} >
+                        <FilterButton dark={dark} label="Services : " icon={ServiceIcon} value="All" component={<Box className={dark ? "scrollbox-dark dropdown-list" : "scrollbox dropdown-list"} sx={{ gap: '10px' }} >
                             {(homeFilter ? servicesFilterOptions : servicesFilterOptionsJOB).map((service) => (
                                 <Box onClick={() => handleChangeService(service)} key={service} className={(homeFilter ? servicesFilter : servicesFilterJOB) === service ? "dropdown-active-item" : "dropdown-item"}>
                                     {service}
                                 </Box>
                             ))}
                         </Box>} />
-                        <FilterButton dark={dark} label="Sort by : " icon={RatingIcon} value="Rating" component={<Box className="dropdown-list">
+                        <FilterButton dark={dark} label="Sort by : " icon={RatingIcon} value="Rating" component={<Box className="dropdown-list" sx={{ gap: '10px' }}>
                             {list.map((option) => (
                                 <Box onClick={() => handleChangeRating(option)} key={option} className={(homeFilter ? ratingFilter : ratingFilterJOB) === option ? "dropdown-active-item" : "dropdown-item"}>
                                     {option}
