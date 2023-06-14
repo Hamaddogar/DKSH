@@ -201,7 +201,7 @@ const valuetext = (value) => `${value}$`;
 const styleSheet = {
     flex: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 5 },
     button: { px: "20px", py: "2px", pr: "0px", border: " 1px solid #ececf0", borderRadius: "10px" },
-    filterButton: { px: "12px", py: "9px", border: " 1px solid #ececf0", borderRadius: "10px", cursor: "pointer" },
+    filterButton: { px: "12px", py: "9px", border: " 1px solid #ececf0", borderRadius: "10px" },
     label: { fontStyle: "normal", fontWeight: 600, fontSize: "12px", lineHeight: "20px", letterSpacing: "-0.01em", color: "#878F9A" },
     dropdownContainer: {
         background: "#FFFFFF",

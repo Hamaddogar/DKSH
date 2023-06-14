@@ -22,6 +22,7 @@ const persistConfig = {
     "servicesFilterJOB",
     "servicesFilterOptionsJOB",
     "ratingFilterJOB",
+    "selectedProfile",
   ],
   rootReducer: mainReducer
 }

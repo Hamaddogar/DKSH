@@ -24,7 +24,7 @@ const Index = () => {
     React.useEffect(() => {
         if (selectedProfile === null) { navigate('/') }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, []);
 
     return (
         <>
