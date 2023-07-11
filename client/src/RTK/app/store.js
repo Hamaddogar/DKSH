@@ -23,6 +23,14 @@ const persistConfig = {
     "servicesFilterOptionsJOB",
     "ratingFilterJOB",
     "selectedProfile",
+    "currentUser",
+    "loginError",
+    "signUpError",
+    "resetToken",
+    "forgotSuccess",
+    "forgotError",
+    "resetSuccess",
+    "resetError",
   ],
   rootReducer: mainReducer
 }

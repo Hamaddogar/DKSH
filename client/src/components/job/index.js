@@ -26,7 +26,7 @@ const Index = ({ job, index }) => {
                     </div>
                 ))}
             </div>
-            {portfolio.length > 0 && (
+            {portfolio?.length > 0 && (
                 <div className="job-portfolio-container">
                     {portfolio.map((img) => (
                         <img loading="lazy" alt='' src={img} key={img} className="job-portfolio-img" />
@@ -49,4 +49,4 @@ const Index = ({ job, index }) => {
 
 export default Index;
 
-const getFirstAndLast = (arr) => [arr[0], arr[arr.length - 1]];
+const getFirstAndLast = (arr) => [arr[0], arr[arr?.length - 1]];

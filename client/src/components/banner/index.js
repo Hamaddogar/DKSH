@@ -64,7 +64,7 @@ const Index = ({ filterFor = 'home' }) => {
     const { dark } = useContext(ThemeContext);
     const dispatch = useDispatch()
 
-    const { activeTab, activeTabJOB } = useSelector(store => store.mainReducer)
+    const { activeTab, activeTabJOB, currentUser } = useSelector(store => store.mainReducer);
     const handleTabChange = event => {
         dispatch(
             condition ?
@@ -75,7 +75,7 @@ const Index = ({ filterFor = 'home' }) => {
     }
     return (
         <div className={dark ? "banner-container banner-container-dark" : "banner-container"}>
-            <div className={dark ? "banner-heading banner-heading-dark" : "banner-heading"}>Welcome, John ✋ </div>
+            <div className={dark ? "banner-heading banner-heading-dark" : "banner-heading"}>Welcome, {currentUser?.fullName} ✋ </div>
             <div className={dark ? "banner-Subheading banner-Subheading-dark" : "banner-Subheading"}>Let’s Explore DKSH’s top talent</div>
             <div className={matches ? "banners-button-grid relative-position z-index-2" : "banners-button-grid-responsive relative-position z-index-2"}>
                 {ButtonArr.map((item, i) => (

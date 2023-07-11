@@ -17,7 +17,7 @@ const developerSchema = new mongoose.Schema({
         cancelled: Number,
         inProgress: Number,
     },
-    
+
     services: [
         {
             title: String,

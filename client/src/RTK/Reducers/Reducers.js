@@ -2,8 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 const APIS = {
-  all_dev: 'http://localhost:8080/user',
+  all_dev: 'http://localhost:8080/alluser',
   all_jobs: 'http://localhost:8080/jobss',
+  login: 'http://localhost:8080/api/login',
+  signup: 'http://localhost:8080/signup',
+  forgot: 'http://localhost:8080/forgot',
+  resetpassword: 'http://localhost:8080/resetpassword',
 }
 
 // selected Dummy Profile 
@@ -82,7 +86,7 @@ const dummy = {
     "https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-03-340x250.jpg"
   ],
   commentCount: function () {
-    return this.comments.length
+    return this.comments?.length
   },
   ratingCount: function () {
     let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
@@ -98,7 +102,17 @@ const dummy = {
 let initialState = {
   loading: false,
   allDevelopers: [],
+  allJobs: [],
   selectedProfile: dummy,
+  loadingV2: false,
+  currentUser: null,
+  loginError: false,
+  signUpError: false,
+  forgotSuccess: false,
+  forgotError: false,
+  resetSuccess: false,
+  resetError: false,
+  resetToken: false,
 
   // filters for users
   activeTab: 'All',
@@ -115,13 +129,16 @@ let initialState = {
   servicesFilterJOB: "All",
   servicesFilterOptionsJOB: ["All", "UI Design", "UX Design"],
   ratingFilterJOB: 0,
+
+  // 
+  openLoginBoxDesk: false,
 }
 
 // ________________ Asyn Functions for Calling __________________ //
 
-// allDeveloperGetter
-export const allDeveloperGetter = createAsyncThunk(
-  'mainSlice/allDeveloperGetter',
+// allUsersGetter
+export const allUsersGetter = createAsyncThunk(
+  'mainSlice/allUsersGetter',
   async () => {
     const data = await axios.get(APIS.all_dev)
     return data.data;
@@ -133,6 +150,44 @@ export const allJobsGetter = createAsyncThunk(
   'mainSlice/allJobsGetter',
   async () => {
     const data = await axios.get(APIS.all_jobs)
+    return data.data;
+  }
+);
+
+// LoginFun
+export const LoginFun = createAsyncThunk(
+  'mainSlice/LoginFun',
+  async ({ email, password }) => {
+    const data = await axios.post(APIS.login, { email, password })
+    return data.data;
+  }
+);
+
+
+// LoginFun
+export const SignUpFun = createAsyncThunk(
+  'mainSlice/SignUpFun',
+  async ({ firstName, role, lastName, contactNo, country, email, password }) => {
+    const data = await axios.post(APIS.signup, { firstName, role, lastName, contactNo, country, email, password })
+    return data.data;
+  }
+);
+
+
+// LoginFun
+export const forgotFun = createAsyncThunk(
+  'mainSlice/forgotFun',
+  async ({ email }) => {
+    const data = await axios.post(APIS.forgot, { email })
+    return data.data;
+  }
+);
+
+// LoginFun
+export const ResetFun = createAsyncThunk(
+  'mainSlice/ResetFun',
+  async ({ password, token }) => {
+    const data = await axios.post(APIS.resetpassword, { password, token })
     return data.data;
   }
 );
@@ -191,20 +246,54 @@ const mainSlice = createSlice({
       state.priceFilterJOB = [0, 1000];
       state.servicesFilterJOB = "";
       state.ratingFilterJOB = 0;
-    }
+    },
 
+    LOGIN_BOX_HANDLE: (state, { payload }) => {
+      if (payload) {
+        state.openLoginBoxDesk = payload;
+      } else {
+        state.openLoginBoxDesk = payload;
+        state.loadingV2 = payload;
+        state.loginError = false;
+        state.signUpError = false;
+        state.forgotSuccess = false;
+        state.forgotError = false;
+        state.resetError = false;
+        state.resetSuccess = false;
+      }
+    },
+    LOGIN_WITH_GOOGLE_APPLE: (state, { payload }) => {
+      state.currentUser = payload;
+      state.loadingV2 = 'responded';
+    },
 
+    RESET_TOKEN: (state, { payload }) => {
+      state.resetToken = payload;
+      // state.openLoginBoxDesk = 'responded';
+    },
+
+    
+    LOG_OUT: (state, { payload }) => {
+      state.openLoginBoxDesk = null;
+      state.loadingV2 = null;
+      state.loginError = false;
+      state.signUpError = false;
+      state.forgotSuccess = false;
+      state.forgotError = false;
+      state.resetError = false;
+      state.resetSuccess = false;
+      state.currentUser = null;
+    },
   },
 
   // thunk reducers Responses
   extraReducers: (builder) =>
     builder
-
-      // allDeveloperGetter cases
-      .addCase(allDeveloperGetter.pending, (state) => {
+      // allUsersGetter cases
+      .addCase(allUsersGetter.pending, (state) => {
         state.loading = true;
       })
-      .addCase(allDeveloperGetter.fulfilled, (state, { payload }) => {
+      .addCase(allUsersGetter.fulfilled, (state, { payload }) => {
         state.loading = false;
         if (payload.success) {
           const data = payload.users.map(user => {
@@ -225,7 +314,7 @@ const mainSlice = createSlice({
           state.allDevelopers = data;
         }
       })
-      .addCase(allDeveloperGetter.rejected, (state, { error }) => {
+      .addCase(allUsersGetter.rejected, (state, { error }) => {
         state.loading = false;
         Swal.fire({ icon: 'error', title: error.code, text: error.message })
       })
@@ -246,6 +335,79 @@ const mainSlice = createSlice({
         Swal.fire({ icon: 'error', title: error.code, text: error.message })
       })
 
+
+      // LoginFun cases 
+      .addCase(LoginFun.fulfilled, (state, { payload }) => {
+        if (payload.success) {
+          state.loadingV2 = 'responded';
+          state.currentUser = payload?.user;
+          state.loginError = false;
+        } else {
+          state.loginError = payload.message
+        }
+      })
+      .addCase(LoginFun.rejected, (state, { error }) => {
+        Swal.fire({ icon: 'error', title: error.code, text: error.message })
+      })
+
+      // SignUpFun 
+      .addCase(SignUpFun.fulfilled, (state, { payload }) => {
+        // console.log('-signUp', payload);
+        if (payload.success) {
+          state.loadingV2 = 'responded';
+        } else {
+          state.signUpError = payload.message
+        }
+      })
+      .addCase(SignUpFun.rejected, (state, { error }) => {
+        Swal.fire({ icon: 'error', title: error.code, text: error.message })
+      })
+
+
+      // forgotFun
+      .addCase(forgotFun.pending, (state) => {
+        state.forgotloading = true;
+      })
+      .addCase(forgotFun.fulfilled, (state, { payload }) => {
+        state.forgotloading = false;
+        if (payload.success) {
+          state.forgotSuccess = payload.message;
+          // state.resetToken = payload.token;
+        } else {
+          state.forgotError = payload.message
+        }
+      })
+      .addCase(forgotFun.rejected, (state, { error }) => {
+        state.forgotloading = false;
+        Swal.fire({ icon: 'error', title: error.code, text: error.message })
+      })
+
+
+      // ResetFun
+      .addCase(ResetFun.pending, (state) => {
+        state.resetloading = true;
+      })
+      .addCase(ResetFun.fulfilled, (state, { payload }) => {
+        state.resetloading = false;
+        if (payload.success) {
+          state.resetSuccess = payload.message;
+          // state.resetToken = false;
+          // state.openLoginBoxDesk = 'login';
+          state.loginError = false;
+          state.signUpError = false;
+          state.forgotSuccess = false;
+          state.forgotError = false;
+        } else {
+          state.resetError = payload.message
+          state.forgotSuccess = false;
+        }
+      })
+      .addCase(ResetFun.rejected, (state, { error }) => {
+        state.resetloading = false;
+        state.forgotSuccess = false;
+        state.forgotError = false;
+        Swal.fire({ icon: 'error', title: error.code, text: error.message })
+      })
 
 })
 
@@ -275,7 +437,10 @@ export const {
   SERVICE_Filter_Options_JOB,
   RESET_Filter_JOB,
 
-
+  LOGIN_BOX_HANDLE,
+  LOGIN_WITH_GOOGLE_APPLE,
+  RESET_TOKEN,
+  LOG_OUT,
 
 
 

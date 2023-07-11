@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Box, Grid } from "@mui/material";
+import { Avatar, Box, Button, Divider, Grid, Menu, MenuItem, Stack, alpha, styled } from "@mui/material";
 import Images from "../../assets/images";
 import MenuIcon from "@mui/icons-material/Menu";
 import Icon from "../../assets/icons";
+import firebase from '../login-Box-LG/firebase';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ThemeContext from "../../context/ThemeContext";
@@ -10,7 +11,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import { ACTIVE_TAB_Filter, SELECTED_PROFILE } from "../../RTK/Reducers/Reducers";
+import { ACTIVE_TAB_Filter, LOGIN_BOX_HANDLE, LOG_OUT, SELECTED_PROFILE } from "../../RTK/Reducers/Reducers";
+import LoginBoxLGHOC from "../login-Box-LG/LoginBoxLGHOC";
+import { DarkMode, ExitToApp, LightMode, Login } from "@mui/icons-material";
 const { SubtractIcon, SelectIcon, StarIcon, MsgIcon, PeopleGroupIcon, PeopleWhite, HomeWhite, ForwardWhite, FileWhite } = Icon;
 const NotificationsIcons = (dark) => {
     if (dark)
@@ -261,7 +264,7 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
     }
     const activeViewUp = () => {
         const activeList = users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))
-        const newIndex = Math.abs((userSelector.index + 1) % users.length);
+        const newIndex = Math.abs((userSelector.index + 1) % users?.length);
         document.getElementById('user-container').scrollTop = newIndex === 0 ? 0 : userSelector.index * 40;
         setUserSelector({ index: newIndex, thisUser: activeList[newIndex] })
     }
@@ -373,6 +376,46 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
         </div>
     );
 };
+const StyledMenu = styled((props) => (
+    <Menu
+        elevation={0}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+        {...props}
+    />
+))(({ theme }) => ({
+    '& .MuiPaper-root': {
+        borderRadius: 6,
+        marginTop: theme.spacing(1),
+        minWidth: 180,
+        color:
+            theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+        boxShadow:
+            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+        '& .MuiMenu-list': {
+            padding: '4px 0',
+        },
+        '& .MuiMenuItem-root': {
+            '& .MuiSvgIcon-root': {
+                fontSize: 18,
+                color: theme.palette.text.secondary,
+                marginRight: theme.spacing(1.5),
+            },
+            '&:active': {
+                backgroundColor: alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.selectedOpacity,
+                ),
+            },
+        },
+    },
+}));
 const Index = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -381,7 +424,7 @@ const Index = () => {
     const [searchDropdown, setSearchDropdown] = useState(false);
     const [userSelector, setUserSelector] = useState({ index: '0', thisUser: '' });
     const [searchIt, setsearchIt] = useState("");
-    const { allDevelopers } = useSelector(store => store.mainReducer)
+    const { allDevelopers, currentUser } = useSelector(store => store.mainReducer)
     const handleClickUser = (profile, index) => {
         const user = allDevelopers.filter(dev => dev._id === profile.id);
         setUserSelector({ index: index, thisUser: user[0] })
@@ -392,21 +435,58 @@ const Index = () => {
         dispatch(ACTIVE_TAB_Filter(service.title))
         navigate('/')
     }
+
+    const handleLogin = () => dispatch(LOGIN_BOX_HANDLE('login'))
+    const handleSignUp = () => dispatch(LOGIN_BOX_HANDLE('signup'))
+
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => setAnchorEl(event.currentTarget);
+    const handleClose = () => setAnchorEl(null);
+
+    const handleLogOut = async () => {
+        await firebase.auth().signOut();
+        dispatch(LOG_OUT())
+        handleClose()
+    }
+
+    const handleDarkMode = () => {
+        setDark((e) => !e);
+        localStorage.setItem("dark-theme", !dark);
+    }
+
+
+    // Mobile View
     if (!matches)
         return (
             <div className={dark ? "header-container header-container-dark " : "header-container"} style={{ display: "block", paddingTop: "12px" }}>
+                <LoginBoxLGHOC />
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div
-                        onClick={() => {
-                            setDark((e) => !e);
-                            localStorage.setItem("dark-theme", !dark);
-                        }}
                     >
-                        <div className="profile-container">
-                            <img alt="" src={Images.Profile} className="header-Profile-icon" />
-                            <div className={dark ? "header-Profile-Name header-Profile-Name-dark" : "header-Profile-Name"}>John Yev </div>
-                            <div style={{ paddingLeft: 10 }}>{ArrowIcon()}</div>
-                        </div>
+                        {currentUser ?
+                            <div className="profile-container"
+                                style={{ cursor: 'pointer' }}
+                                id="profile-button"
+                                aria-controls={open ? 'profile-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                variant="contained"
+                                disableElevation
+                                onClick={handleClick} >
+                                {currentUser?.avatar && <Avatar className="header-Profile-icon" alt={currentUser?.firstName} src={currentUser?.avatar} />}
+                                {!currentUser?.avatar && <Avatar className="header-Profile-icon" >{(currentUser?.firstName).charAt(0).toUpperCase()}</Avatar>}
+
+                                <div className={dark ? "header-Profile-Name header-Profile-Name-dark" : "header-Profile-Name"}>{currentUser?.fullName} </div>
+                                <div style={{ paddingLeft: 10 }}>{ArrowIcon()}</div>
+                            </div>
+                            :
+                            <Stack direction='row' alignItems='center' justifyContent='flex-end' spacing={2}>
+                                <Button sx={{ ...signUpBtn }} size='small' onClick={handleSignUp} className='signUpBtn'>Sign Up</Button>
+                                <Button disableElevation disableRipple sx={{ ...loginBtn, color: dark ? '#FFFFFF' : '#090B0C', '&:hover': { background: dark ? '#090B0C' : '#FBFBFC' } }} size='small' onClick={handleLogin}>Login</Button>
+                            </Stack>
+                        }
                     </div>
                     <div>
                         <div className="header-notification-btn">
@@ -419,62 +499,142 @@ const Index = () => {
                 <Grid item xs={12} sm={12} sx={{ mt: 3 }}>
                     {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector)}
                 </Grid>
+
+                <StyledMenu
+                    id="profile-menu"
+                    sx={{ '& ul': dark ? { background: '#121619', border: '1px solid #5D6974', color: 'white !important' } : {} }}
+                    MenuListProps={{
+                        'aria-labelledby': 'profile-button',
+                        backgronudColor: 'red'
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={handleLogOut} disableRipple sx={{ fontSize: '13px' }}>
+                        {currentUser ? <ExitToApp sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} /> : <Login sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />}
+                        Logout
+                    </MenuItem>
+                    <Divider sx={{ my: 0.5 }} />
+                    <MenuItem onClick={handleDarkMode} disableRipple sx={{ fontSize: '13px' }}>
+                        {dark ? <LightMode sx={{ color: '#CCCCCC !important' }} /> : <DarkMode />}
+                        {dark ? 'Day Mode' : 'Night Mode'}
+                    </MenuItem>
+
+                </StyledMenu>
             </div>
         );
+    // desktop view
 
-    return (
-        <div className={dark ? "header-container header-container-dark " : "header-container"}>
-            <Grid container spacing={2}>
-                <Grid item xs={10.5} sm={2} md={1.5} lg={1.7} sx={{ display: { sm: "none", md: "block" } }}>
-                    <img alt="" src={dark ? Images.WhiteLogo : Images.Logo} className="header-logo" />
-                </Grid>
-                <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={6} md={3.5} lg={4}>
-                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector)}
-                </Grid>
-                <Grid item sx={{ display: { xs: "block", sm: "none", md: "none", lg: "none" } }} xs={1.5}>
-                    <MenuIcon className="Menu-Icon" />
-                </Grid>
-                <Grid item sx={{ display: { sm: "none", md: "block" } }} xs={12} sm={6} md={4} lg={3.6}>
-                    <div className="header-button-flex">
-                        <div className={dark ? "header-Home-btn header-Home-btn-dark" : "header-Home-btn"} onClick={() => navigate("/")}>
-                            {HomeButtonIcon(dark)} <span className="Home-margin">Home</span>
-                        </div>
-                        <div className="header-jobs-btn" onClick={() => navigate("/network")}>
-                            {networkButton(dark)} <span className="Home-margin">My network</span>
-                        </div>
-                        <div className="header-jobs-btn" onClick={() => navigate("/jobs")}>
-                            {JobsIcon(dark)} <span className="Home-margin">Jobs</span>
-                        </div>
+    return <div className={dark ? "header-container header-container-dark " : "header-container"}>
+        <LoginBoxLGHOC />
+        <Grid container spacing={2} alignItems='center' justifyContent='space-between'>
+            <Grid item xs={10.5} sm={2} md={1.5} lg={1.7} sx={{ display: { sm: "none", md: "block" } }}>
+                <img alt="" src={dark ? Images.WhiteLogo : Images.Logo} className="header-logo" />
+            </Grid>
+            <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={6} md={currentUser ? 2.5 : 3.5} lg={4}>
+                {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector)}
+            </Grid>
+            <Grid item sx={{ display: { xs: "block", sm: "none", md: "none", lg: "none" } }} xs={1.5}>
+                <MenuIcon className="Menu-Icon" />
+            </Grid>
+            <Grid item sx={{ display: { sm: "none", md: "block" } }} xs={12} sm={6} md={currentUser ? 3.5 : 2}>
+                <div className="header-button-flex">
+                    <div className={dark ? "header-Home-btn header-Home-btn-dark" : "header-Home-btn"} onClick={() => navigate("/")}>
+                        {HomeButtonIcon(dark)} <span className="Home-margin">Home</span>
                     </div>
-                </Grid>
-                <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={2} md={1.2} lg={1.2}>
-                    <div className="header-notification-btn">
-                        {NotificationsIcons(dark)}
-                        {iconBell(dark)}
+                    {currentUser && <div className="header-jobs-btn" onClick={() => navigate("/network")}>
+                        {networkButton(dark)} <span className="Home-margin">My network</span>
+                    </div>}
+                    <div className="header-jobs-btn" onClick={() => navigate("/jobs")}>
+                        {JobsIcon(dark)} <span className="Home-margin">Jobs</span>
                     </div>
-                </Grid>
-                <Grid
-                    item
-                    sx={{ display: { xs: "none", sm: "block" } }}
-                    xs={7}
-                    sm={3}
-                    md={1.8}
-                    lg={1.5}
-                    onClick={() => {
-                        setDark((e) => !e);
-                        localStorage.setItem("dark-theme", !dark);
-                    }}
-                >
-                    <div className="profile-container">
-                        <div className={dark ? "header-Profile-Name header-Profile-Name-dark" : "header-Profile-Name"}>John Yev</div> <img alt="" src={Images.Profile} className="header-Profile-icon" />
+                </div>
+            </Grid>
+            <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={2} md={1}  >
+                <div className="header-notification-btn">
+                    {NotificationsIcons(dark)}
+                    {iconBell(dark)}
+                </div>
+            </Grid>
+            <Grid
+                item
+                sx={{ display: { xs: "none", sm: "block" } }}
+                xs={7}
+                sm={3}
+                md={currentUser ? 1.5 : 2}
+            >
+                {currentUser ?
+                    <div className="profile-container"
+                        style={{ cursor: 'pointer' }}
+                        id="profile-button"
+                        aria-controls={open ? 'profile-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        variant="contained"
+                        disableElevation
+                        onClick={handleClick} >
+                        <div className={dark ? "header-Profile-Name header-Profile-Name-dark" : "header-Profile-Name"}>{currentUser?.fullName}</div>
+                        {currentUser?.avatar && <Avatar className="header-Profile-icon" alt={currentUser?.firstName} src={currentUser?.avatar} />}
+                        {!currentUser?.avatar && <Avatar className="header-Profile-icon" >{(currentUser?.firstName).charAt(0).toUpperCase()}</Avatar>}
                         <div>{ArrowIcon()}</div>
                     </div>
-                </Grid>
+                    :
+                    <Stack direction='row' alignItems='center' justifyContent='flex-end' spacing={2}>
+                        <Button disableElevation disableRipple sx={{ ...loginBtn, color: dark ? '#FFFFFF' : '#090B0C', '&:hover': { background: dark ? '#090B0C' : '#FBFBFC' } }} size='small' onClick={handleLogin}>Login</Button>
+                        <Button sx={{ ...signUpBtn }} size='small' onClick={handleSignUp} className='signUpBtn'>Sign Up</Button>
+                    </Stack>
+                }
+
             </Grid>
-        </div>
-    );
+        </Grid>
+        <StyledMenu
+            id="profile-menu"
+            sx={{ '& ul': dark ? { background: '#121619', border: '1px solid #5D6974', color: 'white !important' } : {} }}
+            MenuListProps={{
+                'aria-labelledby': 'profile-button',
+                backgronudColor: 'red'
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+        >
+            <MenuItem onClick={handleLogOut} disableRipple sx={{ fontSize: '13px' }}>
+                {currentUser ? <ExitToApp sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} /> : <Login sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />}
+                Logout
+            </MenuItem>
+            <Divider sx={{ my: 0.5 }} />
+            <MenuItem onClick={handleDarkMode} disableRipple sx={{ fontSize: '13px' }}>
+                {dark ? <LightMode sx={{ color: '#CCCCCC !important' }} /> : <DarkMode />}
+                {dark ? 'Day Mode' : 'Night Mode'}
+            </MenuItem>
+
+        </StyledMenu>
+    </div>
 };
 
 export default Index;
+
+const loginBtn = {
+    textTransform: 'capitalize',
+    fontSize: '13px',
+    lineHeight: '20px',
+    letterSpacing: '-0.21px',
+    fontWeight: 600,
+};
+const signUpBtn = {
+    textTransform: 'capitalize',
+    fontSize: '12px',
+    "borderRadius": "12px",
+    "background": "#8077F6",
+    lineHeight: '20px',
+    letterSpacing: '-0.12px',
+    color: 'white',
+    padding: '8px 24px',
+    fontWeight: 500,
+    '&:hover': { background: '#8077F6' },
+    boxShadow: 'none'
+
+}
 
 const CustomIcon = (icon, clickAction) => <div onClick={clickAction} style={{ cursor: 'pointer' }} className="custom-icon">{icon}</div>;

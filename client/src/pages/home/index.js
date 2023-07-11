@@ -11,7 +11,7 @@ const Index = () => {
     const [data, setData] = React.useState([null]);
     const { allDevelopers, loading, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab } = useSelector(store => store.mainReducer)
     React.useEffect(() => {
-        if (allDevelopers.length > 0) {
+        if (allDevelopers?.length > 0) {
             const filterdData = allDevelopers.filter(dev =>
                 (dev.availableToWork === availableToWorkFilter) &&
                 (dev.proTallent === proTallentFilter)
@@ -19,7 +19,7 @@ const Index = () => {
             const finalFilterdData = filterdData.filter(dev =>
                 (dev.hourlyRate >= priceFilter[0] && dev.hourlyRate <= priceFilter[1]) &&
                 (typeof (ratingFilter) === 'number' ? dev.ratingCount() >= Number(ratingFilter) : dev.ratingCount() >= 5) &&
-                ((dev.specialization.filter(item => item.toLowerCase().includes(servicesFilter === "All" ? "" : servicesFilter.toLowerCase()))).length > 0) &&
+                ((dev.specialization.filter(item => item.toLowerCase().includes(servicesFilter === "All" ? "" : servicesFilter.toLowerCase())))?.length > 0) &&
                 (activeTab.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTab.toLowerCase())
             )
             setData(finalFilterdData);

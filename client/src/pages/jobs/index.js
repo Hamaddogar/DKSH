@@ -14,11 +14,11 @@ const Index = ({view}) => {
     const [data, setData] = React.useState([null]);
     const { allJobs, loading, priceFilterJOB, servicesFilterJOB, ratingFilterJOB, activeTabJOB } = useSelector(store => store.mainReducer)
     React.useEffect(() => {
-        if (allJobs.length > 0) {
+        if (allJobs?.length > 0) {
             const finalFilterdData = allJobs.filter(dev =>
                 (dev.hourlyRate >= priceFilterJOB[0] && dev.hourlyRate <= priceFilterJOB[1]) &&
                 (typeof (ratingFilterJOB) === 'number' ? dev.rating >= Number(ratingFilterJOB) : dev.rating >= 5) &&
-                ((dev.skills.filter(item => item.toLowerCase().includes(servicesFilterJOB === "All" ? "" : servicesFilterJOB.toLowerCase()))).length > 0) &&
+                ((dev.skills.filter(item => item.toLowerCase().includes(servicesFilterJOB === "All" ? "" : servicesFilterJOB.toLowerCase())))?.length > 0) &&
                 (activeTabJOB.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTabJOB.toLowerCase())
             )
             setData(finalFilterdData);
@@ -96,7 +96,7 @@ const Index = ({view}) => {
                 <Filters filterFor="job" view={listView} setView={setListView} title="Jobs" hideGridView={true} />
             </Grid>
             {(loading || data?.[0] === null) && ["", "", "", "", "", "", ""].map(mapJobs)}
-            {!loading && data?.[0] !== null && data.length === 0 && (
+            {!loading && data?.[0] !== null && data?.length === 0 && (
                 <Grid item xs="12">
                     <Alert severity="error">No Profile Found</Alert>
                 </Grid>

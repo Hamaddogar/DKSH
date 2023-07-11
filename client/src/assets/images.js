@@ -9,6 +9,17 @@ import WhiteLogo from "./white-logo.png";
 import WhiteMsg from "./msg-white.svg";
 import Star from "./star.svg";
 import HamadPhoto from "./hamad.jpeg";
-const Images = { Star, WhiteMsg, Logo, Profile, grid1, grid2, grid3, profileGrid, WhiteLogo, IconDarkLight, HamadPhoto };
+import logoWhite from './logo-white.png';
+import frame from './fromer.png';
+import apple from './apple.png';
+import google from './google.png';
+import hirer from './hirer.png';
+import provider from './provider.png';
+import arrowright from './arrowright.png';
+import msgBG from './msgBG.png';
+import msgBGM from './msgBGM.png';
+import hiddenPassword from './pi.png';
+
+const Images = { hiddenPassword, msgBGM, msgBG, arrowright, hirer, provider, google, apple, logoWhite, frame, Star, WhiteMsg, Logo, Profile, grid1, grid2, grid3, profileGrid, WhiteLogo, IconDarkLight, HamadPhoto };
 
 export default Images;

@@ -64,7 +64,7 @@ const Index = ({ allDevelopersList, loading, view }) => {
       <Grid item container spacing={2}>
          {(loading || allDevelopersList[0] === null) &&
             users.map(mapUsers)}
-         {!loading && allDevelopersList.length === 0 && (
+         {!loading && allDevelopersList?.length === 0 && (
             <Grid item xs="12">
                <Alert severity="error">No Profile Found</Alert>
             </Grid>
