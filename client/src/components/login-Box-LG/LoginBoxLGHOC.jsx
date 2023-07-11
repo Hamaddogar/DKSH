@@ -86,19 +86,7 @@ const LoginBoxLGHOC = () => {
                 }))
 
             }
-        } else {
-
         }
-
-
-
-
-
-
-
-
-
-
     };
 
     // Mobile View

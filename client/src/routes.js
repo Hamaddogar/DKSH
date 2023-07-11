@@ -14,7 +14,7 @@ const routes = [
         element: <PublicLayout />,
         children: [
             { path: "/", element: <Home /> },
-            { path: "reset/:token", element: <Reset /> },
+            { path: "/reset/:token", element: <Reset /> },
             { path: "/jobs", element: <Jobs /> },
             { path: "/network", element: <Network /> },
         ],
