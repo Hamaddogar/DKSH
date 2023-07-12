@@ -19,21 +19,72 @@ import FormSam from './FormSam';
 const LoginBoxLGHOC = () => {
     const dispatch = useDispatch();
     const { logoWhite, frame, google, apple, hirer, provider, arrowright, msgBG, msgBGM, hiddenPassword } = Images;
-    const { openLoginBoxDesk, loadingV2, currentUser, loginError, signUpError, resetSuccess, forgotSuccess, resetError, forgotError, resetToken, } = useSelector(store => store.mainReducer);
+    const { signUpUser, openLoginBoxDesk, loadingV2, currentUser, loginError, signUpError, resetSuccess, forgotSuccess, resetError, forgotError, resetToken, } = useSelector(store => store.mainReducer);
     const [information, setinformation] = React.useState({ step: 'init', as_a: 'none' });
     const [showPassword, setShowPassword] = React.useState(false);
     const matches = useMediaQuery("(min-width:768px)");
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [history, setHistory] = React.useState([])
+    const [activeStep, setActiveStep] = React.useState('');
 
+
+    React.useEffect(() => {
+        if (history[history.length - 1] !== activeStep) setHistory(pv => ([...pv, activeStep]))
+    }, [activeStep])
+
+    React.useEffect(() => {
+        if (openLoginBoxDesk && openLoginBoxDesk === 'login') setActiveStep('login')
+        else if (openLoginBoxDesk && openLoginBoxDesk === 'banner') setActiveStep('banner')
+        else if (openLoginBoxDesk && openLoginBoxDesk === 'reset') setActiveStep('reset')
+        else if (openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'init') setActiveStep('signup-init')
+        else if (openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'details') setActiveStep('signup-details')
+    }, [openLoginBoxDesk, information?.step])
 
     const informationSaver = (key, value) => e => setinformation(pv => ({ ...pv, [key]: value }))
     const shifter = mvt => e => dispatch(LOGIN_BOX_HANDLE(mvt));
     const handleTogglePasswordVisibility = () => setShowPassword(!showPassword);
+    const handleBack = () => {
+        if (history.length > 1) {
+            history.pop();
+            const previousStep = history[history.length - 1]
+            switch (previousStep) {
+                case 'login':
+                    dispatch(LOGIN_BOX_HANDLE('login'));
+                    break;
+
+                case 'banner':
+                    dispatch(LOGIN_BOX_HANDLE('banner'));
+                    break;
+
+                case 'reset':
+                    dispatch(LOGIN_BOX_HANDLE('reset'));
+                    break;
+
+                case 'signup-init':
+                    setinformation(pv => ({ ...pv, step: "init" }))
+                    dispatch(LOGIN_BOX_HANDLE('signup'));
+                    break;
+
+                case 'signup-details':
+                    setinformation(pv => ({ ...pv, step: "details" }))
+                    dispatch(LOGIN_BOX_HANDLE('signup'));
+                    break;
+
+                default:
+                    // Handle default case here
+                    break;
+            }
+        } else {
+            handleClose()
+        }
+    }
 
     const handleClose = () => {
         dispatch(LOGIN_BOX_HANDLE(false))
         setinformation({ step: 'init', as_a: 'none' })
-        setShowPassword(false)
+        setShowPassword(false);
+        setHistory([]);
+        setActiveStep('')
     }
     // handle Submits Functions
 
@@ -82,7 +133,7 @@ const LoginBoxLGHOC = () => {
                     country: "null",
                     loginID: user.email,
                     fullName: user.displayName,
-                    avatar : user.photoURL
+                    avatar: user.photoURL
                 }))
 
             }
@@ -117,7 +168,7 @@ const LoginBoxLGHOC = () => {
                                 '& .MuiPaper-root': {
                                     borderRadius: '0px',
                                     maxHeight: 'calc(100% - 85px)',
-                                    backgroundColor: openLoginBoxDesk && openLoginBoxDesk === 'banner' ? '#8077F6' : '#FFFFFF'
+                                    backgroundColor: activeStep === 'banner' ? '#8077F6' : '#FFFFFF'
                                 },
                                 '& .MuiDialog-container:after': {
                                     verticalAlign: 'top'
@@ -127,15 +178,15 @@ const LoginBoxLGHOC = () => {
                 >
                     <Box ref={descriptionElementRef} tabIndex={-1} >
                         <Close sx={{ position: 'absolute', top: 30, right: 20, color: '#F2F3F3' }} onClick={handleClose} />
-                        {openLoginBoxDesk !== 'banner' && !loadingV2 && <Box sx={{ backgroundColor: '#8077F6', textAlign: 'center', py: 3.3, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottomRightRadius: '20px', borderBottomLeftRadius: '20px' }}>
-                            <ArrowBack sx={{ position: 'absolute', left: 5, color: '#F2F3F3' }} onClick={handleClose} />
+                        {activeStep !== 'banner' && !loadingV2 && <Box sx={{ backgroundColor: '#8077F6', textAlign: 'center', py: 3.3, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottomRightRadius: '20px', borderBottomLeftRadius: '20px' }}>
+                            <ArrowBack sx={{ position: 'absolute', left: 5, color: '#F2F3F3' }} onClick={handleBack} />
                             <Box component='img' src={logoWhite} alt='logo' width='100px' />
                         </Box>}
                         {!loadingV2 && <Grid container alignItems='flex-top' justifyContent='space-between'>
                             <Grid item xs={12} sx={{}}>
                                 <Box>
                                     <DialogContent>
-                                        {openLoginBoxDesk && openLoginBoxDesk === 'login' && <>
+                                        {activeStep === 'login' && <>
                                             <Typography sx={{ mt: '20px', fontSize: '20px', fontWeight: 600, maxWidth: '190px' }}>Login</Typography>
                                             {loginError && <Alert sx={{ mt: '20px', '& .MuiPaper-root': { borderRadius: '10px' } }} severity="error">{loginError}!</Alert>}
                                             <Box component="form" id='loginForm' onSubmit={handleSubmit(handleLogin)} noValidate sx={{ mt: 1 }}>
@@ -206,7 +257,7 @@ const LoginBoxLGHOC = () => {
                                                 </Grid>
                                             </Box>
                                         </>}
-                                        {openLoginBoxDesk && openLoginBoxDesk === 'reset' && <>
+                                        {activeStep === 'reset' && <>
                                             <Typography sx={{ fontSize: '20px', fontWeight: 600, maxWidth: '190px' }}>Reset Password</Typography>
                                             {(forgotError || resetError) && <Alert sx={{ mt: '20px', '& .MuiPaper-root': { borderRadius: '10px' } }} severity="error">{(forgotError || resetError)}!</Alert>}
                                             {(forgotSuccess || resetSuccess) && <Alert sx={{ mt: '20px', '& .MuiPaper-root': { borderRadius: '10px' } }} severity="success">{(forgotSuccess || resetSuccess)}!</Alert>}
@@ -245,7 +296,7 @@ const LoginBoxLGHOC = () => {
                                             </Box>}
                                             {resetToken && <FormSam />}
                                         </>}
-                                        {openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'init' && <>
+                                        {activeStep === 'signup-init' && <>
                                             <Typography mt='20px' sx={{ fontSize: '17px', fontWeight: 600 }}>
                                                 Sign up as a client or service provider.</Typography>
                                             <Box>
@@ -283,7 +334,7 @@ const LoginBoxLGHOC = () => {
                                                 </Grid>
                                             </Grid>
                                         </>}
-                                        {openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'details' && <>
+                                        {activeStep === 'signup-details' && <>
                                             <Typography sx={{ fontSize: '20px', fontWeight: 600 }}>
                                                 {information?.as_a === 'client' ? ' Sign up to hire talent.' : 'Sign up to find work'}
                                             </Typography>
@@ -335,12 +386,12 @@ const LoginBoxLGHOC = () => {
                                                             size='small'
                                                             fullWidth
                                                             id="contact"
-                                                            label="Contanct Number"
+                                                            label="Contact Number"
                                                             name="contactNo"
-                                                            {...register("contactNo", { required: true, minLength: 11 })}
+                                                            {...register("contactNo", { required: true, minLength: 5 })}
                                                             error={errors.contactNo}
                                                         />
-                                                        {errors.contactNo && <>{errors.contactNo.type === 'minLength' ? ErrorText("Minimum Length 11 characters!") : ErrorText("Field is Required!")}</>}
+                                                        {errors.contactNo && <>{errors.contactNo.type === 'minLength' ? ErrorText("Minimum Length 5 Digits!") : ErrorText("Field is Required!")}</>}
                                                     </Grid>
                                                     <Grid item xs={12} sm={6}>
                                                         <TextField
@@ -426,7 +477,7 @@ const LoginBoxLGHOC = () => {
                                 </Box>
                             </Grid>
                             {/* Action Screen */}
-                            {openLoginBoxDesk && openLoginBoxDesk === 'banner' && <Grid item xs={12} sx={{ backgroundColor: '#8077F6', color: '#F2F1FE' }}>
+                            {activeStep === 'banner' && <Grid item xs={12} sx={{ backgroundColor: '#8077F6', color: '#F2F1FE' }}>
                                 <DialogContent >
                                     <Stack pt={2}>
                                         <Box>
@@ -502,7 +553,7 @@ const LoginBoxLGHOC = () => {
                     <Grid item xs={7.5} sx={{}}>
                         <Box pt={2} pl={2}>
                             <DialogContent>
-                                {openLoginBoxDesk && openLoginBoxDesk === 'login' && <>
+                                {activeStep === 'login' && <>
                                     <Typography sx={{ fontSize: '20px', fontWeight: 600, maxWidth: '190px' }}>Login</Typography>
                                     {loginError && <Alert sx={{ mt: '20px', '& .MuiPaper-root': { borderRadius: '10px' } }} severity="error">{loginError}!</Alert>}
                                     <Box component="form" id='loginForm' noValidate onSubmit={handleSubmit(handleLogin)} sx={{ mt: 1 }}>
@@ -546,7 +597,7 @@ const LoginBoxLGHOC = () => {
                                         />
                                         <Stack mt='42px' direction='row' alignItems='center' justifyContent={'space-between'}>
                                             <Stack direction='row' alignItems='center' spacing={2.3}>
-                                                <Button onClick={handleClose} size='smal' variant='outlined' sx={{ textTransform: 'capitalize', borderRadius: '12px', color: '#1F1F1F', border: '1px solid #1F1F1F', fontSize: '11px', padding: '8px 24px' }} disableElevation >Back</Button>
+                                                <Button onClick={handleBack} size='smal' variant='outlined' sx={{ textTransform: 'capitalize', borderRadius: '12px', color: '#1F1F1F', border: '1px solid #1F1F1F', fontSize: '11px', padding: '8px 24px' }} disableElevation >Back</Button>
                                                 <Button type="submit" size='smal' variant='contained' sx={{ textTransform: 'capitalize', borderRadius: '12px', backgroundColor: '#8077F6', fontSize: '11px', padding: '9px 26px' }} disableElevation >Login</Button>
                                             </Stack>
                                             <Stack direction='row' alignItems='center' justifyContent={'flex-end'} spacing={2.3}>
@@ -574,7 +625,7 @@ const LoginBoxLGHOC = () => {
                                         </Grid>
                                     </Box>
                                 </>}
-                                {openLoginBoxDesk && openLoginBoxDesk === 'reset' && <>
+                                {activeStep === 'reset' && <>
                                     <Typography sx={{ fontSize: '20px', fontWeight: 600, maxWidth: '190px' }}>Reset Password</Typography>
                                     {(forgotError || resetError) && <Alert sx={{ mt: '20px', '& .MuiPaper-root': { borderRadius: '10px' } }} severity="error">{(forgotError || resetError)}!</Alert>}
                                     {(forgotSuccess || resetSuccess) && <Alert sx={{ mt: '20px', '& .MuiPaper-root': { borderRadius: '10px' } }} severity="success">{(forgotSuccess || resetSuccess)}!</Alert>}
@@ -613,7 +664,7 @@ const LoginBoxLGHOC = () => {
                                     </Box>}
                                     {resetToken && <FormSam />}
                                 </>}
-                                {openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'init' && <>
+                                {activeStep === 'signup-init' && <>
                                     <Typography sx={{ fontSize: '20px', fontWeight: 600 }}>
                                         Sign up as a client or service provider.</Typography>
                                     <Box sx={{ mt: '55px' }}>
@@ -648,7 +699,7 @@ const LoginBoxLGHOC = () => {
                                         </span>
                                     </Grid>
                                 </>}
-                                {openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'details' && <>
+                                {activeStep === 'signup-details' && <>
                                     <Typography sx={{ fontSize: '20px', fontWeight: 600 }}>
                                         {information?.as_a === 'client' ? ' Sign up to hire talent.' : 'Sign up to find work'}
                                     </Typography>
@@ -700,12 +751,12 @@ const LoginBoxLGHOC = () => {
                                                     size='small'
                                                     fullWidth
                                                     id="contact"
-                                                    label="Contanct Number"
+                                                    label="Contact Number"
                                                     name="contactNo"
-                                                    {...register("contactNo", { required: true, minLength: 11 })}
+                                                    {...register("contactNo", { required: true, minLength: 5 })}
                                                     error={errors.contactNo}
                                                 />
-                                                {errors.contactNo && <>{errors.contactNo.type === 'minLength' ? ErrorText("Minimum Length 11 characters!") : ErrorText("Field is Required!")}</>}
+                                                {errors.contactNo && <>{errors.contactNo.type === 'minLength' ? ErrorText("Minimum Length 5 Digits!") : ErrorText("Field is Required!")}</>}
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
                                                 <TextField
@@ -735,7 +786,6 @@ const LoginBoxLGHOC = () => {
                                                         '& fieldset': { background: 'rgb(135, 143, 154,.08)', borderRadius: '12px', borderColor: '#EDF0F3', minHeight: '48px' },
                                                         '& .Mui-focused': { top: '2px' },
                                                         '& input': { borderRadius: '12px !important', color: '#878F9A !important', padding: '11px 14px' }
-
                                                     }}
                                                 >
                                                     <InputLabel id="country-label" sx={{ fontSize: '15px', top: '-3px' }}>Select Country</InputLabel>
@@ -769,7 +819,7 @@ const LoginBoxLGHOC = () => {
                                         </Grid>
                                         <Stack mt='42px' direction='row' alignItems='center' justifyContent={'space-between'}>
                                             <Stack direction='row' alignItems='center' spacing={2.3}>
-                                                <Button onClick={handleClose} size='smal' variant='outlined' sx={{ textTransform: 'capitalize', borderRadius: '12px', color: '#1F1F1F', border: '1px solid #1F1F1F', fontSize: '11px', padding: '8px 24px' }} disableElevation >Back</Button>
+                                                <Button onClick={handleBack} size='smal' variant='outlined' sx={{ textTransform: 'capitalize', borderRadius: '12px', color: '#1F1F1F', border: '1px solid #1F1F1F', fontSize: '11px', padding: '8px 24px' }} disableElevation >Back</Button>
                                                 <Button type="submit" size='smal' variant='contained' sx={{ textTransform: 'capitalize', borderRadius: '12px', backgroundColor: '#8077F6', fontSize: '11px', padding: '9px 26px' }} disableElevation >Sign Up</Button>
                                             </Stack>
                                             <Stack direction='row' alignItems='center' justifyContent={'flex-end'} spacing={2.3}>
@@ -824,7 +874,7 @@ const LoginBoxLGHOC = () => {
                     {loadingV2 === 'responded' && <Grid container py={6} px={3} justifyContent={'space-between'}>
                         <Grid item xs={12}>
                             <Typography mt={2} sx={{ fontSize: '20px', fontWeight: 600, maxWidth: '500px', textAlign: 'center', marginX: 'auto' }}>
-                                Congratulations {currentUser?.fullName}! <br />
+                                Congratulations {currentUser?.fullName || signUpUser?.fullName}! <br />
                                 {openLoginBoxDesk === 'login' ? 'Login Successful' : 'Your account has been created'}
                             </Typography>
                         </Grid>

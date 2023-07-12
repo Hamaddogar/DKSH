@@ -1,6 +1,7 @@
-require('dotenv').config()
+require('dotenv').config();
 const mongoose = require('mongoose');
-const MONGO_URI = process.env.MONGO_URI;
+
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://admin:admin@cluster0.zylqsdb.mongodb.net/dksh?';
 // -------------DB Connection----------------- //
 
 

@@ -1,4 +1,3 @@
-require('dotenv').config()
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
@@ -9,8 +8,8 @@ let transporter = nodemailer.createTransport({
   service: 'gmail',
   host: "smtp.gmail.com",
   auth: {
-    user: process.env.SYSTEM_EMAIL,
-    pass: process.env.SYSTEM_EMAIL_PASSWORD,
+    user: 'system.advisories@gmail.com',
+    pass: 'yhlqgawxpmiodwbs',
   }
 });
 

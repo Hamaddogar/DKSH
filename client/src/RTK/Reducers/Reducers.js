@@ -1,103 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-const APIS = {
-  all_dev: 'http://localhost:8080/alluser',
-  all_jobs: 'http://localhost:8080/jobss',
-  login: 'http://localhost:8080/api/login',
-  signup: 'http://localhost:8080/signup',
-  forgot: 'http://localhost:8080/forgot',
-  resetpassword: 'http://localhost:8080/resetpassword',
-}
+import { dummy } from '../../utils/HELPER';
+import { APIS } from '../../utils/endPoints';
 
-// selected Dummy Profile 
-const dummy = {
-  "jobs": {
-    "completed": 102,
-    "cancelled": 7,
-    "inProgress": 2
-  },
-  "_id": "6477d04bb132f36d15119a89",
-  "firstName": "Hammad",
-  "mainCategory": "Interfaces",
-  "proTallent": false,
-  "availableToWork": true,
-  "lastName": "Shafiq",
-  "hourlyRate": 140,
-  "avatar": "https://avatars.githubusercontent.com/u/42932321?v=4",
-  "verified": true,
-  "description": "Experienced Full Stack Web Developer adept at building apps from scratch. ",
-  "category": "Full Stack developer",
-  "revenue": 234000,
-  "services": [
-    {
-      "title": " i will Your Full Stack Developer React || Node js ",
-      "description": "",
-      "comments": [
-        {
-          "projectHeading": "Post Textile ",
-          "description": "Muhammad Hamad is working on our logistics management system as Full stack developer . He make custom frontend app pure in JavaScript now is working on backend that will be soon live. He always full fill his commitment . I always paid him advance . I never realized I did mistake 100% recommended",
-          "commentDate": "2023-03-11T19:00:00.000Z",
-          "rated": 5,
-          "price": 23000,
-          "_id": "6477d04bb132f36d15119a8b"
-        },
-        {
-          "projectHeading": " Digtal Flow ",
-          "description": "I've had the pleasure of working with Muhammad, as remote Full Stack developer, for the past three years. He consistently displays professionalism, excellent coding skills, effective communication, and honesty. Muhammad's passion for his work goes beyond financial motivations, driving him to strive for perfection.Highly recommended",
-          "commentDate": "2022-04-01T19:00:00.000Z",
-          "rated": 5,
-          "price": 60000,
-          "_id": "6477d04bb132f36d15119a8c"
-        }
-      ],
-      "profile": [
-        "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/293240721/original/6891870e69ea2793c44105520881aa0556da1f9b.png",
-        "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/250604452/original/789892c3543a3199c6f38b416ca1f42bf92a5039.png",
-        "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/267148774/original/ddf545f98b847c3cd66c9afe1cf0b680148237f1.png"
-      ],
-      "_id": "6477d04bb132f36d15119a8a"
-    }
-  ],
-  "comments": [
-    {
-      "Heading": "Post Textile App",
-      "title": "Muhammad Hamad is working on our logistics management system as Full stack developer . He make custom frontend app pure in JavaScript now is working on backend that will be soon live. He always full fill his commitment . I always paid him advance . I never realized I did mistake 100% recommended",
-      "date": "2023-07-02T19:00:00.000Z",
-      "rated": 5,
-      "_id": "6477d04bb132f36d15119a8d"
-    },
-    {
-      "Heading": "stock",
-      "title": "I've had the pleasure of working with Muhammad, as remote Full Stack developer, for the past three years. He consistently displays professionalism, excellent coding skills, effective communication, and honesty. Muhammad's passion for his work goes beyond financial motivations, driving him to strive for perfection.Highly recommended",
-      "date": "2022-01-14T06:00:00.000Z",
-      "rated": 5,
-      "_id": "6477d04bb132f36d15119a8e"
-    }
-  ],
-  "specialization": [
-    "Full Stack devloper",
-    "ReactJs",
-    "Node Js"
-  ],
-  "projectsThumbs": [
-    "https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-01-340x250.jpg",
-    "https://fiverr-res.cloudinary.com/images/t_medium7,q_auto,f_auto,q_auto,f_auto/gigs/150311157/original/b2cffba150592f0c20aece34ffefa82869c3237d/develop-a-web-app-with-react-js-node-js.jpeg",
-    "https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-03-340x250.jpg"
-  ],
-  commentCount: function () {
-    return this.comments?.length
-  },
-  ratingCount: function () {
-    let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-    return number.toFixed(1)
-  },
-  profileName: function () {
-    return `${this.firstName} ${this.lastName}`
-  },
-  "__v": 0
-};
-
+ 
 // ------------------All Asyn Reducers are below ------------------//
 let initialState = {
   loading: false,
@@ -106,6 +13,7 @@ let initialState = {
   selectedProfile: dummy,
   loadingV2: false,
   currentUser: null,
+  signUpUser: null,
   loginError: false,
   signUpError: false,
   forgotSuccess: false,
@@ -272,7 +180,7 @@ const mainSlice = createSlice({
       // state.openLoginBoxDesk = 'responded';
     },
 
-    
+
     LOG_OUT: (state, { payload }) => {
       state.openLoginBoxDesk = null;
       state.loadingV2 = null;
@@ -283,6 +191,8 @@ const mainSlice = createSlice({
       state.resetError = false;
       state.resetSuccess = false;
       state.currentUser = null;
+      state.signUpUser = null;
+      
     },
   },
 
@@ -355,6 +265,7 @@ const mainSlice = createSlice({
         // console.log('-signUp', payload);
         if (payload.success) {
           state.loadingV2 = 'responded';
+          state.signUpUser = payload?.user
         } else {
           state.signUpError = payload.message
         }

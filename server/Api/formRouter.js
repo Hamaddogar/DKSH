@@ -12,8 +12,8 @@ exports.saveFormData = async (req, res) => {
 
     const newForm = new Form({ firstName, role, lastName, contactNo, country, email, password, fullName: `${firstName} ${lastName}` });
     await newForm.save();
-    // const user = await Form.findOne({ email })
-    res.send({ success: true });
+    const user = await Form.findOne({ email })
+    res.send({ success: true, user });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
