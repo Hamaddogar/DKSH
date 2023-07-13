@@ -511,7 +511,7 @@ const LoginBoxLGHOC = () => {
                             {loadingV2 === 'responded' && <Grid container py={2} px={2} justifyContent={'space-between'}>
                                 <Grid item xs={12}>
                                     <Typography mt={2} sx={{ fontSize: '18px', fontWeight: 600, maxWidth: '500px', textAlign: 'center', marginX: 'auto' }}>
-                                        Congratulations {currentUser?.fullName}! <br />
+                                        Congratulations {currentUser?.fullName || signUpUser?.fullName}! <br />
                                         {openLoginBoxDesk === 'login' ? 'Login Successful' : 'Your account has been created'}
                                     </Typography>
                                 </Grid>
