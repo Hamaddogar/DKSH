@@ -4,17 +4,18 @@ import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
 import { SwitchBase } from "../form/Switch";
 import Icons from "../../assets/icons";
-import useTheme from "../../hooks/useTheme";
 import CloseIcon from "@mui/icons-material/Close";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AVALIABLE_TO_WORK_Filter, PRICE_Filter, PRICE_Filter_JOB, PRO_TALLENT_Filter, RATING_Filter, RATING_Filter_JOB, RESET_Filter, RESET_Filter_JOB, SERVICE_Filter, SERVICE_Filter_JOB } from "../../RTK/Reducers/Reducers";
 const { RatingIcon, ServiceIcon, PriceIcon, UpIcon, DownIcon, CrossIcon, CheckIcon } = Icons;
-const SMFilters = ({ open, onClose = () => { }, condition }) => {
+
+
+const SMFilters = ({ open, onClose = () => { }, condition, dark }) => {
     const { priceFilter, servicesFilter, servicesFilterOptions, ratingFilter, availableToWorkFilter, proTallentFilter,
         priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB, servicesFilterJOB
     } = useSelector(store => store.mainReducer)
-    const { dark } = useTheme();
+    // const { dark } = useTheme();
     const [price, setPrice] = useState({ view: false, value: [0, 1000] });
     const [service, setService] = useState({ view: false, value: "All" });
     const [rating, setRating] = useState({ view: false, value: "Rating" });
@@ -39,16 +40,8 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
                 "SERVICE_FUNCTION": SERVICE_Filter_JOB
             })
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps 
     }, [condition]);
-
-
-
-
-
-
-
     const dispatch = useDispatch();
     const handleChangePrice = (e, values) => setPrice((e) => ({ ...e, value: values }));
     const handleApplyPrice = () => dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION(price.value))
@@ -56,7 +49,6 @@ const SMFilters = ({ open, onClose = () => { }, condition }) => {
         dispatch(ALPHA_FUNCTIONS.PRICE_FUNCTION([0, 1000]));
         setPrice((e) => ({ ...e, value: [0, 1000] }))
     }
-
     const ServiceDropdown = () => {
         const handleChangeService = (service) => dispatch(ALPHA_FUNCTIONS.SERVICE_FUNCTION(service))
         return (

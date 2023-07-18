@@ -36,7 +36,7 @@ function DropdownButton({ icon, label, dark, value, children, onClick }) {
         )}
       </Box>
 
-      {isOpen && label !== "Reset all" && <Box sx={styleSheet.dropdownContainer}>{children}</Box>}
+      {isOpen && label !== "Reset all" && <Box sx={{ ...styleSheet.dropdownContainer, background: dark ? "#0D1013" : "#FFFFFF", }}>{children}</Box>}
     </div>
   );
 }
@@ -49,7 +49,6 @@ const styleSheet = {
   filterButton: { px: "12px", py: "9px", border: " 1px solid #ececf0", borderRadius: "10px", cursor: "pointer" },
   label: { fontStyle: "normal", fontWeight: 600, fontSize: "12px", lineHeight: "20px", letterSpacing: "-0.01em", color: "#878F9A" },
   dropdownContainer: {
-    background: "#FFFFFF",
     padding: "12px",
     minWidth: "183px",
     minHeight: "130px",

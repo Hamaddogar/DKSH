@@ -40,7 +40,9 @@ const LoginBoxLGHOC = () => {
         else if (openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'details') setActiveStep('signup-details')
     }, [openLoginBoxDesk, information?.step])
 
-    const informationSaver = (key, value) => e => setinformation(pv => ({ ...pv, [key]: value }))
+    const informationSaver = (key, value, nextStep, nextStepTo) => e => (nextStep && nextStepTo) ?
+        setinformation(pv => ({ ...pv, [key]: value, [nextStep]: nextStepTo })) :
+        setinformation(pv => ({ ...pv, [key]: value }))
     const shifter = mvt => e => dispatch(LOGIN_BOX_HANDLE(mvt));
     const handleTogglePasswordVisibility = () => setShowPassword(!showPassword);
     const handleBack = () => {
@@ -301,7 +303,7 @@ const LoginBoxLGHOC = () => {
                                                 Sign up as a client or service provider.</Typography>
                                             <Box>
                                                 <Stack mt={'30px'} p={1} direction='row' alignItems='center' justifyContent={'space-between'} border={information.as_a === "client" ? '1px solid #8077F6' : '1px solid #EDF0F3'} borderRadius={'14px'} sx={{ background: '#FBFBFC' }}
-                                                    onClick={informationSaver('as_a', 'client')}
+                                                    onClick={informationSaver('as_a', 'client', 'step', 'details')}
                                                 >
                                                     <Stack direction='row' alignItems='center'>
                                                         <Box component='img' src={hirer} alt='toHire' />
@@ -311,7 +313,7 @@ const LoginBoxLGHOC = () => {
                                                 </Stack>
 
                                                 <Stack mt={'30px'} p={1} direction='row' alignItems='center' justifyContent={'space-between'} border={information.as_a === "freelancer" ? '1px solid #8077F6' : '1px solid #EDF0F3'} borderRadius={'14px'} sx={{ background: '#FBFBFC' }}
-                                                    onClick={informationSaver('as_a', 'freelancer')}
+                                                    onClick={informationSaver('as_a', 'freelancer', 'step', 'details')}
                                                 >
                                                     <Stack direction='row' alignItems='center'>
                                                         <Box component='img' src={provider} alt='freelancer' />
@@ -319,11 +321,7 @@ const LoginBoxLGHOC = () => {
                                                     </Stack>
                                                     <Box component='img' src={arrowright} alt='toHire' />
                                                 </Stack>
-                                                <Box mt={4}>
-                                                    <Button variant='contained' sx={{ textTransform: 'capitalize', borderRadius: '12px', backgroundColor: '#8077F6', fontSize: '11px', padding: '9px 26px' }} disableElevation
-                                                        onClick={information.as_a !== 'none' ? informationSaver('step', 'details') : handleNoAction}
-                                                    >Continue</Button>
-                                                </Box>
+
                                             </Box>
                                             <Grid container mt={4} spacing={1.5} sx={{ fontSize: '13px', color: '#717C86' }}>
                                                 <Grid item xs={12}>
@@ -669,7 +667,7 @@ const LoginBoxLGHOC = () => {
                                         Sign up as a client or service provider.</Typography>
                                     <Box sx={{ mt: '55px' }}>
                                         <Stack p={2} direction='row' alignItems='center' justifyContent={'space-between'} border={information.as_a === "client" ? '1px solid #8077F6' : '1px solid #EDF0F3'} borderRadius={'14px'} sx={{ background: '#FBFBFC', cursor: 'pointer' }}
-                                            onClick={informationSaver('as_a', 'client')}
+                                            onClick={informationSaver('as_a', 'client', 'step', 'details')}
                                         >
                                             <Stack direction='row' alignItems='center'>
                                                 <Box component='img' src={hirer} alt='toHire' />
@@ -678,7 +676,7 @@ const LoginBoxLGHOC = () => {
                                             <Box component='img' src={arrowright} alt='toHire' />
                                         </Stack>
                                         <Stack mt={'30px'} p={2} direction='row' alignItems='center' justifyContent={'space-between'} border={information.as_a === "freelancer" ? '1px solid #8077F6' : '1px solid #EDF0F3'} borderRadius={'14px'} sx={{ background: '#FBFBFC', cursor: 'pointer' }}
-                                            onClick={informationSaver('as_a', 'freelancer')}
+                                            onClick={informationSaver('as_a', 'freelancer', 'step', 'details')}
                                         >
                                             <Stack direction='row' alignItems='center'>
                                                 <Box component='img' src={provider} alt='freelancer' />
@@ -686,11 +684,6 @@ const LoginBoxLGHOC = () => {
                                             </Stack>
                                             <Box component='img' src={arrowright} alt='toHire' />
                                         </Stack>
-                                        <Box mt={'40px'}>
-                                            <Button variant='contained' sx={{ textTransform: 'capitalize', borderRadius: '12px', backgroundColor: '#8077F6', fontSize: '11px', padding: '9px 26px' }} disableElevation
-                                                onClick={information.as_a !== 'none' ? informationSaver('step', 'details') : handleNoAction}
-                                            >Continue</Button>
-                                        </Box>
                                     </Box>
                                     <Grid container mt={'40px'} sx={{ fontSize: '12px', color: '#5D6974' }}>
                                         Already have an account?

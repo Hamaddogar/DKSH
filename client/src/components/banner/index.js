@@ -1,5 +1,4 @@
-import ThemeContext from "../../context/ThemeContext";
-import React, { useContext } from "react";
+import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux"
 import "./styles.css";
@@ -58,10 +57,9 @@ const image2Right = () => {
     );
 };
 const ButtonArr = ["All", "Interfaces", "Branding", "Illustration", "Graphics", "3D", "Animation", "Marketing"];
-const Index = ({ filterFor = 'home' }) => {
+const Index = ({ filterFor = 'home', dark }) => {
     const condition = filterFor === "home"
     const matches = useMediaQuery("(min-width:768px)");
-    const { dark } = useContext(ThemeContext);
     const dispatch = useDispatch()
 
     const { activeTab, activeTabJOB, currentUser } = useSelector(store => store.mainReducer);

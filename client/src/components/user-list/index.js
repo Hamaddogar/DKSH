@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./styles.css";
 import ProfileCard from "../profile-card";
 import { Alert, Grid, Skeleton, Stack } from "@mui/material";
-import ThemeContext from "../../context/ThemeContext";
 const users = ["", "", "", "", "", "", "", ""];
-const Index = ({ allDevelopersList, loading, view }) => {
-   const { dark } = useContext(ThemeContext);
+const Index = ({ allDevelopersList, loading, view, dark }) => {
+   // const { dark } = useContext(ThemeContext);
 
    const LoadSkelton = React.useCallback(() => {
       return (
@@ -50,14 +49,14 @@ const Index = ({ allDevelopersList, loading, view }) => {
    const mapProfileCards = React.useCallback(
       (user) => view === 'List' ?
          <Grid item key={user._id} xs="12">
-            <ProfileCard user={user} view={view} />
+            <ProfileCard user={user} view={view} dark={dark} />
          </Grid>
          :
          <Grid item key={user._id} xs="12" sm="6" md="4">
-            <ProfileCard user={user} view={view} />
+            <ProfileCard user={user} view={view} dark={dark} />
          </Grid>
       ,
-      [view]
+      [view, dark]
    );
 
    return (

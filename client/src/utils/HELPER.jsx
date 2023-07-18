@@ -1,4 +1,6 @@
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import { APIS } from './endPoints';
 
 export const Toaster = (type, error) => {
   switch (type) {
@@ -62,7 +64,10 @@ export const formatDate = (dateString, withTime = true) => {
 
 };
 
-
+export const updateSetting = async ({ userId, settings }) => {
+  const res = await axios.post(APIS.updateSettings, { userId, settings });
+  console.log('theme',res.data);
+}
 
 
 // selected Dummy Profile 

@@ -4,12 +4,12 @@ import axios from 'axios';
 import { dummy } from '../../utils/HELPER';
 import { APIS } from '../../utils/endPoints';
 
- 
 // ------------------All Asyn Reducers are below ------------------//
 let initialState = {
   loading: false,
   allDevelopers: [],
   allJobs: [],
+  settings: {},
   selectedProfile: dummy,
   loadingV2: false,
   currentUser: null,
@@ -72,7 +72,7 @@ export const LoginFun = createAsyncThunk(
 );
 
 
-// LoginFun
+// SignUpFun
 export const SignUpFun = createAsyncThunk(
   'mainSlice/SignUpFun',
   async ({ firstName, role, lastName, contactNo, country, email, password }) => {
@@ -82,7 +82,7 @@ export const SignUpFun = createAsyncThunk(
 );
 
 
-// LoginFun
+// forgotFun
 export const forgotFun = createAsyncThunk(
   'mainSlice/forgotFun',
   async ({ email }) => {
@@ -91,7 +91,7 @@ export const forgotFun = createAsyncThunk(
   }
 );
 
-// LoginFun
+// ResetFun
 export const ResetFun = createAsyncThunk(
   'mainSlice/ResetFun',
   async ({ password, token }) => {
@@ -180,6 +180,10 @@ const mainSlice = createSlice({
       // state.openLoginBoxDesk = 'responded';
     },
 
+    THEME_UPDATOR: (state, { payload }) => {
+      state.settings.darkTheme = payload;
+    },
+
 
     LOG_OUT: (state, { payload }) => {
       state.openLoginBoxDesk = null;
@@ -192,7 +196,8 @@ const mainSlice = createSlice({
       state.resetSuccess = false;
       state.currentUser = null;
       state.signUpUser = null;
-      
+      state.settings = {};
+
     },
   },
 
@@ -250,6 +255,7 @@ const mainSlice = createSlice({
       .addCase(LoginFun.fulfilled, (state, { payload }) => {
         if (payload.success) {
           state.loadingV2 = 'responded';
+          state.settings = payload.user.settings;
           state.currentUser = payload?.user;
           state.loginError = false;
         } else {
@@ -265,7 +271,9 @@ const mainSlice = createSlice({
         // console.log('-signUp', payload);
         if (payload.success) {
           state.loadingV2 = 'responded';
-          state.signUpUser = payload?.user
+          state.signUpUser = payload?.user;
+          state.currentUser = payload?.user;
+          state.settings = payload?.user?.settings;
         } else {
           state.signUpError = payload.message
         }
@@ -351,6 +359,7 @@ export const {
   LOGIN_BOX_HANDLE,
   LOGIN_WITH_GOOGLE_APPLE,
   RESET_TOKEN,
+  THEME_UPDATOR,
   LOG_OUT,
 
 

@@ -9,7 +9,7 @@ const Index = () => {
     const dispatch = useDispatch();
     const [listView, setListView] = useState(false);
     const [data, setData] = React.useState([null]);
-    const { allDevelopers, loading, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab } = useSelector(store => store.mainReducer)
+    const { settings, allDevelopers, loading, priceFilter, servicesFilter, ratingFilter, availableToWorkFilter, proTallentFilter, activeTab } = useSelector(store => store.mainReducer)
     React.useEffect(() => {
         if (allDevelopers?.length > 0) {
             const filterdData = allDevelopers.filter(dev =>
@@ -36,15 +36,16 @@ const Index = () => {
             window.scrollTo(0, 0)
         }, 100);
     }, [])
-    
+
     return (
         <>
-            <Banner />
-            <Filters view={listView} setView={setListView} />
+            <Banner dark={(settings?.darkTheme)} />
+            <Filters dark={(settings?.darkTheme)} view={listView} setView={setListView} />
             <UserList
                 view={listView ? "List" : "Grid"}
                 allDevelopersList={data}
                 loading={loading}
+                dark={(settings?.darkTheme)}
             />
         </>
     );

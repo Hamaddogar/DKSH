@@ -1,19 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./styles.css";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Paper from "@mui/material/Paper";
 import Icon from "../../assets/icons";
-import ThemeContext from "../../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGIN_BOX_HANDLE } from "../../RTK/Reducers/Reducers";
 const { PeopleWhite, HomeWhite, FileWhite, ActiveHome, ActiveJob, ActiveNetwork } = Icon;
 
-const Index = () => {
+const Index = ({ dark }) => {
     let path = window.location.pathname;
     const navigate = useNavigate();
-    const { dark } = useContext(ThemeContext);
+    // const { dark } = useContext(ThemeContext);
     const links = [
         { label: "Home", icon: HomeButtonIcon(dark, path), href: "/" },
         { label: "My Network", icon: networkButton(dark, path), href: "/network" },
@@ -41,7 +40,7 @@ const Index = () => {
         >
             <BottomNavigation showLabels sx={{ paddingTop: "10px", background: dark ? "#090b0c" : "#fff" }}>
                 {links.map((link) => (
-                    <BottomNavigationAction onClick={() => link.label === "My Network" ? dispatch(LOGIN_BOX_HANDLE('banner')): navigate(link.href)} sx={{ gap: "14px" }} label={<label style={{ color: color(link.href) }}>{link.label}</label>} icon={link.icon} />
+                    <BottomNavigationAction onClick={() => link.label === "My Network" ? dispatch(LOGIN_BOX_HANDLE('banner')) : navigate(link.href)} sx={{ gap: "14px" }} label={<label style={{ color: color(link.href) }}>{link.label}</label>} icon={link.icon} />
                 ))}
             </BottomNavigation>
         </Paper>

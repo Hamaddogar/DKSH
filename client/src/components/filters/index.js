@@ -8,19 +8,17 @@ import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SMFilters from "./SmallScreenFilters";
-import useTheme from "../../hooks/useTheme";
 import { useDispatch, useSelector } from "react-redux";
 import { AVALIABLE_TO_WORK_Filter, PRICE_Filter, PRICE_Filter_JOB, PRO_TALLENT_Filter, RATING_Filter, RATING_Filter_JOB, RESET_Filter, RESET_Filter_JOB, SERVICE_Filter, SERVICE_Filter_JOB } from "../../RTK/Reducers/Reducers";
 const { RatingIcon, ServiceIcon, PriceIcon, FilterIcon, ListIcon, GridIcon, DarkFilterIcon, ListWhite, GridWhite } = Icons;
 
 const Index = (props) => {
     const dispatch = useDispatch();
-    const { view, setView, filterFor = 'home' } = props;
+    const { view, setView, filterFor = 'home', dark } = props;
     const homeFilter = filterFor === 'home'
     const { allDevelopers, priceFilter, servicesFilter, servicesFilterOptions, ratingFilter, availableToWorkFilter, proTallentFilter,
-        priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB, servicesFilterJOB,
+        priceFilterJOB, servicesFilterOptionsJOB, ratingFilterJOB, servicesFilterJOB
     } = useSelector(store => store.mainReducer)
-    const { dark } = useTheme();
     const [price, setPrice] = useState([0, 1000]);
     const [viewFilters, setViewFilters] = useState(false);
     const [modelViewFilters, setModelViewFilters] = useState(false);
@@ -104,7 +102,7 @@ const Index = (props) => {
                     <Button style={{ padding: "15px" }} title={<img alt='' src={viewFilters || modelViewFilters ? FilterIcon : DarkFilterIcon} />} type={viewFilters ? "primary" : "secondary"} onClick={handleViewFilters} />
                 </Box>
             </Box>
-            {matches && <SMFilters condition={homeFilter} open={modelViewFilters} onClose={() => setModelViewFilters(false)} view={view} setView={setView} />}
+            {matches && <SMFilters dark={dark} condition={homeFilter} open={modelViewFilters} onClose={() => setModelViewFilters(false)} view={view} setView={setView} />}
             {viewFilters && !matches && (
                 <Box sx={{ ...styleSheet.flex, mt: 2, mb: 3, flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" } }}>
                     <Box sx={{ ...styleSheet.flex, flexDirection: { xs: "column", sm: "row" } }}>
@@ -146,14 +144,14 @@ const Index = (props) => {
                         } />
                         <FilterButton dark={dark} label="Services : " icon={ServiceIcon} value="All" component={<Box className={dark ? "scrollbox-dark dropdown-list" : "scrollbox dropdown-list"} sx={{ gap: '10px' }} >
                             {(homeFilter ? servicesFilterOptions : servicesFilterOptionsJOB).map((service) => (
-                                <Box onClick={() => handleChangeService(service)} key={service} className={(homeFilter ? servicesFilter : servicesFilterJOB) === service ? "dropdown-active-item" : "dropdown-item"}>
+                                <Box onClick={() => handleChangeService(service)} key={service} className={(homeFilter ? servicesFilter : servicesFilterJOB) === service ? "dropdown-active-item white-text" : "dropdown-item"}>
                                     {service}
                                 </Box>
                             ))}
                         </Box>} />
                         <FilterButton dark={dark} label="Sort by : " icon={RatingIcon} value="Rating" component={<Box className="dropdown-list" sx={{ gap: '10px' }}>
                             {list.map((option) => (
-                                <Box onClick={() => handleChangeRating(option)} key={option} className={(homeFilter ? ratingFilter : ratingFilterJOB) === option ? "dropdown-active-item" : "dropdown-item"}>
+                                <Box onClick={() => handleChangeRating(option)} key={option} className={(homeFilter ? ratingFilter : ratingFilterJOB) === option ? "dropdown-active-item white-text" : "dropdown-item"}>
                                     {option}
                                 </Box>
                             ))}

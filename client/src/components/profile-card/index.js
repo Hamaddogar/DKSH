@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Images from "../../assets/images";
 import { Grid } from "@mui/material";
 import "./styles.css";
@@ -6,7 +6,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import ThemeContext from "../../context/ThemeContext";
 import { useDispatch } from "react-redux";
 import { SELECTED_PROFILE } from "../../RTK/Reducers/Reducers";
 import { formatDate } from "../../utils/HELPER";
@@ -97,9 +96,8 @@ const modalIcon = () => {
   );
 };
 
-const Index = ({ user, view }) => {
+const Index = ({ user, view, dark }) => {
   const dispatch = useDispatch();
-  const { dark } = useContext(ThemeContext);
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
 
@@ -139,7 +137,7 @@ const Index = ({ user, view }) => {
                   </div>
                   <div className="commentRating-container">
                     <div className={dark ? "commentsRating-Listcount commentsRating-Listcount-dark" : "commentsRating-Listcount"}>
-                      <div className="margin-icon">{commentIcon()}</div> {user?.commentCount()} <span className="commentsRating-Listtitle">Comments</span>
+                      <div className="margin-icon">{commentIcon(dark)}</div> {user?.commentCount()} <span className="commentsRating-Listtitle">Comments</span>
                     </div>
                     <div className={dark ? "commentsRating-Listcount commentsRating-Listcount-dark" : "commentsRating-Listcount"}>
                       {user?.ratingCount()} / 5 <span className="commentsRating-Listtitle">Rating</span>

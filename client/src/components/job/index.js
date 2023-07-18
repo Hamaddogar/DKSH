@@ -1,13 +1,10 @@
-import React, { useContext } from "react";
-import ThemeContext from "../../context/ThemeContext";
+import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Icons from "../../assets/icons";
 import "./styles.css";
 const { FileIcon } = Icons;
-const Index = ({ job, index }) => {
+const Index = ({ job, index, dark }) => {
     const matches = useMediaQuery("(max-width:550px)");
-
-    const { dark } = useContext(ThemeContext);
     const { title, subTitle, description, skills, applications, rating, portfolio, hourlyRate } = job;
     return (
         <div className="job-container" key={index}>

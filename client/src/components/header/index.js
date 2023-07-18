@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Avatar, Box, Button, Divider, Grid, Menu, MenuItem, Stack, alpha, styled } from "@mui/material";
 import Images from "../../assets/images";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -6,14 +6,14 @@ import Icon from "../../assets/icons";
 import firebase from '../login-Box-LG/firebase';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ThemeContext from "../../context/ThemeContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import { ACTIVE_TAB_Filter, LOGIN_BOX_HANDLE, LOG_OUT, SELECTED_PROFILE } from "../../RTK/Reducers/Reducers";
+import { ACTIVE_TAB_Filter, LOGIN_BOX_HANDLE, LOG_OUT, SELECTED_PROFILE, THEME_UPDATOR } from "../../RTK/Reducers/Reducers";
 import LoginBoxLGHOC from "../login-Box-LG/LoginBoxLGHOC";
 import { DarkMode, ExitToApp, LightMode, Login } from "@mui/icons-material";
+import { updateSetting } from "../../utils/HELPER";
 const { SubtractIcon, SelectIcon, StarIcon, MsgIcon, PeopleGroupIcon, PeopleWhite, HomeWhite, ForwardWhite, FileWhite } = Icon;
 const NotificationsIcons = (dark) => {
     if (dark)
@@ -416,11 +416,11 @@ const StyledMenu = styled((props) => (
         },
     },
 }));
-const Index = () => {
+
+const Index = ({ dark }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const matches = useMediaQuery("(min-width:768px)");
-    const { dark, setDark } = useContext(ThemeContext);
     const [searchDropdown, setSearchDropdown] = useState(false);
     const [userSelector, setUserSelector] = useState({ index: '0', thisUser: '' });
     const [searchIt, setsearchIt] = useState("");
@@ -452,9 +452,14 @@ const Index = () => {
     }
 
     const handleDarkMode = () => {
-        setDark((e) => !e);
-        localStorage.setItem("dark-theme", !dark);
-    }
+        console.log("dark",dark);
+        dispatch(THEME_UPDATOR(!dark))
+        updateSetting({
+            userId: currentUser?._id,
+            settings: { darkTheme: !dark }
+        });
+    };
+
 
 
     // Mobile View

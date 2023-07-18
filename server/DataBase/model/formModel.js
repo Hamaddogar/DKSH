@@ -10,7 +10,11 @@ const formSchema = new mongoose.Schema({
   password: String,
   country: String,
   fullName: String,
-  role: String
+  role: String,
+  settings: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserSettings',
+  },
 });
 
 // bcrypt password code 

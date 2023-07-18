@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
-import ThemeContext from "../../context/ThemeContext";
+import React from "react";
 import Button from "../form/Button";
 import "./styles.css";
 import Images from "../../assets/images";
 import { toast } from "react-toastify";
-const Index = ({ user }) => {
-    const { dark } = useContext(ThemeContext); 
+const Index = ({ user, dark }) => {
     const handleClickMessage = () => {
         toast.info('Not Avaliable!')
     }

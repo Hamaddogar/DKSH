@@ -1,12 +1,13 @@
 
-// const server = 'http://localhost:8080';
+const server = 'http://localhost:8080';
 
 
 export const APIS = {
-    all_dev: '/alluser',
-    all_jobs: '/jobss',
-    login: '/api/login',
-    signup: '/signup',
-    forgot: '/forgot',
-    resetpassword: '/resetpassword',
+    all_dev: server + '/alluser',
+    all_jobs: server + '/jobss',
+    login: server + '/api/login',
+    signup: server + '/signup',
+    forgot: server + '/forgot',
+    resetpassword: server + '/resetpassword',
+    updateSettings: server + '/setting/update'
 }

@@ -6,13 +6,12 @@ import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { SERVICE_Filter_Options_JOB } from "../../RTK/Reducers/Reducers";
 import { Alert, Grid, Skeleton, Stack } from "@mui/material";
-import ThemeContext from "../../context/ThemeContext";
-const Index = ({view}) => {
-    const { dark } = React.useContext(ThemeContext);
+
+const Index = () => {
     const [listView, setListView] = useState(false);
     const dispatch = useDispatch();
     const [data, setData] = React.useState([null]);
-    const { allJobs, loading, priceFilterJOB, servicesFilterJOB, ratingFilterJOB, activeTabJOB } = useSelector(store => store.mainReducer)
+    const { settings, allJobs, loading, priceFilterJOB, servicesFilterJOB, ratingFilterJOB, activeTabJOB } = useSelector(store => store.mainReducer)
     React.useEffect(() => {
         if (allJobs?.length > 0) {
             const finalFilterdData = allJobs.filter(dev =>
@@ -36,34 +35,32 @@ const Index = ({view}) => {
         }, 100);
     }, [])
 
-
-
     const LoadSkelton = React.useCallback(() => {
         return (
             <Stack spacing={1}>
                 <Skeleton
-                    sx={{ bgcolor: dark ? 'grey.900' : 'none', fontSize: '1rem' }}
+                    sx={{ bgcolor: (settings?.darkTheme) ? 'grey.900' : 'none', fontSize: '1rem' }}
                     variant="text"
                 />
                 <Skeleton
-                    sx={{ bgcolor: dark ? 'grey.900' : 'none' }}
+                    sx={{ bgcolor: (settings?.darkTheme) ? 'grey.900' : 'none' }}
                     variant="circular"
                     width={40}
                     height={40}
                 />
                 <Skeleton
-                    sx={{ bgcolor: dark ? 'grey.900' : 'none' }}
+                    sx={{ bgcolor: (settings?.darkTheme) ? 'grey.900' : 'none' }}
                     variant="rectangular"
                     height={60}
                 />
                 <Skeleton
-                    sx={{ bgcolor: dark ? 'grey.900' : 'none' }}
+                    sx={{ bgcolor: (settings?.darkTheme) ? 'grey.900' : 'none' }}
                     variant="rounded"
                     height={60}
                 />
             </Stack>
         );
-    }, [dark]);
+    }, [settings?.darkTheme]);
 
     const mapJobs = React.useCallback(
         (user, index) => (
@@ -77,23 +74,19 @@ const Index = ({view}) => {
     const mapJobCards = React.useCallback(
         (job, index) => (
             <Grid item key={job.index} xs="12">
-                <Job job={job} index={index} />
+                <Job job={job} index={index} dark={(settings?.darkTheme)} />
             </Grid>
         ),
-        []
+        [settings?.darkTheme]
     );
 
-
-
-
     return (
-
         <Grid item container spacing={2}>
             <Grid item xs={12}>
-                <Banner filterFor="job" />
+                <Banner filterFor="job" dark={(settings?.darkTheme)} />
             </Grid>
             <Grid item xs={12}>
-                <Filters filterFor="job" view={listView} setView={setListView} title="Jobs" hideGridView={true} />
+                <Filters dark={(settings?.darkTheme)} filterFor="job" view={listView} setView={setListView} title="Jobs" hideGridView={true} />
             </Grid>
             {(loading || data?.[0] === null) && ["", "", "", "", "", "", ""].map(mapJobs)}
             {!loading && data?.[0] !== null && data?.length === 0 && (
@@ -104,9 +97,6 @@ const Index = ({view}) => {
             {!loading && data?.[0] !== null && data?.map(mapJobCards)}
         </Grid>
     );
-
-
-
 };
 
 export default Index;

@@ -10,6 +10,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const allJobsRouter = require('./Api/Router/allJobsRouter');
 const allUsersRouter = require('./Api/Router/allUsersRouter');
+const settingUpdateRouter = require('./Api/Router/settingUpdateRouter');
 
 
 app.use(cors());
@@ -24,6 +25,7 @@ app.use(express.static("./build"));
 // ============Work Area================//
 connectDB();
 app.use('/signup', userRouter);
+app.use('/setting/update', settingUpdateRouter);
 app.use('/api/login', loginRouter);
 app.use('/forgot', forgetRouter);
 app.use('/resetpassword', resetRouter);
