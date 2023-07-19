@@ -32,6 +32,7 @@ const persistConfig = {
     "resetSuccess",
     "resetError",
     "signUpUser",
+    "settings",
   ],
   rootReducer: mainReducer
 }

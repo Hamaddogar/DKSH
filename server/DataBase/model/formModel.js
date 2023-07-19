@@ -15,18 +15,16 @@ const formSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'UserSettings',
   },
+  avatar: String,
 });
 
 // bcrypt password code 
 formSchema.pre('save', function (next) {
   var user = this;
   var SALT_FACTOR = 5;
-
   if (!user.isModified('password')) return next();
-
   bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
     if (err) return next(err);
-
     bcrypt.hash(user.password, salt, null, function (err, hash) {
       if (err) return next(err);
       user.password = hash;
@@ -34,9 +32,6 @@ formSchema.pre('save', function (next) {
     });
   });
 });
-
-
-
 
 formSchema.methods.verifyPassword = function (password, cb) {
   bcrypt.compare(password, this.password, function (err, isVaild) {

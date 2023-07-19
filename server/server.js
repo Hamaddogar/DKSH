@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const allJobsRouter = require('./Api/Router/allJobsRouter');
 const allUsersRouter = require('./Api/Router/allUsersRouter');
 const settingUpdateRouter = require('./Api/Router/settingUpdateRouter');
+const countryGetterRouter = require('./Api/Router/countryGetterRouter');
 
 
 app.use(cors());
@@ -28,6 +29,7 @@ app.use('/signup', userRouter);
 app.use('/setting/update', settingUpdateRouter);
 app.use('/api/login', loginRouter);
 app.use('/forgot', forgetRouter);
+app.use('/country', countryGetterRouter);
 app.use('/resetpassword', resetRouter);
 app.use('/', allJobsRouter);
 app.use('/', allUsersRouter);

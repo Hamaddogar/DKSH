@@ -75,8 +75,8 @@ export const LoginFun = createAsyncThunk(
 // SignUpFun
 export const SignUpFun = createAsyncThunk(
   'mainSlice/SignUpFun',
-  async ({ firstName, role, lastName, contactNo, country, email, password }) => {
-    const data = await axios.post(APIS.signup, { firstName, role, lastName, contactNo, country, email, password })
+  async ({ firstName, role, lastName, contactNo, country, email, password, avatar }) => {
+    const data = await axios.post(APIS.signup, { firstName, role, lastName, contactNo, country, email, password, avatar })
     return data.data;
   }
 );

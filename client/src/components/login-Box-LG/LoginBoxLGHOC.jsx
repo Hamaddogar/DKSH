@@ -6,13 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import { ArrowBack, Close } from '@mui/icons-material';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { LOGIN_BOX_HANDLE, LOGIN_WITH_GOOGLE_APPLE, LoginFun, ResetFun, SignUpFun, forgotFun } from '../../RTK/Reducers/Reducers';
-import { Alert, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField, Typography, useMediaQuery } from '@mui/material';
+import { LOGIN_BOX_HANDLE, LOGIN_WITH_GOOGLE_APPLE, LoginFun, SignUpFun, forgotFun } from '../../RTK/Reducers/Reducers';
+import { Alert, Autocomplete, Checkbox, CircularProgress, FormControlLabel, Grid, InputAdornment, Stack, TextField, Typography, useMediaQuery } from '@mui/material';
 import Images from '../../assets/images';
 import { useForm } from "react-hook-form";
-import { ErrorText, handleNoAction } from './ErrorText';
+import { ErrorText } from './ErrorText';
 import firebase from './firebase';
 import FormSam from './FormSam';
+import { countryList } from '../../utils/HELPER';
 
 
 
@@ -26,7 +27,8 @@ const LoginBoxLGHOC = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [history, setHistory] = React.useState([])
     const [activeStep, setActiveStep] = React.useState('');
-
+    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState('Pakistan');
 
     React.useEffect(() => {
         if (history[history.length - 1] !== activeStep) setHistory(pv => ([...pv, activeStep]))
@@ -79,7 +81,7 @@ const LoginBoxLGHOC = () => {
         } else {
             handleClose()
         }
-    }
+    };
 
     const handleClose = () => {
         dispatch(LOGIN_BOX_HANDLE(false))
@@ -87,7 +89,7 @@ const LoginBoxLGHOC = () => {
         setShowPassword(false);
         setHistory([]);
         setActiveStep('')
-    }
+    };
     // handle Submits Functions
 
     const handleLogin = data => {
@@ -95,7 +97,7 @@ const LoginBoxLGHOC = () => {
             email: data.email,
             password: data.password,
         }));
-    }
+    };
 
     const handleSignUp = data => {
         dispatch(SignUpFun({
@@ -107,41 +109,74 @@ const LoginBoxLGHOC = () => {
             email: data.email,
             password: data.password,
         }));
-    }
+    };
 
     const handleForgotReset = (data) => {
         dispatch(forgotFun({
             email: data.email
         }))
-    }
+    };
 
     // login 
     const handleLoginGoogleApple = async (loginWith) => {
 
-        if (loginWith === 'google') {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            const res = await firebase.auth().signInWithPopup(provider);
-            if (res.user) {
-                const user = res.user;
-                const nameParts = user.displayName.split(' ');
-                const firstName = nameParts[0];
-                const lastName = nameParts.slice(1).join(' ');
-                dispatch(LOGIN_WITH_GOOGLE_APPLE({
-                    _id: user.uid,
-                    firstName: firstName,
-                    role: information.as_a,
-                    lastName: lastName,
-                    contactNo: "null",
-                    country: "null",
-                    loginID: user.email,
-                    fullName: user.displayName,
-                    avatar: user.photoURL
-                }))
+        if (activeStep === 'login') {
+            if (loginWith === 'google') {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const res = await firebase.auth().signInWithPopup(provider);
+                if (res.user) {
+                    const user = res.user;
+                    dispatch(LoginFun({
+                        email: user.email,
+                        password: 'google' + user.uid,
+                    }));
+                }
+            }
+        } else {
+            // signUp
+            if (loginWith === 'google') {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const res = await firebase.auth().signInWithPopup(provider);
+                if (res.user) {
+                    const user = res.user;
+                    const nameParts = user.displayName.split(' ');
+                    const firstName = nameParts[0];
+                    const lastName = nameParts.slice(1).join(' ');
+                    // dispatch(LOGIN_WITH_GOOGLE_APPLE({
+                    //     _id: user.uid,
+                    //     firstName: firstName,
+                    //     role: information.as_a,
+                    //     lastName: lastName,
+                    //     contactNo: "null",
+                    //     country: "null",
+                    //     loginID: user.email,
+                    //     fullName: user.displayName,
+                    //     avatar: user.photoURL
+                    // }));
 
+
+
+                    dispatch(SignUpFun({
+                        firstName: firstName,
+                        role: information.as_a,
+                        lastName: lastName,
+                        email: user.email,
+                        password: 'google' + user.uid,
+                        avatar: user.photoURL
+                    }));
+
+
+
+
+
+
+
+                }
             }
         }
     };
 
+    const handleAutocompleteChange = (event, newValue) => setValue(newValue);
     // Mobile View
     const descriptionElementRef = React.useRef(null);
     React.useEffect(() => {
@@ -411,33 +446,42 @@ const LoginBoxLGHOC = () => {
                                                         {errors.password && <>{errors.password.type === 'minLength' ? ErrorText("Minimum Length 6 characters!") : ErrorText("Field is Required!")}</>}
                                                     </Grid>
                                                     <Grid item xs={12} sm={6}>
-                                                        <FormControl fullWidth variant="outlined" style={{ marginBottom: 16 }}
+                                                        <Autocomplete
+                                                            id="country-selector"
+                                                            open={open}
                                                             sx={{
                                                                 mt: '20px',
-                                                                // '& .MuiFormLabel-root': { fontSize: '14px' },
-                                                                '& .MuiInputBase-root': { borderRadius: '12px', minHeight: '48px' },
-                                                                '& fieldset': { background: 'rgb(135, 143, 154,.08)', borderRadius: '12px', borderColor: '#EDF0F3', minHeight: '48px' },
-                                                                '& .Mui-focused': { top: '2px' },
-                                                                '& input': { borderRadius: '12px !important', color: '#878F9A !important', padding: '11px 14px' }
-
+                                                                '& .MuiOutlinedInput-root': { minHeight: '45px' },
+                                                                '& fieldset': { background: 'rgb(135, 143, 154,.08)', borderRadius: '12px', borderColor: '#EDF0F3', minHeight: '44px' },
+                                                                '& label': { fontSize: '15px', top: '2px' },
+                                                                '& input': { borderRadius: '12px !important', color: '#878F9A !important', },
                                                             }}
-                                                        >
-                                                            <InputLabel id="country-label" sx={{ fontSize: '15px', top: '-3px' }}>Select Country</InputLabel>
-                                                            <Select
-                                                                label='Select Country'
-                                                                size='small'
-                                                                labelId="country-label"
-                                                                id="country"
-                                                                name="country"
-                                                                {...register('country', { required: true })}
-                                                                error={errors.country}
-                                                            >
-                                                                <MenuItem value="USA">USA</MenuItem>
-                                                                <MenuItem value="UK">UK</MenuItem>
-                                                                <MenuItem value="Canada">Canada</MenuItem>
-                                                                <MenuItem value="Australia">Australia</MenuItem>
-                                                            </Select>
-                                                        </FormControl>
+                                                            size='small'
+                                                            onOpen={() => { setOpen(true) }}
+                                                            onClose={() => { setOpen(false) }}
+                                                            getOptionLabel={(option) => option}
+                                                            options={countryList}
+                                                            value={value}
+                                                            loading={open}
+                                                            onChange={handleAutocompleteChange}
+                                                            renderInput={(params) => (
+                                                                <TextField
+                                                                    {...params}
+                                                                    label="Select a country"
+                                                                    InputProps={{
+                                                                        ...params.InputProps,
+                                                                        endAdornment: (
+                                                                            <React.Fragment>
+                                                                                {open ? <CircularProgress color="inherit" size={20} /> : null}
+                                                                                {params.InputProps.endAdornment}
+                                                                            </React.Fragment>
+                                                                        ),
+                                                                    }}
+                                                                    {...register('country', { required: true })}
+                                                                    error={errors.country}
+                                                                />
+                                                            )}
+                                                        />
                                                         {errors.country && <>{ErrorText("Please Select Country")}</>}
                                                     </Grid>
                                                     <Grid item xs={12}>
@@ -771,32 +815,42 @@ const LoginBoxLGHOC = () => {
                                                 {errors.password && <>{errors.password.type === 'minLength' ? ErrorText("Minimum Length 6 characters!") : ErrorText("Field is Required!")}</>}
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
-                                                <FormControl fullWidth variant="outlined" style={{ marginBottom: 16 }}
+                                                <Autocomplete
+                                                    id="country-selector"
+                                                    open={open}
                                                     sx={{
                                                         mt: '20px',
-                                                        // '& .MuiFormLabel-root': { fontSize: '14px' },
-                                                        '& .MuiInputBase-root': { borderRadius: '12px', minHeight: '48px' },
-                                                        '& fieldset': { background: 'rgb(135, 143, 154,.08)', borderRadius: '12px', borderColor: '#EDF0F3', minHeight: '48px' },
-                                                        '& .Mui-focused': { top: '2px' },
-                                                        '& input': { borderRadius: '12px !important', color: '#878F9A !important', padding: '11px 14px' }
+                                                        '& .MuiOutlinedInput-root': { minHeight: '45px' },
+                                                        '& fieldset': { background: 'rgb(135, 143, 154,.08)', borderRadius: '12px', borderColor: '#EDF0F3', minHeight: '44px' },
+                                                        '& label': { fontSize: '15px', top: '2px' },
+                                                        '& input': { borderRadius: '12px !important', color: '#878F9A !important', },
                                                     }}
-                                                >
-                                                    <InputLabel id="country-label" sx={{ fontSize: '15px', top: '-3px' }}>Select Country</InputLabel>
-                                                    <Select
-                                                        label='Select Country'
-                                                        size='small'
-                                                        labelId="country-label"
-                                                        id="country"
-                                                        name="country"
-                                                        {...register('country', { required: true })}
-                                                        error={errors.country}
-                                                    >
-                                                        <MenuItem value="USA">USA</MenuItem>
-                                                        <MenuItem value="UK">UK</MenuItem>
-                                                        <MenuItem value="Canada">Canada</MenuItem>
-                                                        <MenuItem value="Australia">Australia</MenuItem>
-                                                    </Select>
-                                                </FormControl>
+                                                    size='small'
+                                                    onOpen={() => { setOpen(true) }}
+                                                    onClose={() => { setOpen(false) }}
+                                                    getOptionLabel={(option) => option}
+                                                    options={countryList}
+                                                    value={value}
+                                                    loading={open}
+                                                    onChange={handleAutocompleteChange}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Select a country"
+                                                            InputProps={{
+                                                                ...params.InputProps,
+                                                                endAdornment: (
+                                                                    <React.Fragment>
+                                                                        {open ? <CircularProgress color="inherit" size={20} /> : null}
+                                                                        {params.InputProps.endAdornment}
+                                                                    </React.Fragment>
+                                                                ),
+                                                            }}
+                                                            {...register('country', { required: true })}
+                                                            error={errors.country}
+                                                        />
+                                                    )}
+                                                />
                                                 {errors.country && <>{ErrorText("Please Select Country")}</>}
                                             </Grid>
                                             <Grid item xs={12}>

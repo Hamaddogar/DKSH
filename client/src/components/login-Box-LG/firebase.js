@@ -2,19 +2,15 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
 // Rest of your code remains the same
-
-
 const firebaseConfig = {
-    apiKey: "AIzaSyDMq5RKd_aXHSYbgxdkqUo5y7kMiYHP5yE",
-    authDomain: "proshops-37c1d.firebaseapp.com",
-    projectId: "proshops-37c1d",
-    storageBucket: "proshops-37c1d.appspot.com",
-    messagingSenderId: "494523737293",
-    appId: "1:494523737293:web:7d4e024c321e0e332eb584",
-    measurementId: "G-TSX03G4GSC"
+    apiKey: "AIzaSyAvpA6IXpcLHE4iVIIJ1n0Ec8SGp5oCoOI",
+    authDomain: "dkshauth-9760d.firebaseapp.com",
+    projectId: "dkshauth-9760d",
+    storageBucket: "dkshauth-9760d.appspot.com",
+    messagingSenderId: "211599753918",
+    appId: "1:211599753918:web:2443c854bc523cff9194ef",
+    measurementId: "G-454K1GLSMX"
 };
-
-
 
 firebase.initializeApp(firebaseConfig);
 
