@@ -28,7 +28,7 @@ const LoginBoxLGHOC = () => {
     const [history, setHistory] = React.useState([])
     const [activeStep, setActiveStep] = React.useState('');
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState('Pakistan');
+    const [value, setValue] = React.useState('');
 
     React.useEffect(() => {
         if (history[history.length - 1] !== activeStep) setHistory(pv => ([...pv, activeStep]))
@@ -120,58 +120,26 @@ const LoginBoxLGHOC = () => {
     // login 
     const handleLoginGoogleApple = async (loginWith) => {
 
-        if (activeStep === 'login') {
-            if (loginWith === 'google') {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                const res = await firebase.auth().signInWithPopup(provider);
-                if (res.user) {
-                    const user = res.user;
-                    dispatch(LoginFun({
-                        email: user.email,
-                        password: 'google' + user.uid,
-                    }));
-                }
-            }
-        } else {
-            // signUp
-            if (loginWith === 'google') {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                const res = await firebase.auth().signInWithPopup(provider);
-                if (res.user) {
-                    const user = res.user;
-                    const nameParts = user.displayName.split(' ');
-                    const firstName = nameParts[0];
-                    const lastName = nameParts.slice(1).join(' ');
-                    // dispatch(LOGIN_WITH_GOOGLE_APPLE({
-                    //     _id: user.uid,
-                    //     firstName: firstName,
-                    //     role: information.as_a,
-                    //     lastName: lastName,
-                    //     contactNo: "null",
-                    //     country: "null",
-                    //     loginID: user.email,
-                    //     fullName: user.displayName,
-                    //     avatar: user.photoURL
-                    // }));
-
-
-
-                    dispatch(SignUpFun({
-                        firstName: firstName,
-                        role: information.as_a,
-                        lastName: lastName,
-                        email: user.email,
-                        password: 'google' + user.uid,
-                        avatar: user.photoURL
-                    }));
-
-
-
-
-
-
-
-                }
+        if (loginWith === 'google') {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const res = await firebase.auth().signInWithPopup(provider);
+            if (res.user) {
+                const user = res.user;
+                const nameParts = user.displayName.split(' ');
+                const firstName = nameParts[0];
+                const lastName = nameParts.slice(1).join(' ');
+                dispatch(LOGIN_WITH_GOOGLE_APPLE({
+                    _id: user.uid,
+                    firstName: firstName,
+                    role: information.as_a,
+                    lastName: lastName,
+                    contactNo: "null",
+                    country: "null",
+                    loginID: user.email,
+                    fullName: user.displayName,
+                    avatar: user.photoURL,
+                    local : false
+                }));
             }
         }
     };

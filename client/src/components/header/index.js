@@ -454,10 +454,12 @@ const Index = ({ dark }) => {
     const handleDarkMode = () => {
         console.log("dark",dark);
         dispatch(THEME_UPDATOR(!dark))
-        updateSetting({
-            userId: currentUser?._id,
-            settings: { darkTheme: !dark }
-        });
+        if (currentUser && !("local" in currentUser)) {
+            updateSetting({
+                userId: currentUser?._id,
+                settings: { darkTheme: !dark }
+            });
+        }
     };
 
 
