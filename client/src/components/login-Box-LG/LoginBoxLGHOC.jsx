@@ -138,7 +138,7 @@ const LoginBoxLGHOC = () => {
                     loginID: user.email,
                     fullName: user.displayName,
                     avatar: user.photoURL,
-                    local : false
+                    local: false
                 }));
             }
         }
@@ -440,7 +440,7 @@ const LoginBoxLGHOC = () => {
                                                                         ...params.InputProps,
                                                                         endAdornment: (
                                                                             <React.Fragment>
-                                                                                {open ? <CircularProgress color="inherit" size={20} /> : null}
+                                                                                {!Boolean(countryList) ? <CircularProgress color="inherit" size={20} /> : null}
                                                                                 {params.InputProps.endAdornment}
                                                                             </React.Fragment>
                                                                         ),
@@ -809,7 +809,7 @@ const LoginBoxLGHOC = () => {
                                                                 ...params.InputProps,
                                                                 endAdornment: (
                                                                     <React.Fragment>
-                                                                        {open ? <CircularProgress color="inherit" size={20} /> : null}
+                                                                        {!Boolean(countryList) ? <CircularProgress color="inherit" size={20} /> : null}
                                                                         {params.InputProps.endAdornment}
                                                                     </React.Fragment>
                                                                 ),

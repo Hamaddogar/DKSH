@@ -5,7 +5,7 @@ import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 import storage from 'redux-persist-indexeddb-storage';
 
 const persistConfig = {
-  key: 'dksh',
+  key: 'dkshv2',
   storage: storage('myDB'),
   stateReconciler: autoMergeLevel1,
   blacklist: [
@@ -31,6 +31,7 @@ const persistConfig = {
     "resetSuccess",
     "resetError",
     "signUpUser",
+    "openLoginBoxDesk",
   ],
   rootReducer: mainReducer
 }

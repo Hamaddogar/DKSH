@@ -5,12 +5,14 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Paper from "@mui/material/Paper";
 import Icon from "../../assets/icons";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LOGIN_BOX_HANDLE } from "../../RTK/Reducers/Reducers";
 const { PeopleWhite, HomeWhite, FileWhite, ActiveHome, ActiveJob, ActiveNetwork } = Icon;
 
 const Index = ({ dark }) => {
-    let path = window.location.pathname;
+    const { openLoginBoxDesk } = useSelector(store => store.mainReducer)
+    const currentPath = window.location.pathname;
+    let path = openLoginBoxDesk ? "/network" : currentPath;
     const navigate = useNavigate();
     // const { dark } = useContext(ThemeContext);
     const links = [
@@ -18,8 +20,15 @@ const Index = ({ dark }) => {
         { label: "My Network", icon: networkButton(dark, path), href: "/network" },
         { label: "Jobs", icon: JobsIcon(dark, path), href: "/jobs" },
     ];
-
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const handleClearNavigation = (href) => e => {
+        if (href === "/network") {
+            dispatch(LOGIN_BOX_HANDLE('banner'));
+        } else {
+            dispatch(LOGIN_BOX_HANDLE(false));
+            navigate(href);
+        }
+    }
 
     const color = (href) => (!dark ? `${path === href ? "#8077F6" : "#090b0c"}` : `${path === href ? "#8077F6" : "#fff"}`);
     return (
@@ -40,7 +49,7 @@ const Index = ({ dark }) => {
         >
             <BottomNavigation showLabels sx={{ paddingTop: "10px", background: dark ? "#090b0c" : "#fff" }}>
                 {links.map((link) => (
-                    <BottomNavigationAction onClick={() => link.label === "My Network" ? dispatch(LOGIN_BOX_HANDLE('banner')) : navigate(link.href)} sx={{ gap: "14px" }} label={<label style={{ color: color(link.href) }}>{link.label}</label>} icon={link.icon} />
+                    <BottomNavigationAction onClick={handleClearNavigation(link.href)} sx={{ gap: "14px" }} label={<label style={{ color: color(link.href) }}>{link.label}</label>} icon={link.icon} />
                 ))}
             </BottomNavigation>
         </Paper>
