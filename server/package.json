@@ -10,20 +10,15 @@
   "author": "Hamad",
   "license": "ISC",
   "dependencies": {
-    "async": "^3.2.4",
-    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
-    "country-state-city": "^3.1.4",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "geoip-lite": "^1.4.7",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^6.2.3",
     "nodemailer": "^6.9.3",
-    "nodemailer-sendgrid-transport": "^0.2.0",
     "path": "^0.12.7",
     "validator": "^11.1.0"
   }

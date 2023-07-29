@@ -24,7 +24,7 @@ const LoginBoxLGHOC = () => {
     const [information, setinformation] = React.useState({ step: 'init', as_a: 'none' });
     const [showPassword, setShowPassword] = React.useState(false);
     const matches = useMediaQuery("(min-width:768px)");
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue: setValueRHF } = useForm();
     const [history, setHistory] = React.useState([])
     const [activeStep, setActiveStep] = React.useState('');
     const [open, setOpen] = React.useState(false);
@@ -40,7 +40,8 @@ const LoginBoxLGHOC = () => {
         else if (openLoginBoxDesk && openLoginBoxDesk === 'reset') setActiveStep('reset')
         else if (openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'init') setActiveStep('signup-init')
         else if (openLoginBoxDesk && openLoginBoxDesk === 'signup' && information?.step === 'details') setActiveStep('signup-details')
-    }, [openLoginBoxDesk, information?.step])
+        // else if (resetToken) setActiveStep('reset')
+    }, [openLoginBoxDesk, information?.step, resetToken])
 
     const informationSaver = (key, value, nextStep, nextStepTo) => e => (nextStep && nextStepTo) ?
         setinformation(pv => ({ ...pv, [key]: value, [nextStep]: nextStepTo })) :
@@ -154,6 +155,37 @@ const LoginBoxLGHOC = () => {
         }
         // eslint-disable-next-line
     }, [openLoginBoxDesk]);
+
+    React.useEffect(() => {
+        // Create an AbortController instance
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        const apiUrl = 'http://ip-api.com/json/?fields=61439';
+
+        // Make the API request using fetch
+        if (!value) {
+            fetch(apiUrl, { signal })
+                .then(response => {
+                    if (!response.ok) { throw new Error('Network response was not ok'); }
+                    return response.json();
+                })
+                .then(data => {
+                    setValue(data?.country);
+                    setValueRHF('country', data?.country);
+                })
+                .catch(error => {
+                    if (error.name === 'AbortError') {
+                        // console.log('Request aborted');
+                    } else {
+                        // console.error('Error fetching data:', error);
+                    }
+                });
+        }
+        // Cleanup function to abort the request when the component unmounts
+        return () => {
+            abortController.abort();
+        };
+    }, [])
 
     if (!matches) {
         return (
@@ -445,7 +477,7 @@ const LoginBoxLGHOC = () => {
                                                                             </React.Fragment>
                                                                         ),
                                                                     }}
-                                                                    {...register('country', { required: true })}
+                                                                    {...register('country', { required: true, })}
                                                                     error={errors.country}
                                                                 />
                                                             )}

@@ -145,16 +145,6 @@ export const dummy = {
     "https://fiverr-res.cloudinary.com/images/t_medium7,q_auto,f_auto,q_auto,f_auto/gigs/150311157/original/b2cffba150592f0c20aece34ffefa82869c3237d/develop-a-web-app-with-react-js-node-js.jpeg",
     "https://rainbowit.net/themes/inbio/wp-content/uploads/2021/08/portfolio-large-03-340x250.jpg"
   ],
-  commentCount: function () {
-    return this.comments?.length
-  },
-  ratingCount: function () {
-    let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-    return number.toFixed(1)
-  },
-  profileName: function () {
-    return `${this.firstName} ${this.lastName}`
-  },
   "__v": 0
 };
 
@@ -413,4 +403,21 @@ export const countryList = [
   "Kosovo",
   "Curaçao",
   "Sint Maarten (Dutch part)"
-]
+];
+
+
+
+export const commentCount = function (comments) {
+  return comments?.length
+};
+export const ratingCount = function (comments, commentCount) {
+  let number = comments.reduce((a, b) => a + b.rated, 0) / commentCount
+  return number.toFixed(1)
+};
+export const profileName = function (firstName, lastName) {
+  return `${firstName} ${lastName}`
+};
+
+// profileName(user?.firstName, user?.lastName)
+// ratingCount(user?.comments, commentCount(user?.comments))
+// commentCount(user?.comments)

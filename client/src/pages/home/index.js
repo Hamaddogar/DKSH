@@ -5,6 +5,7 @@ import UserList from "../../components/user-list";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { SERVICE_Filter_Options } from "../../RTK/Reducers/Reducers";
+import { commentCount, ratingCount } from "../../utils/HELPER";
 const Index = () => {
     const dispatch = useDispatch();
     const [listView, setListView] = useState(false);
@@ -18,7 +19,7 @@ const Index = () => {
             )
             const finalFilterdData = filterdData.filter(dev =>
                 (dev.hourlyRate >= priceFilter[0] && dev.hourlyRate <= priceFilter[1]) &&
-                (typeof (ratingFilter) === 'number' ? dev.ratingCount() >= Number(ratingFilter) : dev.ratingCount() >= 5) &&
+                (typeof (ratingFilter) === 'number' ? ratingCount(dev?.comments, commentCount(dev?.comments)) >= Number(ratingFilter) : ratingCount(dev?.comments, commentCount(dev?.comments)) >= 5) &&
                 ((dev.specialization.filter(item => item.toLowerCase().includes(servicesFilter === "All" ? "" : servicesFilter.toLowerCase())))?.length > 0) &&
                 (activeTab.toLowerCase() === "all" ? true : dev.mainCategory.toLowerCase() === activeTab.toLowerCase())
             )

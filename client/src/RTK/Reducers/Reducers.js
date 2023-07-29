@@ -177,7 +177,9 @@ const mainSlice = createSlice({
 
     RESET_TOKEN: (state, { payload }) => {
       state.resetToken = payload;
-      // state.openLoginBoxDesk = 'responded';
+      if (payload) {
+        state.openLoginBoxDesk = 'reset'
+      }
     },
 
     THEME_UPDATOR: (state, { payload }) => {
@@ -211,22 +213,7 @@ const mainSlice = createSlice({
       .addCase(allUsersGetter.fulfilled, (state, { payload }) => {
         state.loading = false;
         if (payload.success) {
-          const data = payload.users.map(user => {
-            return {
-              ...user,
-              commentCount: function () {
-                return this.comments.length
-              },
-              ratingCount: function () {
-                let number = this.comments.reduce((a, b) => a + b.rated, 0) / this.commentCount()
-                return number.toFixed(1)
-              },
-              profileName: function () {
-                return `${this.firstName} ${this.lastName}`
-              },
-            }
-          })
-          state.allDevelopers = data;
+          state.allDevelopers = payload.users;
         }
       })
       .addCase(allUsersGetter.rejected, (state, { error }) => {
