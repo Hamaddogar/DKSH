@@ -421,3 +421,41 @@ export const profileName = function (firstName, lastName) {
 // profileName(user?.firstName, user?.lastName)
 // ratingCount(user?.comments, commentCount(user?.comments))
 // commentCount(user?.comments)
+
+
+// Function to call the /country endpoint and get country information
+export const getCountryData = async () => {
+  try {
+    const response = await fetch(APIS.getCountry); // Replace '/country' with your actual endpoint URL
+    if (!response.ok) {
+      // Handle non-2xx status codes (e.g., 404 Not Found, 500 Internal Server Error)
+      throw new Error('Failed to fetch data from the server.');
+    }
+    const data = await response.json();
+    return data; // Return the data object containing country information
+  } catch (error) {
+    console.error('Error fetching country data:', error);
+    return null; // Return null or handle the error appropriately in your application
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

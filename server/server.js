@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const allJobsRouter = require('./Api/Router/allJobsRouter');
 const allUsersRouter = require('./Api/Router/allUsersRouter');
 const settingUpdateRouter = require('./Api/Router/settingUpdateRouter');
+const countryGetter = require('./Api/Router/countryRoute');
 
 
 app.use(cors());
@@ -31,6 +32,7 @@ app.use('/forgot', forgetRouter);
 app.use('/resetpassword', resetRouter);
 app.use('/', allJobsRouter);
 app.use('/', allUsersRouter);
+app.use('/', countryGetter);
 
 
 // ===========Deploy Purposes===========//

@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { ErrorText } from './ErrorText';
 import firebase from './firebase';
 import FormSam from './FormSam';
-import { countryList } from '../../utils/HELPER';
+import { countryList, getCountryData } from '../../utils/HELPER';
 
 
 
@@ -157,34 +157,16 @@ const LoginBoxLGHOC = () => {
     }, [openLoginBoxDesk]);
 
     React.useEffect(() => {
-        // Create an AbortController instance
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-        const apiUrl = 'http://ip-api.com/json/?fields=61439';
-
-        // Make the API request using fetch
         if (!value) {
-            fetch(apiUrl, { signal })
-                .then(response => {
-                    if (!response.ok) { throw new Error('Network response was not ok'); }
-                    return response.json();
-                })
-                .then(data => {
-                    setValue(data?.country);
-                    setValueRHF('country', data?.country);
-                })
-                .catch(error => {
-                    if (error.name === 'AbortError') {
-                        // console.log('Request aborted');
-                    } else {
-                        // console.error('Error fetching data:', error);
-                    }
-                });
+            (async () => {
+                const res = await getCountryData();
+                if (res.success) {
+                    setValue(res?.countryName);
+                    setValueRHF('country', res?.countryName);
+                }
+            })();
         }
-        // Cleanup function to abort the request when the component unmounts
-        return () => {
-            abortController.abort();
-        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (!matches) {

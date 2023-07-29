@@ -9,5 +9,6 @@ export const APIS = {
     signup: '/signup',
     forgot: '/forgot',
     resetpassword: '/resetpassword',
-    updateSettings: '/setting/update'
+    updateSettings: '/setting/update',
+    getCountry: '/country',
 }
