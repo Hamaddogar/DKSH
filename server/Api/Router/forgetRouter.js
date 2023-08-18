@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-const URL = 'https://dkshs-v2-56e538e53ee1.herokuapp.com/reset/';
+const URL = 'https://dksh-vercel.vercel.app/reset/';
 // const URL = 'http://localhost:3000/reset/';
 
 router.post('/', async (req, res) => {
