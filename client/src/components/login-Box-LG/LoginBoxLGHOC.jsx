@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -160,7 +162,7 @@ const LoginBoxLGHOC = () => {
         if (!value) {
             (async () => {
                 const res = await getCountryData();
-                if (res.success) {
+                if (res?.success) {
                     setValue(res?.countryName);
                     setValueRHF('country', res?.countryName);
                 }
