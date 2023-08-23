@@ -13,8 +13,8 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-const URL = 'https://dksh-vercel.vercel.app/reset/';
-// const URL = 'http://localhost:3000/reset/';
+// const URL = 'https://dksh-vercel.vercel.app/reset/';
+const URL = 'http://localhost:3000/reset/';
 
 router.post('/', async (req, res) => {
   const secretKey = 'your-secret-key'; // Replace with your own secret key
