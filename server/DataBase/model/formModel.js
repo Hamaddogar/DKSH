@@ -1,7 +1,7 @@
 // models/formModel.js
 
 const mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt-nodejs');
 const formSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
@@ -20,8 +20,8 @@ const formSchema = new mongoose.Schema({
 
 // bcrypt password code 
 formSchema.pre('save', function (next) {
-  var user = this;
-  var SALT_FACTOR = 5;
+  const user = this;
+  const SALT_FACTOR = 5;
   if (!user.isModified('password')) return next();
   bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
     if (err) return next(err);

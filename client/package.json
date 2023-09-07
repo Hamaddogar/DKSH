@@ -33,7 +33,10 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+        "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
+        "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
     },
     "eslintConfig": {
         "extends": [
@@ -52,5 +55,42 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@babel/core": "^7.22.9",
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+        "@babel/plugin-syntax-flow": "^7.22.5",
+        "@babel/plugin-transform-react-jsx": "^7.22.5",
+        "@types/autosuggest-highlight": "^3.2.0",
+        "@types/lodash": "^4.14.195",
+        "@types/mapbox-gl": "^2.7.11",
+        "@types/node": "^20.4.2",
+        "@types/nprogress": "^0.2.0",
+        "@types/numeral": "^2.0.2",
+        "@types/react": "^18.2.15",
+        "@types/react-dom": "^18.2.7",
+        "@types/react-lazy-load-image-component": "^1.5.3",
+        "@types/react-slick": "^0.23.10",
+        "@types/stylis": "^4.2.0",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "eslint": "^8.45.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-typescript": "^17.1.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-config-react-app": "^7.0.1",
+        "eslint-import-resolver-typescript": "^3.5.5",
+        "eslint-plugin-flowtype": "^8.0.3",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-jsx-a11y": "^6.7.1",
+        "eslint-plugin-prettier": "^5.0.0",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-unused-imports": "^3.0.0",
+        "prettier": "^3.0.0",
+        "typescript": "^4.9.5"
+    },
+    "overrides": {
+        "nth-check": "2.1.1"
     }
 }
