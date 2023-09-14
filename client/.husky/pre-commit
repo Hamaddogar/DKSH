@@ -1,0 +1,32 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Check if Husky is installed
+if [ -z "$HUSKY" ]; then
+    echo "Husky not found. Skipping pre-commit hook."
+    exit 0
+fi
+
+# Use nvm if available
+if command -v nvm &> /dev/null; then
+    nvm use || { echo "Error: Unable to switch Node.js version."; exit 1; }
+fi
+
+# Check if "git add" is being run
+if [ -n "$(git status --porcelain)" ]; then
+    # If files are staged, run "yarn run format" before committing
+    yarn run format || { echo "Error: yarn run format failed. Please fix formatting issues."; exit 1; }
+fi
+
+# Run lint-staged
+npx lint-staged
+
+# Capture the exit code of lint-staged
+exitCode=$?
+
+# Exit with the appropriate code
+if [ $exitCode -ne 0 ]; then
+    echo "Linting failed. Please fix the issues before committing."
+fi
+
+exit $exitCode

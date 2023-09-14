@@ -1,24 +1,63 @@
-import React, { useState } from "react";
-import { Avatar, Box, Button, Divider, Grid, Menu, MenuItem, Stack, alpha, styled } from "@mui/material";
-import Images from "../../assets/images";
-import MenuIcon from "@mui/icons-material/Menu";
-import Icon from "../../assets/icons";
-import firebase from '../login-Box-LG/firebase';
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useNavigate } from "react-router-dom";
-import "./styles.css";
-import { useDispatch, useSelector } from "react-redux";
-import { ACTIVE_TAB_Filter, LOGIN_BOX_HANDLE, LOG_OUT, SELECTED_PROFILE, THEME_UPDATOR } from "../../RTK/Reducers/Reducers";
-import LoginBoxLGHOC from "../login-Box-LG/LoginBoxLGHOC";
-import { DarkMode, ExitToApp, LightMode, Login } from "@mui/icons-material";
-import { commentCount, profileName, ratingCount, updateSetting } from "../../utils/HELPER";
-const { SubtractIcon, SelectIcon, StarIcon, MsgIcon, PeopleGroupIcon, PeopleWhite, HomeWhite, ForwardWhite, FileWhite } = Icon;
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unsafe-optional-chaining */
+import React, { useState, useEffect } from 'react';
+import {
+    Avatar,
+    Box,
+    Button,
+    Divider,
+    Grid,
+    Menu,
+    MenuItem,
+    Stack,
+    alpha,
+    styled,
+} from '@mui/material';
+import Images from '../../assets/images';
+import Icon from '../../assets/icons';
+import firebase from '../../modules/auth/firebase';
+import {
+    ExpandMore as ExpandMoreIcon,
+    ExpandLess as ExpandLessIcon,
+    Menu as MenuIcon,
+} from '@mui/icons-material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useNavigate } from 'react-router-dom';
+import './styles.css';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    ACTIVE_TAB_Filter,
+    LOGIN_BOX_HANDLE,
+    LOG_OUT,
+    SELECTED_PROFILE,
+    THEME_UPDATOR,
+} from '../../RTK/Reducers/Reducers';
+import LoginBoxLGHOC from '../../modules/auth';
+import { DarkMode, ExitToApp, LightMode, Login } from '@mui/icons-material';
+import { commentCount, profileName, ratingCount, updateSetting } from '../../utils/HELPER';
+
+const {
+    SubtractIcon,
+    SelectIcon,
+    StarIcon,
+    MsgIcon,
+    PeopleGroupIcon,
+    PeopleWhite,
+    HomeWhite,
+    ForwardWhite,
+    FileWhite,
+} = Icon;
 const NotificationsIcons = (dark) => {
     if (dark)
         return (
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
                 <g clipPath="url(#clip0_408_2383)">
                     <path
                         fillRule="evenodd"
@@ -37,7 +76,13 @@ const NotificationsIcons = (dark) => {
         );
 
     return (
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <g clipPath="url(#clip0_404_13554)">
                 <g clipPath="url(#clip1_404_13554)">
                     <path
@@ -75,7 +120,13 @@ const NotificationsIcons = (dark) => {
 const iconBell = (dark) => {
     if (dark)
         return (
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
                 <g clipPath="url(#clip0_408_2380)">
                     <g clipPath="url(#clip1_408_2380)">
                         <path
@@ -111,7 +162,13 @@ const iconBell = (dark) => {
         );
 
     return (
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <g clipPath="url(#clip0_404_13557)">
                 <path
                     fillRule="evenodd"
@@ -132,7 +189,13 @@ const iconBell = (dark) => {
 const searchIcon = (dark) => {
     if (dark)
         return (
-            <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+                width="17"
+                height="18"
+                viewBox="0 0 17 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
                 <path
                     d="M1.4301 10.4842L2.16028 10.3129L1.4301 10.4842ZM1.4301 5.93667L2.16028 6.10794L1.4301 5.93667ZM14.3248 5.93667L15.0549 5.76539L14.3248 5.93667ZM14.3248 10.4842L15.0549 10.6555L14.3248 10.4842ZM10.1512 14.6578L9.97992 13.9276L10.1512 14.6578ZM5.60366 14.6578L5.43238 15.3879L5.60366 14.6578ZM5.60366 1.76311L5.43238 1.03293V1.03293L5.60366 1.76311ZM10.1512 1.76311L10.3225 1.03293L10.1512 1.76311ZM15.6367 17.0303C15.9296 17.3232 16.4044 17.3232 16.6973 17.0303C16.9902 16.7374 16.9902 16.2626 16.6973 15.9697L15.6367 17.0303ZM2.16028 10.3129C1.8359 8.93004 1.8359 7.49084 2.16028 6.10794L0.699918 5.76539C0.322683 7.3736 0.322683 9.04728 0.699918 10.6555L2.16028 10.3129ZM13.5946 6.10795C13.919 7.49084 13.919 8.93004 13.5946 10.3129L15.0549 10.6555C15.4322 9.04728 15.4322 7.3736 15.0549 5.76539L13.5946 6.10795ZM9.97992 13.9276C8.59703 14.252 7.15783 14.252 5.77494 13.9276L5.43238 15.3879C7.04059 15.7652 8.71427 15.7652 10.3225 15.3879L9.97992 13.9276ZM5.77494 2.49329C7.15783 2.1689 8.59703 2.1689 9.97992 2.49329L10.3225 1.03293C8.71427 0.655691 7.04059 0.655692 5.43238 1.03293L5.77494 2.49329ZM5.77494 13.9276C3.9814 13.5069 2.58099 12.1065 2.16028 10.3129L0.699918 10.6555C1.25073 13.0037 3.08421 14.8371 5.43238 15.3879L5.77494 13.9276ZM10.3225 15.3879C12.6707 14.8371 14.5041 13.0037 15.0549 10.6555L13.5946 10.3129C13.1739 12.1065 11.7735 13.5069 9.97992 13.9276L10.3225 15.3879ZM9.97992 2.49329C11.7735 2.91399 13.1739 4.31441 13.5946 6.10795L15.0549 5.76539C14.5041 3.41721 12.6707 1.58373 10.3225 1.03293L9.97992 2.49329ZM5.43238 1.03293C3.0842 1.58373 1.25073 3.41721 0.699918 5.76539L2.16028 6.10794C2.58099 4.3144 3.9814 2.91399 5.77494 2.49329L5.43238 1.03293ZM12.5826 13.9763L15.6367 17.0303L16.6973 15.9697L13.6433 12.9156L12.5826 13.9763Z"
                     fill="white"
@@ -141,7 +204,13 @@ const searchIcon = (dark) => {
         );
 
     return (
-        <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="17"
+            height="18"
+            viewBox="0 0 17 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 d="M1.42986 10.4842L2.16004 10.3129L1.42986 10.4842ZM1.42986 5.93667L2.16004 6.10794L1.42986 5.93667ZM14.3245 5.93667L15.0547 5.76539L14.3245 5.93667ZM14.3245 10.4842L15.0547 10.6555L14.3245 10.4842ZM10.151 14.6578L9.97968 13.9276L10.151 14.6578ZM5.60342 14.6578L5.43214 15.3879L5.60342 14.6578ZM5.60342 1.76311L5.43214 1.03293V1.03293L5.60342 1.76311ZM10.151 1.76311L10.3222 1.03293L10.151 1.76311ZM15.6364 17.0303C15.9293 17.3232 16.4042 17.3232 16.6971 17.0303C16.99 16.7374 16.99 16.2626 16.6971 15.9697L15.6364 17.0303ZM2.16004 10.3129C1.83565 8.93004 1.83565 7.49084 2.16004 6.10794L0.699674 5.76539C0.322439 7.3736 0.322439 9.04728 0.699674 10.6555L2.16004 10.3129ZM13.5943 6.10795C13.9187 7.49084 13.9187 8.93004 13.5943 10.3129L15.0547 10.6555C15.4319 9.04728 15.4319 7.3736 15.0547 5.76539L13.5943 6.10795ZM9.97968 13.9276C8.59678 14.252 7.15759 14.252 5.77469 13.9276L5.43214 15.3879C7.04034 15.7652 8.71403 15.7652 10.3222 15.3879L9.97968 13.9276ZM5.77469 2.49329C7.15759 2.1689 8.59679 2.1689 9.97968 2.49329L10.3222 1.03293C8.71403 0.655691 7.04034 0.655692 5.43214 1.03293L5.77469 2.49329ZM5.77469 13.9276C3.98115 13.5069 2.58074 12.1065 2.16004 10.3129L0.699674 10.6555C1.25048 13.0037 3.08396 14.8371 5.43214 15.3879L5.77469 13.9276ZM10.3222 15.3879C12.6704 14.8371 14.5039 13.0037 15.0547 10.6555L13.5943 10.3129C13.1736 12.1065 11.7732 13.5069 9.97968 13.9276L10.3222 15.3879ZM9.97968 2.49329C11.7732 2.91399 13.1736 4.31441 13.5943 6.10795L15.0547 5.76539C14.5039 3.41721 12.6704 1.58373 10.3222 1.03293L9.97968 2.49329ZM5.43214 1.03293C3.08396 1.58373 1.25048 3.41721 0.699674 5.76539L2.16004 6.10794C2.58074 4.3144 3.98115 2.91399 5.77469 2.49329L5.43214 1.03293ZM12.5824 13.9763L15.6364 17.0303L16.6971 15.9697L13.643 12.9156L12.5824 13.9763Z"
                 fill="#090B0C"
@@ -150,10 +219,17 @@ const searchIcon = (dark) => {
     );
 };
 const searchButton = (searchDropdown, dark) => {
-    if (searchDropdown) return <img alt="" src={SubtractIcon} style={{ marginTop: "5px", width: "20px" }} />;
+    if (searchDropdown)
+        return <img alt="" src={SubtractIcon} style={{ marginTop: '5px', width: '20px' }} />;
     if (dark) return <img alt="" src={ForwardWhite} />;
     return (
-        <svg width="25" height="28" viewBox="0 0 25 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="25"
+            height="28"
+            viewBox="0 0 25 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <rect x="0.666748" width="24" height="28" rx="8" fill="#EDF0F3" />
             <path d="M10.0147 19.722H8.43275L15.0827 6.45H16.6647L10.0147 19.722Z" fill="#090B0C" />
         </svg>
@@ -162,7 +238,13 @@ const searchButton = (searchDropdown, dark) => {
 const networkButton = (dark) => {
     if (dark) return <img alt="" src={PeopleWhite} />;
     return (
-        <svg width="19" height="17" viewBox="0 0 19 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="19"
+            height="17"
+            viewBox="0 0 19 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -175,7 +257,13 @@ const networkButton = (dark) => {
 const ArrowIcon = () => {
     return (
         <>
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+                width="10"
+                height="6"
+                viewBox="0 0 10 6"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
                 <path
                     fillRule="evenodd"
                     clipRule="evenodd"
@@ -189,7 +277,13 @@ const ArrowIcon = () => {
 const JobsIcon = (dark) => {
     if (dark) return <img alt="" src={FileWhite} />;
     return (
-        <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="19"
+            height="18"
+            viewBox="0 0 19 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -202,7 +296,13 @@ const JobsIcon = (dark) => {
 const HomeButtonIcon = (dark) => {
     if (dark) return <img alt="" src={HomeWhite} />;
     return (
-        <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="19"
+            height="20"
+            viewBox="0 0 19 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -219,14 +319,33 @@ const HomeButtonIcon = (dark) => {
     );
 };
 
-const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector) => {
-    const users = allDevelopers.map(dev => {
-        return { id: dev._id, profileImg: dev.avatar, username: profileName(dev.firstName, dev.lastName), rating: ratingCount(dev.comments, commentCount(dev.comments)), comments: commentCount(dev.comments) }
+const SearchFieldWithDropdown = (
+    searchDropdown,
+    setSearchDropdown,
+    dark,
+    matches,
+    allDevelopers,
+    handleClickUser,
+    handleClickService,
+    searchIt,
+    setsearchIt,
+    userSelector,
+    setUserSelector
+) => {
+    const users = allDevelopers.map((dev) => {
+        return {
+            id: dev._id,
+            profileImg: dev.avatar,
+            username: profileName(dev.firstName, dev.lastName),
+            rating: ratingCount(dev.comments, commentCount(dev.comments)),
+            comments: commentCount(dev.comments),
+        };
     });
     const [services, setServices] = useState([]);
 
     const servicesFunction = React.useMemo(() => {
         const filteredServices = allDevelopers.reduce((count, item) => {
+            // eslint-disable-next-line prefer-destructuring
             const mainCategory = item.mainCategory;
             const userName = item.firstName.toLowerCase() + ' ' + item.lastName.toLowerCase();
 
@@ -252,111 +371,215 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
         setServices(servicesFunction);
     }, [servicesFunction]);
 
-    React.useEffect(handleEffect, [handleEffect]);
+    useEffect(handleEffect, [handleEffect]);
 
-
-    const handleClose = () => setSearchDropdown(false)
+    const handleClose = () => setSearchDropdown(false);
     const activeViewDown = () => {
-        const activeList = users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))
-        const newIndex = Math.abs((userSelector.index - 1) % activeList?.length)
-        document.getElementById('user-container').scrollTop -= (userSelector.index < 4 || userSelector.index < activeList?.length - 4 ? 40 : 5);
-        setUserSelector({ index: newIndex, thisUser: activeList[newIndex] })
-    }
+        const activeList = users.filter((dev) =>
+            dev.username.toLowerCase().includes(searchIt.toLowerCase())
+        );
+        const newIndex = Math.abs((userSelector.index - 1) % activeList?.length);
+        document.getElementById('user-container').scrollTop -=
+            userSelector.index < 4 || userSelector.index < activeList?.length - 4 ? 40 : 5;
+        setUserSelector({ index: newIndex, thisUser: activeList[newIndex] });
+    };
     const activeViewUp = () => {
-        const activeList = users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))
+        const activeList = users.filter((dev) =>
+            dev.username.toLowerCase().includes(searchIt.toLowerCase())
+        );
         const newIndex = Math.abs((userSelector.index + 1) % users?.length);
-        document.getElementById('user-container').scrollTop = newIndex === 0 ? 0 : userSelector.index * 40;
-        setUserSelector({ index: newIndex, thisUser: activeList[newIndex] })
-    }
+        document.getElementById('user-container').scrollTop =
+            newIndex === 0 ? 0 : userSelector.index * 40;
+        setUserSelector({ index: newIndex, thisUser: activeList[newIndex] });
+    };
     const selectUser = () => {
         handleClickUser(userSelector.thisUser);
-        handleClose()
-    }
+        handleClose();
+    };
 
-    React.useEffect(() => {
-        if (searchDropdown && typeof (userSelector.index) === "number") {
-            document.getElementById('user-container').scrollTop = userSelector.index * (userSelector.index < 4 ? 5 : 30);
+    useEffect(() => {
+        if (searchDropdown && typeof userSelector.index === 'number') {
+            document.getElementById('user-container').scrollTop =
+                userSelector.index * (userSelector.index < 4 ? 5 : 30);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchDropdown])
+    }, [searchDropdown]);
 
     return (
-        <div className={"search-bar"}>
-            <div className={dark ? "search-input-container search-input-container-dark" : "search-input-container"}>
+        <div className={'search-bar'}>
+            <div
+                className={
+                    dark
+                        ? 'search-input-container search-input-container-dark'
+                        : 'search-input-container'
+                }
+            >
                 <div className="search-icon">{searchIcon(dark)}</div>
                 <input
                     type="text"
                     onClick={() => setSearchDropdown(true)}
-                    className={dark ? "search-input search-input-dark" : "search-input"}
+                    className={dark ? 'search-input search-input-dark' : 'search-input'}
                     placeholder="Search candidate, competencies, services"
-                    onChange={e => setsearchIt(e.target.value)}
+                    onChange={(e) => setsearchIt(e.target.value)}
                 />
-                <div onClick={() => setSearchDropdown(false)} style={{ cursor: 'pointer' }} className={dark ? "right-image right-image-dark" : "right-image"}>{searchButton(searchDropdown, dark)}</div>
+                <div
+                    onClick={() => setSearchDropdown(false)}
+                    style={{ cursor: 'pointer' }}
+                    className={dark ? 'right-image right-image-dark' : 'right-image'}
+                >
+                    {searchButton(searchDropdown, dark)}
+                </div>
             </div>
 
-            {searchDropdown &&
-                <div className={dark ? "search-dropdown-container search-dropdown-container-dark " : "search-dropdown-container"} style={{ width: "100%" }}>
-                    <div className={dark ? "search-dropdown-content-container search-dropdown-content-container-dark" : "search-dropdown-content-container"}>
+            {searchDropdown && (
+                <div
+                    className={
+                        dark
+                            ? 'search-dropdown-container search-dropdown-container-dark '
+                            : 'search-dropdown-container'
+                    }
+                    style={{ width: '100%' }}
+                >
+                    <div
+                        className={
+                            dark
+                                ? 'search-dropdown-content-container search-dropdown-content-container-dark'
+                                : 'search-dropdown-content-container'
+                        }
+                    >
                         <div className="dropdown-header" style={{ paddingBottom: 8 }}>
                             <h4 style={{ margin: 0 }}>
-                                Talents{" "}
+                                Talents{' '}
                                 <span className="number_of_talents" style={{ paddingLeft: 20 }}>
                                     {allDevelopers?.length}
                                 </span>
                             </h4>
                             <div className="see-all">See All</div>
                         </div>
-                        <div className={dark ? "scrollbox-dark" : "scrollbox"} id='user-container'>
-                            {(users.filter(dev => dev.username.toLowerCase().includes(searchIt.toLowerCase()))).map((user, k) => (
-                                <Box
-                                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s', paddingRight: '5px', backgroundColor: userSelector.index === k ? 'rgb(0, 120, 212,.1)' : 'none' }}
-                                    className="dropdown-content" key={k}
-                                    onClick={e => { handleClickUser(user, k); setSearchDropdown(false) }}>
-                                    <div className="dis-flex">
-                                        {CustomIcon(<img alt="" width={25} src={user.profileImg} style={{ borderRadius: "50%", background: "none" }} />)}
-                                        <label className="searched-username"> {user.username}</label>
-                                    </div>
-                                    <div className="dis-flex" style={{ gap: 20 }}>
+                        <div className={dark ? 'scrollbox-dark' : 'scrollbox'} id="user-container">
+                            {users
+                                .filter((dev) =>
+                                    dev.username.toLowerCase().includes(searchIt.toLowerCase())
+                                )
+                                .map((user, k) => (
+                                    <Box
+                                        sx={{
+                                            cursor: 'pointer',
+                                            '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' },
+                                            tranisition: '.2s',
+                                            paddingRight: '5px',
+                                            backgroundColor:
+                                                userSelector.index === k
+                                                    ? 'rgb(0, 120, 212,.1)'
+                                                    : 'none',
+                                        }}
+                                        className="dropdown-content"
+                                        key={k}
+                                        onClick={(e) => {
+                                            handleClickUser(user, k);
+                                            setSearchDropdown(false);
+                                        }}
+                                    >
                                         <div className="dis-flex">
-                                            <img alt="" src={StarIcon} width={22} />
-                                            <label className={dark ? "label label-dark" : "label"}> {user.rating} / 5</label>
+                                            {CustomIcon(
+                                                <img
+                                                    alt=""
+                                                    width={25}
+                                                    src={user.profileImg}
+                                                    style={{
+                                                        borderRadius: '50%',
+                                                        background: 'none',
+                                                    }}
+                                                />
+                                            )}
+                                            <label className="searched-username">
+                                                {' '}
+                                                {user.username}
+                                            </label>
                                         </div>
-                                        <div className="dis-flex">
-                                            <img alt="" src={!dark ? MsgIcon : Images.IconDarkLight} width={21} height={19} />
-                                            <label className={dark ? "label label-dark" : "label"}> {user.comments}</label>
+                                        <div className="dis-flex" style={{ gap: 20 }}>
+                                            <div className="dis-flex">
+                                                <img alt="" src={StarIcon} width={22} />
+                                                <label
+                                                    className={dark ? 'label label-dark' : 'label'}
+                                                >
+                                                    {' '}
+                                                    {user.rating} / 5
+                                                </label>
+                                            </div>
+                                            <div className="dis-flex">
+                                                <img
+                                                    alt=""
+                                                    src={!dark ? MsgIcon : Images.IconDarkLight}
+                                                    width={21}
+                                                    height={19}
+                                                />
+                                                <label
+                                                    className={dark ? 'label label-dark' : 'label'}
+                                                >
+                                                    {' '}
+                                                    {user.comments}
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Box>
-                            ))}
+                                    </Box>
+                                ))}
                         </div>
-                        <div className="dropdown-header" style={{ paddingBottom: 10, paddingTop: 6 }}>
+                        <div
+                            className="dropdown-header"
+                            style={{ paddingBottom: 10, paddingTop: 6 }}
+                        >
                             <h4 style={{ margin: 0 }}>
-                                Services{" "}
+                                Services{' '}
                                 <span className="number_of_talents" style={{ paddingLeft: 20 }}>
                                     {services?.length}
                                 </span>
                             </h4>
                             <div className="see-all">See All</div>
                         </div>
-                        <div className={dark ? "scrollbox-dark" : "scrollbox"}>
+                        <div className={dark ? 'scrollbox-dark' : 'scrollbox'}>
                             {services?.map((service, k) => (
                                 <Box
-                                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' }, tranisition: '.2s', paddingRight: '5px' }}
-                                    className="dropdown-content" key={k}
-                                    onClick={e => { handleClickService(service); setSearchDropdown(false) }}>
+                                    sx={{
+                                        cursor: 'pointer',
+                                        '&:hover': { backgroundColor: 'rgb(0, 120, 212,.1)' },
+                                        tranisition: '.2s',
+                                        paddingRight: '5px',
+                                    }}
+                                    className="dropdown-content"
+                                    key={k}
+                                    onClick={(e) => {
+                                        handleClickService(service);
+                                        setSearchDropdown(false);
+                                    }}
+                                >
                                     <div className="dis-flex">
                                         {CustomIcon(searchIcon())}
-                                        <label className="searched-username"> {service.title}</label>
+                                        <label className="searched-username">
+                                            {' '}
+                                            {service.title}
+                                        </label>
                                     </div>
                                     <div className="dis-flex">
-                                        <img alt="" src={dark ? PeopleWhite : PeopleGroupIcon} width={18} />
-                                        <label className={dark ? "label label-dark" : "label"}> {service.search_result}</label>
+                                        <img
+                                            alt=""
+                                            src={dark ? PeopleWhite : PeopleGroupIcon}
+                                            width={18}
+                                        />
+                                        <label className={dark ? 'label label-dark' : 'label'}>
+                                            {' '}
+                                            {service.search_result}
+                                        </label>
                                     </div>
                                 </Box>
                             ))}
                         </div>
                     </div>
-                    <div className={dark ? "dropdown-footer dropdown-footer-dark" : "dropdown-footer"} style={{ display: "flex", flexWrap: 'wrap' }}>
+                    <div
+                        className={
+                            dark ? 'dropdown-footer dropdown-footer-dark' : 'dropdown-footer'
+                        }
+                        style={{ display: 'flex', flexWrap: 'wrap' }}
+                    >
                         <div className="dis-flex">
                             {CustomIcon(<ExpandLessIcon />, activeViewDown)}
                             {CustomIcon(<ExpandMoreIcon />, activeViewUp)}
@@ -372,7 +595,7 @@ const SearchFieldWithDropdown = (searchDropdown, setSearchDropdown, dark, matche
                         </div>
                     </div>
                 </div>
-            }
+            )}
         </div>
     );
 };
@@ -394,8 +617,7 @@ const StyledMenu = styled((props) => (
         borderRadius: 6,
         marginTop: theme.spacing(1),
         minWidth: 180,
-        color:
-            theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+        color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
         boxShadow:
             'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
         '& .MuiMenu-list': {
@@ -410,7 +632,7 @@ const StyledMenu = styled((props) => (
             '&:active': {
                 backgroundColor: alpha(
                     theme.palette.primary.main,
-                    theme.palette.action.selectedOpacity,
+                    theme.palette.action.selectedOpacity
                 ),
             },
         },
@@ -420,25 +642,24 @@ const StyledMenu = styled((props) => (
 const Index = ({ dark }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const matches = useMediaQuery("(min-width:768px)");
+    const matches = useMediaQuery('(min-width:768px)');
     const [searchDropdown, setSearchDropdown] = useState(false);
     const [userSelector, setUserSelector] = useState({ index: '0', thisUser: '' });
-    const [searchIt, setsearchIt] = useState("");
-    const { allDevelopers, currentUser } = useSelector(store => store.mainReducer)
+    const [searchIt, setsearchIt] = useState('');
+    const { allDevelopers, currentUser } = useSelector((store) => store.mainReducer);
     const handleClickUser = (profile, index) => {
-        const user = allDevelopers.filter(dev => dev._id === profile.id);
-        setUserSelector({ index: index, thisUser: user[0] })
-        dispatch(SELECTED_PROFILE(user[0]))
+        const user = allDevelopers.filter((dev) => dev._id === profile.id);
+        setUserSelector({ index: index, thisUser: user[0] });
+        dispatch(SELECTED_PROFILE(user[0]));
         navigate('/network');
-    }
+    };
     const handleClickService = (service) => {
-        dispatch(ACTIVE_TAB_Filter(service.title))
-        navigate('/')
-    }
+        dispatch(ACTIVE_TAB_Filter(service.title));
+        navigate('/');
+    };
 
-    const handleLogin = () => dispatch(LOGIN_BOX_HANDLE('login'))
-    const handleSignUp = () => dispatch(LOGIN_BOX_HANDLE('signup'))
-
+    const handleLogin = () => dispatch(LOGIN_BOX_HANDLE('login'));
+    const handleSignUp = () => dispatch(LOGIN_BOX_HANDLE('signup'));
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -447,53 +668,101 @@ const Index = ({ dark }) => {
 
     const handleLogOut = async () => {
         await firebase.auth().signOut();
-        dispatch(LOG_OUT())
-        handleClose()
-    }
+        dispatch(LOG_OUT());
+        handleClose();
+    };
 
     const handleDarkMode = () => {
-        console.log("dark", dark);
-        dispatch(THEME_UPDATOR(!dark))
-        if (currentUser && !("local" in currentUser)) {
+        console.log('dark', dark);
+        dispatch(THEME_UPDATOR(!dark));
+        if (currentUser && !('local' in currentUser)) {
             updateSetting({
                 userId: currentUser?._id,
-                settings: { darkTheme: !dark }
+                settings: { darkTheme: !dark },
             });
         }
     };
 
-
-
     // Mobile View
     if (!matches)
         return (
-            <div className={dark ? "header-container header-container-dark " : "header-container"} style={{ display: "block", paddingTop: "12px" }}>
+            <div
+                className={dark ? 'header-container header-container-dark ' : 'header-container'}
+                style={{ display: 'block', paddingTop: '12px' }}
+            >
                 <LoginBoxLGHOC />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div
-                    >
-                        {currentUser ?
-                            <div className="profile-container"
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <div>
+                        {currentUser ? (
+                            <div
+                                className="profile-container"
                                 style={{ cursor: 'pointer' }}
                                 id="profile-button"
                                 aria-controls={open ? 'profile-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                variant="contained"
-                                disableElevation
-                                onClick={handleClick} >
-                                {currentUser?.avatar && <Avatar className="header-Profile-icon" alt={currentUser?.firstName} src={currentUser?.avatar} />}
-                                {!currentUser?.avatar && <Avatar className="header-Profile-icon" >{(currentUser?.firstName).charAt(0).toUpperCase()}</Avatar>}
+                                onClick={handleClick}
+                            >
+                                {currentUser?.avatar && (
+                                    <Avatar
+                                        className="header-Profile-icon"
+                                        alt={currentUser?.firstName}
+                                        src={currentUser?.avatar}
+                                    />
+                                )}
+                                {!currentUser?.avatar && (
+                                    <Avatar className="header-Profile-icon">
+                                        {(currentUser?.firstName).charAt(0).toUpperCase()}
+                                    </Avatar>
+                                )}
 
-                                <div className={dark ? "header-Profile-Name header-Profile-Name-dark" : "header-Profile-Name"}>{currentUser?.fullName} </div>
+                                <div
+                                    className={
+                                        dark
+                                            ? 'header-Profile-Name header-Profile-Name-dark'
+                                            : 'header-Profile-Name'
+                                    }
+                                >
+                                    {currentUser?.fullName}{' '}
+                                </div>
                                 <div style={{ paddingLeft: 10 }}>{ArrowIcon()}</div>
                             </div>
-                            :
-                            <Stack direction='row' alignItems='center' justifyContent='flex-end' spacing={2}>
-                                <Button sx={{ ...signUpBtn }} size='small' onClick={handleSignUp} className='signUpBtn'>Sign Up</Button>
-                                <Button disableElevation disableRipple sx={{ ...loginBtn, color: dark ? '#FFFFFF' : '#090B0C', '&:hover': { background: dark ? '#090B0C' : '#FBFBFC' } }} size='small' onClick={handleLogin}>Login</Button>
+                        ) : (
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="flex-end"
+                                spacing={2}
+                            >
+                                <Button
+                                    sx={{ ...signUpBtn }}
+                                    size="small"
+                                    onClick={handleSignUp}
+                                    className="signUpBtn"
+                                >
+                                    Sign Up
+                                </Button>
+                                <Button
+                                    disableElevation
+                                    disableRipple
+                                    sx={{
+                                        ...loginBtn,
+                                        color: dark ? '#FFFFFF' : '#090B0C',
+                                        '&:hover': { background: dark ? '#090B0C' : '#FBFBFC' },
+                                    }}
+                                    size="small"
+                                    onClick={handleLogin}
+                                >
+                                    Login
+                                </Button>
                             </Stack>
-                        }
+                        )}
                     </div>
                     <div>
                         <div className="header-notification-btn">
@@ -504,22 +773,46 @@ const Index = ({ dark }) => {
                 </div>
 
                 <Grid item xs={12} sm={12} sx={{ mt: 3 }}>
-                    {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector)}
+                    {SearchFieldWithDropdown(
+                        searchDropdown,
+                        setSearchDropdown,
+                        dark,
+                        matches,
+                        allDevelopers,
+                        handleClickUser,
+                        handleClickService,
+                        searchIt,
+                        setsearchIt,
+                        userSelector,
+                        setUserSelector
+                    )}
                 </Grid>
 
                 <StyledMenu
                     id="profile-menu"
-                    sx={{ '& ul': dark ? { background: '#121619', border: '1px solid #5D6974', color: 'white !important' } : {} }}
+                    sx={{
+                        '& ul': dark
+                            ? {
+                                  background: '#121619',
+                                  border: '1px solid #5D6974',
+                                  color: 'white !important',
+                              }
+                            : {},
+                    }}
                     MenuListProps={{
                         'aria-labelledby': 'profile-button',
-                        backgronudColor: 'red'
+                        backgronudColor: 'red',
                     }}
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleLogOut} disableRipple sx={{ fontSize: '13px' }}>
-                        {currentUser ? <ExitToApp sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} /> : <Login sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />}
+                        {currentUser ? (
+                            <ExitToApp sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />
+                        ) : (
+                            <Login sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />
+                        )}
                         Logout
                     </MenuItem>
                     <Divider sx={{ my: 0.5 }} />
@@ -527,97 +820,198 @@ const Index = ({ dark }) => {
                         {dark ? <LightMode sx={{ color: '#CCCCCC !important' }} /> : <DarkMode />}
                         {dark ? 'Day Mode' : 'Night Mode'}
                     </MenuItem>
-
                 </StyledMenu>
             </div>
         );
     // desktop view
 
-    return <div className={dark ? "header-container header-container-dark " : "header-container"}>
-        <LoginBoxLGHOC />
-        <Grid container spacing={2} alignItems='center' justifyContent='space-between'>
-            <Grid item xs={10.5} sm={2} md={1.5} lg={1.7} sx={{ display: { sm: "none", md: "block" } }}>
-                <img alt="" src={dark ? Images.WhiteLogo : Images.Logo} className="header-logo" />
-            </Grid>
-            <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={6} md={currentUser ? 2.5 : 3.5} lg={4}>
-                {SearchFieldWithDropdown(searchDropdown, setSearchDropdown, dark, matches, allDevelopers, handleClickUser, handleClickService, searchIt, setsearchIt, userSelector, setUserSelector)}
-            </Grid>
-            <Grid item sx={{ display: { xs: "block", sm: "none", md: "none", lg: "none" } }} xs={1.5}>
-                <MenuIcon className="Menu-Icon" />
-            </Grid>
-            <Grid item sx={{ display: { sm: "none", md: "block" } }} xs={12} sm={6} md={currentUser ? 3.5 : 2}>
-                <div className="header-button-flex">
-                    <div className={dark ? "header-Home-btn header-Home-btn-dark" : "header-Home-btn"} onClick={() => navigate("/")}>
-                        {HomeButtonIcon(dark)} <span className="Home-margin">Home</span>
+    return (
+        <div className={dark ? 'header-container header-container-dark ' : 'header-container'}>
+            <LoginBoxLGHOC />
+            <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+                <Grid
+                    item
+                    xs={10.5}
+                    sm={2}
+                    md={1.5}
+                    lg={1.7}
+                    sx={{ display: { sm: 'none', md: 'block' } }}
+                >
+                    <img
+                        alt=""
+                        src={dark ? Images.WhiteLogo : Images.Logo}
+                        className="header-logo"
+                    />
+                </Grid>
+                <Grid
+                    item
+                    sx={{ display: { xs: 'none', sm: 'block' } }}
+                    xs={5}
+                    sm={6}
+                    md={currentUser ? 2.5 : 3.5}
+                    lg={4}
+                >
+                    {SearchFieldWithDropdown(
+                        searchDropdown,
+                        setSearchDropdown,
+                        dark,
+                        matches,
+                        allDevelopers,
+                        handleClickUser,
+                        handleClickService,
+                        searchIt,
+                        setsearchIt,
+                        userSelector,
+                        setUserSelector
+                    )}
+                </Grid>
+                <Grid
+                    item
+                    sx={{ display: { xs: 'block', sm: 'none', md: 'none', lg: 'none' } }}
+                    xs={1.5}
+                >
+                    <MenuIcon className="Menu-Icon" />
+                </Grid>
+                <Grid
+                    item
+                    sx={{ display: { sm: 'none', md: 'block' } }}
+                    xs={12}
+                    sm={6}
+                    md={currentUser ? 3.5 : 2}
+                >
+                    <div className="header-button-flex">
+                        <div
+                            className={
+                                dark ? 'header-Home-btn header-Home-btn-dark' : 'header-Home-btn'
+                            }
+                            onClick={() => navigate('/')}
+                        >
+                            {HomeButtonIcon(dark)} <span className="Home-margin">Home</span>
+                        </div>
+                        {currentUser && (
+                            <div className="header-jobs-btn" onClick={() => navigate('/network')}>
+                                {networkButton(dark)}{' '}
+                                <span className="Home-margin">My network</span>
+                            </div>
+                        )}
+                        <div className="header-jobs-btn" onClick={() => navigate('/jobs')}>
+                            {JobsIcon(dark)} <span className="Home-margin">Jobs</span>
+                        </div>
                     </div>
-                    {currentUser && <div className="header-jobs-btn" onClick={() => navigate("/network")}>
-                        {networkButton(dark)} <span className="Home-margin">My network</span>
-                    </div>}
-                    <div className="header-jobs-btn" onClick={() => navigate("/jobs")}>
-                        {JobsIcon(dark)} <span className="Home-margin">Jobs</span>
+                </Grid>
+                <Grid item sx={{ display: { xs: 'none', sm: 'block' } }} xs={5} sm={2} md={1}>
+                    <div className="header-notification-btn">
+                        {NotificationsIcons(dark)}
+                        {iconBell(dark)}
                     </div>
-                </div>
+                </Grid>
+                <Grid
+                    item
+                    sx={{ display: { xs: 'none', sm: 'block' } }}
+                    xs={7}
+                    sm={3}
+                    md={currentUser ? 1.5 : 2}
+                >
+                    {currentUser ? (
+                        <div
+                            className="profile-container"
+                            style={{ cursor: 'pointer' }}
+                            id="profile-button"
+                            aria-controls={open ? 'profile-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                            onClick={handleClick}
+                        >
+                            <div
+                                className={
+                                    dark
+                                        ? 'header-Profile-Name header-Profile-Name-dark'
+                                        : 'header-Profile-Name'
+                                }
+                            >
+                                {currentUser?.fullName}
+                            </div>
+                            {currentUser?.avatar && (
+                                <Avatar
+                                    className="header-Profile-icon"
+                                    alt={currentUser?.firstName}
+                                    src={currentUser?.avatar}
+                                />
+                            )}
+                            {!currentUser?.avatar && (
+                                <Avatar className="header-Profile-icon">
+                                    {(currentUser?.firstName).charAt(0).toUpperCase()}
+                                </Avatar>
+                            )}
+                            <div>{ArrowIcon()}</div>
+                        </div>
+                    ) : (
+                        <Stack
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="flex-end"
+                            spacing={2}
+                        >
+                            <Button
+                                disableElevation
+                                disableRipple
+                                sx={{
+                                    ...loginBtn,
+                                    color: dark ? '#FFFFFF' : '#090B0C',
+                                    '&:hover': { background: dark ? '#090B0C' : '#FBFBFC' },
+                                }}
+                                size="small"
+                                onClick={handleLogin}
+                            >
+                                Login
+                            </Button>
+                            <Button
+                                sx={{ ...signUpBtn }}
+                                size="small"
+                                onClick={handleSignUp}
+                                className="signUpBtn"
+                            >
+                                Sign Up
+                            </Button>
+                        </Stack>
+                    )}
+                </Grid>
             </Grid>
-            <Grid item sx={{ display: { xs: "none", sm: "block" } }} xs={5} sm={2} md={1}  >
-                <div className="header-notification-btn">
-                    {NotificationsIcons(dark)}
-                    {iconBell(dark)}
-                </div>
-            </Grid>
-            <Grid
-                item
-                sx={{ display: { xs: "none", sm: "block" } }}
-                xs={7}
-                sm={3}
-                md={currentUser ? 1.5 : 2}
+            <StyledMenu
+                id="profile-menu"
+                sx={{
+                    '& ul': dark
+                        ? {
+                              background: '#121619',
+                              border: '1px solid #5D6974',
+                              color: 'white !important',
+                          }
+                        : {},
+                }}
+                MenuListProps={{
+                    'aria-labelledby': 'profile-button',
+                    backgronudColor: 'red',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
             >
-                {currentUser ?
-                    <div className="profile-container"
-                        style={{ cursor: 'pointer' }}
-                        id="profile-button"
-                        aria-controls={open ? 'profile-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        variant="contained"
-                        disableElevation
-                        onClick={handleClick} >
-                        <div className={dark ? "header-Profile-Name header-Profile-Name-dark" : "header-Profile-Name"}>{currentUser?.fullName}</div>
-                        {currentUser?.avatar && <Avatar className="header-Profile-icon" alt={currentUser?.firstName} src={currentUser?.avatar} />}
-                        {!currentUser?.avatar && <Avatar className="header-Profile-icon" >{(currentUser?.firstName).charAt(0).toUpperCase()}</Avatar>}
-                        <div>{ArrowIcon()}</div>
-                    </div>
-                    :
-                    <Stack direction='row' alignItems='center' justifyContent='flex-end' spacing={2}>
-                        <Button disableElevation disableRipple sx={{ ...loginBtn, color: dark ? '#FFFFFF' : '#090B0C', '&:hover': { background: dark ? '#090B0C' : '#FBFBFC' } }} size='small' onClick={handleLogin}>Login</Button>
-                        <Button sx={{ ...signUpBtn }} size='small' onClick={handleSignUp} className='signUpBtn'>Sign Up</Button>
-                    </Stack>
-                }
-
-            </Grid>
-        </Grid>
-        <StyledMenu
-            id="profile-menu"
-            sx={{ '& ul': dark ? { background: '#121619', border: '1px solid #5D6974', color: 'white !important' } : {} }}
-            MenuListProps={{
-                'aria-labelledby': 'profile-button',
-                backgronudColor: 'red'
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-        >
-            <MenuItem onClick={handleLogOut} disableRipple sx={{ fontSize: '13px' }}>
-                {currentUser ? <ExitToApp sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} /> : <Login sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />}
-                Logout
-            </MenuItem>
-            <Divider sx={{ my: 0.5 }} />
-            <MenuItem onClick={handleDarkMode} disableRipple sx={{ fontSize: '13px' }}>
-                {dark ? <LightMode sx={{ color: '#CCCCCC !important' }} /> : <DarkMode />}
-                {dark ? 'Day Mode' : 'Night Mode'}
-            </MenuItem>
-
-        </StyledMenu>
-    </div>
+                <MenuItem onClick={handleLogOut} disableRipple sx={{ fontSize: '13px' }}>
+                    {currentUser ? (
+                        <ExitToApp sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />
+                    ) : (
+                        <Login sx={{ color: dark ? '#CCCCCC !important' : 'inherit' }} />
+                    )}
+                    Logout
+                </MenuItem>
+                <Divider sx={{ my: 0.5 }} />
+                <MenuItem onClick={handleDarkMode} disableRipple sx={{ fontSize: '13px' }}>
+                    {dark ? <LightMode sx={{ color: '#CCCCCC !important' }} /> : <DarkMode />}
+                    {dark ? 'Day Mode' : 'Night Mode'}
+                </MenuItem>
+            </StyledMenu>
+        </div>
+    );
 };
 
 export default Index;
@@ -632,16 +1026,19 @@ const loginBtn = {
 const signUpBtn = {
     textTransform: 'capitalize',
     fontSize: '12px',
-    "borderRadius": "12px",
-    "background": "#8077F6",
+    borderRadius: '12px',
+    background: '#8077F6',
     lineHeight: '20px',
     letterSpacing: '-0.12px',
     color: 'white',
     padding: '8px 24px',
     fontWeight: 500,
     '&:hover': { background: '#8077F6' },
-    boxShadow: 'none'
+    boxShadow: 'none',
+};
 
-}
-
-const CustomIcon = (icon, clickAction) => <div onClick={clickAction} style={{ cursor: 'pointer' }} className="custom-icon">{icon}</div>;
+const CustomIcon = (icon, clickAction) => (
+    <div onClick={clickAction} style={{ cursor: 'pointer' }} className="custom-icon">
+        {icon}
+    </div>
+);

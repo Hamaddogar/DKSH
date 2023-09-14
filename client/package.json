@@ -36,10 +36,11 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "format": "prettier --check .",
+        "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
         "lint": "eslint .",
         "precommit": "lint-staged",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "add": "yarn run format && git add ."
     },
     "eslintConfig": {
         "extends": [
@@ -75,7 +76,7 @@
         "@types/react-lazy-load-image-component": "^1.5.3",
         "@types/react-slick": "^0.23.10",
         "@types/stylis": "^4.2.0",
-        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
         "@typescript-eslint/parser": "^6.0.0",
         "eslint": "^8.49.0",
         "eslint-config-airbnb": "^19.0.4",
@@ -95,5 +96,16 @@
     },
     "overrides": {
         "nth-check": "2.1.1"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "npm run format",
+            "git add"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
     }
 }

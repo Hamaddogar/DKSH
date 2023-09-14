@@ -1,9 +1,9 @@
 body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: "Axiforma", sans-serif;
-  overflow-x: hidden;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Axiforma', sans-serif;
+    overflow-x: hidden;
 }
 
 h1,
@@ -16,9 +16,9 @@ p,
 div,
 label,
 span {
-  font-family: "Axiforma", sans-serif;
+    font-family: 'Axiforma', sans-serif;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }

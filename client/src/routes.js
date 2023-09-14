@@ -1,28 +1,23 @@
-import React from "react";
+import React from 'react';
 //layouts
-import PublicLayout from "./layout/Public";
+import PublicLayout from './layout/Public';
 // pages
-import Reset from "./pages/reset";
-import Home from "./pages/home";
-import Jobs from "./pages/jobs";
-import Network from "./pages/network";
-import NotFound from "./components/not-found";
+import NotFound from './components/not-found';
+import homeRoutes from './modules/home/routes';
+import JobRoutes from './modules/jobs/routes';
+import NetworkRoutes from './modules/network/routes';
+import ResetRoutes from './modules/reset/routes';
 
 const routes = [
     {
-        path: "/",
+        path: '/',
         element: <PublicLayout />,
-        children: [
-            { path: "/", element: <Home /> },
-            { path: "/reset/:token", element: <Reset /> },
-            { path: "/jobs", element: <Jobs /> },
-            { path: "/network", element: <Network /> },
-        ],
+        children: [...homeRoutes, ...JobRoutes, ...NetworkRoutes, ...ResetRoutes],
     },
     {
-        path: "*",
+        path: '*',
         element: <PublicLayout />,
-        children: [{ path: "*", element: <NotFound /> }],
+        children: [{ path: '*', element: <NotFound /> }],
     },
 ];
 
