@@ -1,10 +1,9 @@
-const express = require('express');
+import express from 'express';
+import UserSettings from '../../DB-Config/model/settings.js';
 const settingUpdateRouter = express.Router();
-const UserSettings = require('../../Database/model/settings');
-const formModel = require('../../Database/model/formModel');
 
 
-settingUpdateRouter.post('/', async (req, res) => {
+settingUpdateRouter.post('/setting/update', async (req, res) => {
     const { userId, settings } = req.body;
 
     console.log(settings);
@@ -21,4 +20,4 @@ settingUpdateRouter.post('/', async (req, res) => {
     }
 });
 
-module.exports = settingUpdateRouter;
+export default settingUpdateRouter;

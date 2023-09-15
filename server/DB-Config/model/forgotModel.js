@@ -1,5 +1,5 @@
 
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 
 const forgotSchema = new Schema({
@@ -8,9 +8,7 @@ const forgotSchema = new Schema({
     resetPasswordToken: String,
     resetPasswordExpires: Date
 
-
-
 })
 const UserForgot = mongoose.model('UserForgot', forgotSchema);
 
-module.exports = UserForgot;
+export default UserForgot;

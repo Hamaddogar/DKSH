@@ -1,9 +1,10 @@
 
-const express = require('express');
-const router = express.Router();
-const Form = require('../../Database/model/formModel')
-const bcrypt = require('bcrypt');
-router.post('/', async (req, res) => {
+import express from 'express';
+const loginRouter = express.Router();
+import Form from '../../DB-Config/model/formModel.js';
+import bcrypt from "bcrypt";
+
+loginRouter.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -25,4 +26,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default loginRouter;

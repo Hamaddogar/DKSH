@@ -1,10 +1,10 @@
 
-const express = require('express');
-const JobsSkelton = require('../../Database/model/Jobs');
+import express from 'express';
+import JobsSkelton from '../../DB-Config/model/Jobs.js';
 const allJobsRouter = express.Router();
 
 allJobsRouter.get('/jobss', async (req, res) => {
-  try { 
+  try {
     const jobList = await JobsSkelton.find({});
     res.send({ success: true, list: jobList });
   } catch (error) {
@@ -13,4 +13,4 @@ allJobsRouter.get('/jobss', async (req, res) => {
   }
 });
 
-module.exports = allJobsRouter;
+export default allJobsRouter;

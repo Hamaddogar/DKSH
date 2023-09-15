@@ -1,7 +1,7 @@
 
-const express = require('express');
+import express from 'express';
 const allUsersRouter = express.Router();
-const Developers = require('../../Database/model/Developer');
+import Developers from '../../DB-Config/model/Developer.js'
 
 
 allUsersRouter.get('/alluser', async (req, res) => {
@@ -16,4 +16,4 @@ allUsersRouter.get('/alluser', async (req, res) => {
 });
 
 
-module.exports = allUsersRouter;
+export default allUsersRouter;

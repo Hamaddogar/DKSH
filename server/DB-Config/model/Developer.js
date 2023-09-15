@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const developerSchema = new mongoose.Schema({
     firstName: String,
@@ -48,4 +48,4 @@ const developerSchema = new mongoose.Schema({
 
 const Developers = mongoose.model('Developers', developerSchema);
 
-module.exports = Developers;
+export default Developers;

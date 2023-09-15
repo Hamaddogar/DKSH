@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const nodemailer = require('nodemailer');
-const UserForgot = require('../../Database/model/forgotModel');
-const jwt = require('jsonwebtoken');
+import express from 'express';
+const forgetRouter = express.Router();
+import nodemailer from 'nodemailer';
+import UserForgot from '../../DB-Config/model/forgotModel.js';
+import jwt from "jsonwebtoken";
 
 let transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -16,7 +16,7 @@ let transporter = nodemailer.createTransport({
 // const URL = 'https://dksh-vercel.vercel.app/reset/';
 const URL = 'http://localhost:3000/reset/';
 
-router.post('/', async (req, res) => {
+forgetRouter.post('/forgot', async (req, res) => {
   const secretKey = 'your-secret-key'; // Replace with your own secret key
   const token = jwt.sign({ email: req.body.email }, secretKey, { expiresIn: '30m' });
 
@@ -50,19 +50,13 @@ router.post('/', async (req, res) => {
       resetPasswordExpires: Date.now() + 3600000,
       email: req.body.email,
     });
+    await userForgot.save();
+    await mailSenderFunction(req.body.email, token);
 
-    await userForgot
-      .save()
-      .then(() => {
-        mailSenderFunction(req.body.email, token);
-      })
-      .catch((err) => {
-        res.status(500).send({ 'message': 'Internal Server Error' })
-      });
   } catch (error) {
     res.status(500).send({ 'message': 'Internal Server Error' })
   }
 
 });
 
-module.exports = router;
+export default forgetRouter;

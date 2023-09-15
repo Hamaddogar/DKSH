@@ -1,5 +1,6 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://admin:admin@cluster0.zylqsdb.mongodb.net/dksh?';
 // -------------DB Connection----------------- //
@@ -14,6 +15,6 @@ const connectDB = () => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-module.exports = connectDB;
+export default connectDB;

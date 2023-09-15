@@ -1,5 +1,5 @@
-const { default: axios } = require('axios');
-const express = require('express');
+import axios from 'axios';
+import express from 'express';
 const countryGetter = express.Router();
 
 countryGetter.get('/country', async (req, res) => {
@@ -16,4 +16,4 @@ countryGetter.get('/country', async (req, res) => {
   }
 });
 
-module.exports = countryGetter;
+export default countryGetter;

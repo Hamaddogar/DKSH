@@ -1,7 +1,7 @@
-const Form = require('../Database/model/formModel');
-const UserSettings = require('../Database/model/settings');
+import Form from '../DB-Config/model/formModel.js';
+import UserSettings from '../DB-Config/model/settings.js';
 
-exports.saveFormData = async (req, res) => {
+const saveFormData = async (req, res) => {
   const { firstName, role, lastName, contactNo, country, email, password, avatar } = req.body;
 
   try {
@@ -24,3 +24,5 @@ exports.saveFormData = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+export default saveFormData;

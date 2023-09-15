@@ -1,10 +1,10 @@
 
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcrypt');
-const UserForgot = require('../../Database/model/forgotModel')
-const Form = require('../../Database/model/formModel')
-const jwt = require('jsonwebtoken');
+import express from 'express';
+const resetRouter = express.Router();
+import bcrypt from "bcrypt";
+import UserForgot from '../../DB-Config/model/forgotModel.js';
+import Form from '../../DB-Config/model/formModel.js';
+import jwt from 'jsonwebtoken';
 
 // Middleware function for JWT verification
 const verifyToken = (req, res, next) => {
@@ -17,7 +17,7 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-router.post('/', verifyToken, async (req, res) => {
+resetRouter.post('/resetpassword', verifyToken, async (req, res) => {
   const newPassword = req.body.password;
   const token = req.body.token
   try {
@@ -42,4 +42,4 @@ router.post('/', verifyToken, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-module.exports = router;
+export default resetRouter;

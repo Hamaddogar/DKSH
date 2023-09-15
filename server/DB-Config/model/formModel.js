@@ -1,7 +1,8 @@
 // models/formModel.js
 
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
+import mongoose from 'mongoose';
+import bcrypt from "bcrypt-nodejs";
+
 const formSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
@@ -39,5 +40,5 @@ formSchema.methods.verifyPassword = function (password, cb) {
     cb(null, isVaild);
   });
 };
-
-module.exports = mongoose.model('Form', formSchema);
+const Form = mongoose.model('Form', formSchema);
+export default Form;

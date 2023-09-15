@@ -1,8 +1,7 @@
+import express from 'express';
+const userRouter = express.Router();
+import saveFormData from '../formRouter.js';
 
-const express = require('express');
-const router = express.Router();
-const formDataController = require('../formRouter');
+userRouter.post('/signup', saveFormData);
 
-router.post('/', formDataController.saveFormData);
-
-module.exports = router;
+export default userRouter;
