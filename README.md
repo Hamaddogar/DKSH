@@ -1,41 +1,5 @@
 
-## Live project link
-https://dksh-vercel.vercel.app/
-
-
 ## folder/file strcture
-├───.husky
-│   └───_
-├───public
-└───src
-    ├───assets
-    ├───components
-    │   ├───footer
-    │   ├───header
-    │   └───not-found
-    ├───context
-    ├───hooks
-    ├───layout
-    ├───modules
-    │   ├───auth
-    │   │   ├───containers
-    │   │   ├───hooks
-    │   │   └───ui
-    │   │       ├───desktop-view
-    │   │       └───mobile-view
-    │   ├───home
-    │   │   ├───containers
-    │   │   ├───hooks
-    │   │   └───ui
-    │   │       ├───banner
-    │   │       ├───dropdown
-    │   │       ├───filters
-    │   │       ├───form
-
-D:\Extras\Hamad\DKSH\client>tree/f
-Folder PATH listing for volume New Volume
-Volume serial number is 525D-EFB9        
-D:.
 │   .editorconfig
 │   .env
 │   .eslintignore
