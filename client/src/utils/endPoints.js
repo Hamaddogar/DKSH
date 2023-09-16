@@ -1,6 +1,6 @@
-const isDev = false;
+const isDev = true;
 
-const server = isDev ? 'http://localhost:8080/' : 'https://dksh-vercel.vercel.app/';
+const server = isDev ? 'http://localhost:8080/' : '/';
 
 export const APIS = {
     all_dev: server + 'alluser',
